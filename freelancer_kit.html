@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NomadStation // Freelancer Araç Kiti</title>
+    <style>
+        :root {
+            --bg-color: #080c14;
+            --card-bg: #0f172a;
+            --accent-color: #10b981; /* Canlı Yeşil - Para ve Odaklanma */
+            --text-main: #f8fafc;
+            --text-muted: #64748b;
+            --border: #1e293b;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        header h1 {
+            font-size: 36px;
+            margin: 0;
+            background: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        header p {
+            color: var(--text-muted);
+            margin: 5px 0 0 0;
+        }
+
+        /* Ana Panel Düzeni */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+
+        .card h2 {
+            font-size: 18px;
+            margin-top: 0;
+            color: var(--accent-color);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* ARAÇ 1: Pomodoro & Çay Molası */
+        .timer-display {
+            font-size: 42px;
+            font-weight: bold;
+            text-align: center;
+            margin: 15px 0;
+            font-family: monospace;
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+        button {
+            flex: 1;
+            background-color: #1e293b;
+            border: 1px solid var(--border);
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+        button:hover {
+            background-color: var(--accent-color);
+            color: #000;
+        }
+
+        /* ARAÇ 2: Kelime & Karakter Sayıcı */
+        textarea {
+            width: 100%;
+            height: 100px;
+            background-color: #020617;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: white;
+            padding: 10px;
+            box-sizing: border-box;
+            resize: none;
+            outline: none;
+        }
+        .counter-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        /* ARAÇ 3: Döviz Çevirici (Simüle) */
+        .currency-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        select, input[type="number"] {
+            background: #020617;
+            border: 1px solid var(--border);
+            color: white;
+            padding: 8px;
+            border-radius: 6px;
+        }
+        input[type="number"] { width: 100%; }
+
+        /* REKLAM & GELİR ALANLARI (PARA KAZANDIRAN KISIM) */
+        .monetize-zone {
+            grid-column: 1 / -1;
+            background: linear-gradient(90deg, #1e1b4b 0%, #0f172a 100%);
+            border: 1px dashed var(--accent-color);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .amazon-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .amazon-btn {
+            background-color: #ff9900; /* Amazon Turuncusu */
+            color: #000000;
+            padding: 12px 20px;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 14px;
+            transition: transform 0.2s;
+        }
+
+        .amazon-btn:hover {
+            transform: scale(1.05);
+            background-color: #ffb347;
+        }
+
+        .ad-placeholder {
+            background-color: #020617;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 15px;
+            font-size: 12px;
+            letter-spacing: 2px;
+            margin-top: 15px;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>NomadStation</h1>
+        <p>Dijital Göçebeler ve Freelancerlar İçin Verimlilik Üssü</p>
+    </header>
+
+    <div class="dashboard-grid">
+
+        <div class="card">
+            <h2>⏱️ Odaklanma & Çay Molası</h2>
+            <div class="timer-display" id="timer">25:00</div>
+            <div class="btn-group">
+                <button onclick="startTimer()">Başlat</button>
+                <button onclick="pauseTimer()">Durdur</button>
+                <button onclick="resetTimer()">Sıfırla</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>✍️ Kelime & Karakter Sayıcı</h2>
+            <textarea id="textInput" placeholder="Metninizi buraya yapıştırın veya yazın..." oninput="countText()"></textarea>
+            <div class="counter-stats">
+                <span>Kelime: <b id="wordCount" style="color:white">0</b></span>
+                <span>Karakter: <b id="charCount" style="color:white">0</b></span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>💵 Hızlı Döviz Kuru</h2>
+            <div class="currency-row">
+                <input type="number" id="amount" value="100" oninput="convertCurrency()">
+                <select id="fromCurrency" onchange="convertCurrency()">
+                    <option value="USD">USD</option>
+                    <option value="EUR">EUR</option>
+                </select>
+            </div>
+            <div style="font-size: 18px; margin-top: 15px; font-weight: bold;">
+                Tahmini Karşılığı: <span id="conversionResult" style="color:#10b981">3.400,00 TL</span>
+            </div>
+            <span style="font-size: 11px; color:var(--text-muted); display:block; margin-top:5px;">*Kurlar simüle edilmiştir, canlı API bağlanabilir.</span>
+        </div>
+
+        <div class="monetize-zone">
+            <h3 style="margin: 0; font-size: 20px; color: #ff9900;">🛒 Önerilen Yazılımcı & Göçebe Ekipmanları</h3>
+            <p style="color: var(--text-muted); font-size: 14px; margin: 5px 0 15px 0;">Çayını yudumlarken konforunu artıracak, dünya genelinde en çok satan Amazon ürünleri</p>
+            
+            <div class="amazon-links">
+                <a href="https://www.amazon.com" target="_blank" class="amazon-btn">Ortopedik Çalışma Minderi 💺</a>
+                <a href="https://www.amazon.com" target="_blank" class="amazon-btn">RGB Mekanik Klavye ⌨️</a>
+                <a href="https://www.amazon.com" target="_blank" class="amazon-btn">Termoslu Akıllı Çay Kupası ☕</a>
+            </div>
+
+            <div class="ad-placeholder">
+                [ REKLAM ALANI - GOOGLE ADSENSE BAĞLANTISI BURAYA GELECEK ]
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // --- POMODORO SİSTEMİ ---
+        let timer;
+        let timeLeft = 25 * 60;
+        let isRunning = false;
+
+        function updateTimerDisplay() {
+            let minutes = Math.floor(timeLeft / 60);
+            let seconds = timeLeft % 60;
+            document.getElementById('timer').innerText = 
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function startTimer() {
+            if (isRunning) return;
+            isRunning = true;
+            timer = setInterval(() => {
+                if (timeLeft > 0) {
+                    timeLeft--;
+                    updateTimerDisplay();
+                } else {
+                    clearInterval(timer);
+                    alert("Mola Zamanı! Kendine güzel bir çay koy.");
+                    resetTimer();
+                }
+            }, 1000);
+        }
+
+        function pauseTimer() {
+            clearInterval(timer);
+            isRunning = false;
+        }
+
+        function resetTimer() {
+            clearInterval(timer);
+            isRunning = false;
+            timeLeft = 25 * 60;
+            updateTimerDisplay();
+        }
+
+        // --- KELİME SAYICI ---
+        function countText() {
+            let text = document.getElementById('textInput').value.trim();
+            let chars = text.length;
+            let words = text === "" ? 0 : text.split(/\s+/).length;
+            
+            document.getElementById('charCount').innerText = chars;
+            document.getElementById('wordCount').innerText = words;
+        }
+
+        // --- DÖVİZ ÇEVİRİCİ ---
+        function convertCurrency() {
+            let amount = document.getElementById('amount').value;
+            let from = document.getElementById('fromCurrency').value;
+            let rate = from === "USD" ? 34.20 : 36.50; // Güncel tahmini kurlar
+            let result = amount * rate;
+            
+            document.getElementById('conversionResult').innerText = 
+                new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY' }).format(result);
+        }
+    </script>
+</body>
+</html>
