@@ -213,6 +213,10 @@
                     <option value="USD">Dolar (USD)</option>
                     <option value="EUR">Euro (EUR)</option>
                     <option value="GBP">Sterlin (GBP)</option>
+                    <option value="CAD">Kanada Doları (CAD)</option>
+                    <option value="AUD">Avustralya Doları (AUD)</option>
+                    <option value="JPY">Japon Yeni (JPY)</option>
+                    <option value="CHF">İsviçre Frangı (CHF)</option>
                 </select>
             </div>
             <div style="font-size: 18px; margin-top: 15px; font-weight: bold;">
@@ -225,9 +229,10 @@
             <h3 style="margin: 0; font-size: 20px; color: #ff9900;">🛒 Önerilen Yazılımcı & Göçebe Ekipmanları</h3>
             <p style="color: var(--text-muted); font-size: 14px; margin: 5px 0 15px 0;">Konforunu artıracak, dünya genelinde en çok satan Amazon ürünleri</p>
             <div class="amazon-links">
-                <a href="https://www.amazon.com" target="_blank" class="amazon-btn">Ortopedik Çalışma Minderi 💺</a>
-                <a href="https://www.amazon.com" target="_blank" class="amazon-btn">RGB Mekanik Klavye ⌨️</a>
-                <a href="https://www.amazon.com" target="_blank" class="amazon-btn">Termoslu Akıllı Çay Kupası ☕</a>
+                <a href="https://amzn.to/49nYykx" target="_blank" class="amazon-btn">Ortopedik Çalışma Minderi 💺</a>
+                <a href="https://amzn.to/3PAOSN1" target="_blank" class="amazon-btn">RGB Mekanik Klavye ⌨️</a>
+                <a href="https://amzn.to/4wNxZ2f" target="_blank" class="amazon-btn">Termoslu Akıllı Çay Kupası ☕</a>
+                <a href="https://amzn.to/49mlCjP" target="_blank" class="amazon-btn">Ergonomik Laptop Standı 💻</a>
             </div>
             <div class="ad-placeholder">
                 [ REKLAM ALANI - GOOGLE ADSENSE BAĞLANTISI BURAYA GELECEK ]
@@ -267,18 +272,20 @@
         }
 
         // --- CANLI İNTERNETTEN DÖVİZ ÇEKME SİHRİ ---
-        let exchangeRates = { USD: 0, EUR: 0, GBP: 0 };
+        let exchangeRates = { USD: 0, EUR: 0, GBP: 0, CAD: 0, AUD: 0, JPY: 0, CHF: 0 };
 
         function fetchLiveRates() {
-            // Serbest ve ücretsiz döviz API'sinden TL kurlarını çekiyoruz
             fetch('https://open.er-api.com/v6/latest/TRY')
                 .then(response => response.json())
                 .then(data => {
-                    // Gelen veriler TRY tabanlı olduğu için tersini alıp güncel kurları buluyoruz
                     exchangeRates.USD = 1 / data.rates.USD;
                     exchangeRates.EUR = 1 / data.rates.EUR;
                     exchangeRates.GBP = 1 / data.rates.GBP;
-                    convertCurrency(); // Kurlar yüklenince ilk hesaplamayı yap
+                    exchangeRates.CAD = 1 / data.rates.CAD;
+                    exchangeRates.AUD = 1 / data.rates.AUD;
+                    exchangeRates.JPY = 1 / data.rates.JPY;
+                    exchangeRates.CHF = 1 / data.rates.CHF;
+                    convertCurrency();
                 })
                 .catch(err => {
                     console.error("Döviz kurları çekilemedi:", err);
@@ -291,14 +298,13 @@
             let from = document.getElementById('fromCurrency').value;
             let currentRate = exchangeRates[from];
             
-            if(currentRate === 0) return; // Kurlar henüz yüklenmediyse bekle
+            if(currentRate === 0 || !currentRate) return;
 
             let result = amount * currentRate;
             document.getElementById('conversionResult').innerText = 
                 new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY' }).format(result);
         }
 
-        // Sayfa ilk açıldığında canlı kurları internetten getir
         window.onload = fetchLiveRates;
     </script>
 </body>
