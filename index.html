@@ -188,7 +188,7 @@
 
         <div class="card">
             <h2>⏱️ Odaklanma & Çay Molası</h2>
-            <div class="timer-display" id="timer">25:00</div>
+            <div class="timer-display" id="timer">30:00</div>
             <div class="btn-group">
                 <button onclick="startTimer()">Başlat</button>
                 <button onclick="pauseTimer()">Durdur</button>
@@ -230,10 +230,10 @@
             <p style="color: var(--text-muted); font-size: 14px; margin: 5px 0 15px 0;">Konforunu artıracak, dünya genelinde en çok satan Amazon ürünleri</p>
             
             <div class="amazon-links">
-                <a href="https://amzn.to/49nYykx" target="_blank" class="amazon-btn">Ortopedik Çalışma Minderi 💺</a>
-                <a href="https://amzn.to/3PAOSN1" target="_blank" class="amazon-btn">RGB Mekanik Klavye ⌨️</a>
-                <a href="https://amzn.to/4wNxZ2f" target="_blank" class="amazon-btn">Termoslu Akıllı Çay Kupası ☕</a>
-                <a href="https://amzn.to/49mlCjP" target="_blank" class="amazon-btn">Ergonomik Laptop Standı 💻</a>
+                <a href="https://amzn.to/4a7y9ro" target="_blank" class="amazon-btn">Ergonomik Laptop Standı 💻</a>
+                <a href="https://amzn.to/3PATtPh" target="_blank" class="amazon-btn">Termoslu Akıllı Çay Kupası ☕</a>
+                <a href="https://amzn.to/4nYkNUf" target="_blank" class="amazon-btn">Oyuncu Kulaklığı 🎧</a>
+                <a href="https://amzn.to/4dIcS8J" target="_blank" class="amazon-btn">Ortopedik Çalışma Minderi 💺</a>
             </div>
 
             <div class="ad-placeholder">
@@ -246,7 +246,7 @@
     <script>
         // --- POMODORO SİSTEMİ ---
         let timer;
-        let timeLeft = 25 * 60;
+        let timeLeft = 30 * 60; // 30 dakikaya çıkarıldı
         let isRunning = false;
 
         function updateTimerDisplay() {
@@ -264,7 +264,7 @@
         }
 
         function pauseTimer() { clearInterval(timer); isRunning = false; }
-        function resetTimer() { clearInterval(timer); isRunning = false; timeLeft = 25 * 60; updateTimerDisplay(); }
+        function resetTimer() { clearInterval(timer); isRunning = false; timeLeft = 30 * 60; updateTimerDisplay(); }
 
         // --- KELİME SAYICI ---
         function countText() {
