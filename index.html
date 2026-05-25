@@ -6,7 +6,6 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-PDGE4NDWT9');
     </script>
 
@@ -68,26 +67,31 @@
             border-radius: 16px;
             padding: 20px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .card h2 {
-            font-size: 18px;
+            font-size: 17px;
             margin-top: 0;
             color: var(--accent-color);
             border-bottom: 1px solid var(--border);
             padding-bottom: 10px;
+            margin-bottom: 15px;
         }
 
         .timer-display {
             font-size: 42px;
             font-weight: bold;
             text-align: center;
-            margin: 15px 0;
+            margin: 10px 0;
             font-family: monospace;
         }
         .btn-group {
             display: flex;
             gap: 10px;
+            margin-top: 10px;
         }
         button {
             flex: 1;
@@ -125,20 +129,35 @@
             color: var(--text-muted);
         }
 
-        .currency-row {
+        .row-item {
             display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 12px;
         }
-        select, input[type="number"] {
+        select, input {
             background: #020617;
             border: 1px solid var(--border);
             color: white;
-            padding: 8px;
-            border-radius: 6px;
+            padding: 10px;
+            border-radius: 8px;
+            outline: none;
         }
-        input[type="number"] { width: 100%; }
+
+        .crypto-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .crypto-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 10px;
+            background: #020617;
+            border-radius: 6px;
+            border: 1px solid #1e293b;
+            font-size: 14px;
+        }
 
         .monetize-zone {
             grid-column: 1 / -1;
@@ -169,7 +188,6 @@
             font-size: 14px;
             transition: transform 0.2s;
         }
-
         .amazon-btn:hover {
             transform: scale(1.05);
             background-color: #ffb347;
@@ -184,6 +202,12 @@
             background-color: #020617;
             margin-top: 15px;
         }
+        .checkbox-group {
+            display: flex;
+            gap: 15px;
+            margin: 8px 0;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -197,41 +221,90 @@
 
         <div class="card">
             <h2>⏱️ Odaklanma & Çay Molası</h2>
-            <div class="timer-display" id="timer">30:00</div>
-            <div class="btn-group">
-                <button onclick="startTimer()">Başlat</button>
-                <button onclick="pauseTimer()">Durdur</button>
-                <button onclick="resetTimer()">Sıfırla</button>
+            <div>
+                <div class="timer-display" id="timer">30:00</div>
+                <div class="btn-group">
+                    <button onclick="startTimer()">Başlat</button>
+                    <button onclick="pauseTimer()">Durdur</button>
+                    <button onclick="resetTimer()">Sıfırla</button>
+                </div>
             </div>
         </div>
 
         <div class="card">
             <h2>✍️ Kelime & Karakter Sayıcı</h2>
-            <textarea id="textInput" placeholder="Metninizi buraya yapıştırın..." oninput="countText()"></textarea>
-            <div class="counter-stats">
-                <span>Kelime: <b id="wordCount" style="color:white">0</b></span>
-                <span>Karakter: <b id="charCount" style="color:white">0</b></span>
+            <div>
+                <textarea id="textInput" placeholder="Metninizi buraya yapıştırın..." oninput="countText()"></textarea>
+                <div class="counter-stats">
+                    <span>Kelime: <b id="wordCount" style="color:white">0</b></span>
+                    <span>Karakter: <b id="charCount" style="color:white">0</b></span>
+                </div>
             </div>
         </div>
 
         <div class="card">
             <h2>💵 Canlı Döviz Kuru</h2>
-            <div class="currency-row">
-                <input type="number" id="amount" value="100" oninput="convertCurrency()">
-                <select id="fromCurrency" onchange="convertCurrency()">
-                    <option value="USD">Dolar (USD)</option>
-                    <option value="EUR">Euro (EUR)</option>
-                    <option value="GBP">Sterlin (GBP)</option>
-                    <option value="CAD">Kanada Doları (CAD)</option>
-                    <option value="AUD">Avustralya Doları (AUD)</option>
-                    <option value="JPY">Japon Yeni (JPY)</option>
-                    <option value="CHF">İsviçre Frangı (CHF)</option>
-                </select>
+            <div>
+                <div class="row-item">
+                    <input type="number" id="amount" value="100" oninput="convertCurrency()">
+                    <select id="fromCurrency" onchange="convertCurrency()">
+                        <option value="USD">Dolar (USD)</option>
+                        <option value="EUR">Euro (EUR)</option>
+                        <option value="GBP">Sterlin (GBP)</option>
+                        <option value="CAD">Kanada Doları (CAD)</option>
+                        <option value="AUD">Avustralya Doları (AUD)</option>
+                        <option value="JPY">Japon Yeni (JPY)</option>
+                        <option value="CHF">İsviçre Frangı (CHF)</option>
+                    </select>
+                </div>
+                <div style="font-size: 16px; margin-top: 10px; font-weight: bold;">
+                    Anlık Karşılığı: <span id="conversionResult" style="color:#10b981">Yükleniyor...</span>
+                </div>
             </div>
-            <div style="font-size: 18px; margin-top: 15px; font-weight: bold;">
-                Anlık Karşılığı: <span id="conversionResult" style="color:#10b981">Yükleniyor...</span>
+        </div>
+
+        <div class="card">
+            <h2>🔒 Güçlü Şifre Oluşturucu</h2>
+            <div>
+                <div class="row-item">
+                    <label style="font-size:12px; color:var(--text-muted)">Şifre Uzunluğu</label>
+                    <input type="number" id="pwLength" value="12" min="6" max="32">
+                </div>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" id="pwSymbols" checked> Sembol</label>
+                    <label><input type="checkbox" id="pwNumbers" checked> Sayı</label>
+                </div>
+                <button onclick="generatePassword()" style="width:100%; margin-top:5px;">Şifre Üret</button>
+                <input type="text" id="pwResult" readonly placeholder="Şifreniz burada görünecek" style="width:100%; margin-top:10px; text-align:center; font-family:monospace; color:#10b981;">
             </div>
-            <span style="font-size: 11px; color:var(--text-muted); display:block; margin-top:5px;">*Kurlar internetten canlı ve otomatik olarak çekilmektedir.</span>
+        </div>
+
+        <div class="card">
+            <h2>💰 Saatlik Ücret Hesaplayıcı</h2>
+            <div>
+                <div class="row-item" style="gap:4px; margin-bottom:8px;">
+                    <input type="number" id="targetIncome" value="50000" placeholder="Aylık Hedef Ciro (TL)">
+                    <input type="number" id="workDays" value="5" placeholder="Haftalık Çalışma Günü" min="1" max="7">
+                    <input type="number" id="workHours" value="6" placeholder="Günlük Çalışma Saati" min="1" max="24">
+                </div>
+                <button onclick="calculateHourlyRate()" style="width:100%;">Hesapla</button>
+                <div style="font-size: 14px; margin-top: 10px; font-weight: bold; text-align:center;">
+                    Minimum Saatlik Ücretin: <span id="hourlyResult" style="color:#3b82f6">---</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>🪙 Canlı Kripto Fiyatları (USD)</h2>
+            <div class="crypto-list">
+                <div class="crypto-row"><span>Bitcoin (BTC)</span><b id="btc-price" style="color:#ff9900">$...</b></div>
+                <div class="crypto-row"><span>Ethereum (ETH)</span><b id="eth-price" style="color:#3b82f6">$...</b></div>
+                <div class="crypto-row"><span>Solana (SOL)</span><b id="sol-price" style="color:#10b981">$...</b></div>
+                <div class="crypto-row"><span>Binance (BNB)</span><b id="bnb-price" style="color:#f3ba2f">$...</b></div>
+                <div class="crypto-row"><span>Ripple (XRP)</span><b id="xrp-price" style="color:#23292f">$...</b></div>
+                <div class="crypto-row"><span>Cardano (ADA)</span><b id="ada-price" style="color:#0033ad">$...</b></div>
+                <div class="crypto-row"><span>Dogecoin (DOGE)</span><b id="doge-price" style="color:#ba9f33">$...</b></div>
+            </div>
         </div>
 
         <div class="monetize-zone">
@@ -268,7 +341,14 @@
             if (isRunning) return;
             isRunning = true;
             timer = setInterval(() => {
-                if (timeLeft > 0) { timeLeft--; updateTimerDisplay(); } else { clearInterval(timer); alert("Mola Zamanı!"); resetTimer(); }
+                if (timeLeft > 0) { 
+                    timeLeft--; 
+                    updateTimerDisplay(); 
+                } else { 
+                    clearInterval(timer); 
+                    alert("Harika İş! 30 Dakikalık Odaklanma Bitti. Şimdi kalk, bir bardak su iç ve gözlerini 20 saniye uzağa bakarak dinlendir! 💧👁️"); 
+                    resetTimer(); 
+                }
             }, 1000);
         }
 
@@ -282,7 +362,7 @@
             document.getElementById('wordCount').innerText = text === "" ? 0 : text.split(/\s+/).length;
         }
 
-        // --- CANLI İNTERNETTEN DÖVİZ ÇEKME SİHRİ ---
+        // --- CANLI DÖVİZ MOTORU ---
         let exchangeRates = { USD: 0, EUR: 0, GBP: 0, CAD: 0, AUD: 0, JPY: 0, CHF: 0 };
 
         function fetchLiveRates() {
@@ -299,7 +379,6 @@
                     convertCurrency();
                 })
                 .catch(err => {
-                    console.error("Döviz kurları çekilemedi:", err);
                     document.getElementById('conversionResult').innerText = "Bağlantı Hatası";
                 });
         }
@@ -308,15 +387,65 @@
             let amount = document.getElementById('amount').value;
             let from = document.getElementById('fromCurrency').value;
             let currentRate = exchangeRates[from];
-            
-            if(currentRate === 0 || !currentRate) return;
-
+            if(!currentRate) return;
             let result = amount * currentRate;
-            document.getElementById('conversionResult').innerText = 
-                new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY' }).format(result);
+            document.getElementById('conversionResult').innerText = new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY' }).format(result);
         }
 
-        window.onload = fetchLiveRates;
+        // --- ŞİFRE OLUŞTURUCU ---
+        function generatePassword() {
+            let length = document.getElementById('pwLength').value;
+            let includeSymbols = document.getElementById('pwSymbols').checked;
+            let includeNumbers = document.getElementById('pwNumbers').checked;
+            
+            let chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            if (includeNumbers) chars += "0123456789";
+            if (includeSymbols) chars += "!@#$%^&*()_+~`|}{[]:;?><,./-=";
+            
+            let password = "";
+            for (let i = 0; i < length; i++) {
+                password += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            document.getElementById('pwResult').value = password;
+        }
+
+        // --- SAATLİK ÜCRET HESAPLAYICI ---
+        function calculateHourlyRate() {
+            let target = parseFloat(document.getElementById('targetIncome').value);
+            let days = parseInt(document.getElementById('workDays').value);
+            let hours = parseInt(document.getElementById('workHours').value);
+            
+            if(!target || !days || !hours) return;
+            
+            let totalHoursInMonth = days * hours * 4.33; 
+            let hourlyRate = target / totalHoursInMonth;
+            
+            document.getElementById('hourlyResult').innerText = new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY' }).format(hourlyRate);
+        }
+
+        // --- CANLI KRİPTO FİYATLARI SİHRİ ---
+        function fetchCryptoPrices() {
+            fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana,binancecoin,ripple,cardano,dogecoin&vs_currencies=usd')
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('btc-price').innerText = "$" + data.bitcoin.usd.toLocaleString();
+                    document.getElementById('eth-price').innerText = "$" + data.ethereum.usd.toLocaleString();
+                    document.getElementById('sol-price').innerText = "$" + data.solana.usd.toLocaleString();
+                    document.getElementById('bnb-price').innerText = "$" + data.binancecoin.usd.toLocaleString();
+                    document.getElementById('xrp-price').innerText = "$" + data.ripple.usd.toFixed(4);
+                    document.getElementById('ada-price').innerText = "$" + data.cardano.usd.toFixed(4);
+                    document.getElementById('doge-price').innerText = "$" + data.dogecoin.usd.toFixed(4);
+                })
+                .catch(err => {
+                    console.log("Kripto verisi çekilemedi, tekrar deneniyor...");
+                });
+        }
+
+        window.onload = function() {
+            fetchLiveRates();
+            fetchCryptoPrices();
+            setInterval(fetchCryptoPrices, 60000); // Kriptoları her dakikada bir otomatik yeniler
+        };
     </script>
 </body>
 </html>
