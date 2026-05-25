@@ -8,7 +8,7 @@
         :root {
             --bg-color: #080c14;
             --card-bg: #0f172a;
-            --accent-color: #10b981; /* Canlı Yeşil - Para ve Odaklanma */
+            --accent-color: #10b981; 
             --text-main: #f8fafc;
             --text-muted: #64748b;
             --border: #1e293b;
@@ -45,7 +45,6 @@
             margin: 5px 0 0 0;
         }
 
-        /* Ana Panel Düzeni */
         .dashboard-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -68,11 +67,8 @@
             color: var(--accent-color);
             border-bottom: 1px solid var(--border);
             padding-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
         }
 
-        /* ARAÇ 1: Pomodoro & Çay Molası */
         .timer-display {
             font-size: 42px;
             font-weight: bold;
@@ -100,7 +96,6 @@
             color: #000;
         }
 
-        /* ARAÇ 2: Kelime & Karakter Sayıcı */
         textarea {
             width: 100%;
             height: 100px;
@@ -121,7 +116,6 @@
             color: var(--text-muted);
         }
 
-        /* ARAÇ 3: Döviz Çevirici (Simüle) */
         .currency-row {
             display: flex;
             align-items: center;
@@ -137,7 +131,6 @@
         }
         input[type="number"] { width: 100%; }
 
-        /* REKLAM & GELİR ALANLARI (PARA KAZANDIRAN KISIM) */
         .monetize-zone {
             grid-column: 1 / -1;
             background: linear-gradient(90deg, #1e1b4b 0%, #0f172a 100%);
@@ -157,7 +150,7 @@
         }
 
         .amazon-btn {
-            background-color: #ff9900; /* Amazon Turuncusu */
+            background-color: #ff9900; 
             color: #000000;
             padding: 12px 20px;
             text-decoration: none;
@@ -205,7 +198,7 @@
 
         <div class="card">
             <h2>✍️ Kelime & Karakter Sayıcı</h2>
-            <textarea id="textInput" placeholder="Metninizi buraya yapıştırın veya yazın..." oninput="countText()"></textarea>
+            <textarea id="textInput" placeholder="Metninizi buraya yapıştırın..." oninput="countText()"></textarea>
             <div class="counter-stats">
                 <span>Kelime: <b id="wordCount" style="color:white">0</b></span>
                 <span>Karakter: <b id="charCount" style="color:white">0</b></span>
@@ -213,30 +206,29 @@
         </div>
 
         <div class="card">
-            <h2>💵 Hızlı Döviz Kuru</h2>
+            <h2>💵 Canlı Döviz Kuru</h2>
             <div class="currency-row">
                 <input type="number" id="amount" value="100" oninput="convertCurrency()">
                 <select id="fromCurrency" onchange="convertCurrency()">
-                    <option value="USD">USD</option>
-                    <option value="EUR">EUR</option>
+                    <option value="USD">Dolar (USD)</option>
+                    <option value="EUR">Euro (EUR)</option>
+                    <option value="GBP">Sterlin (GBP)</option>
                 </select>
             </div>
             <div style="font-size: 18px; margin-top: 15px; font-weight: bold;">
-                Tahmini Karşılığı: <span id="conversionResult" style="color:#10b981">3.400,00 TL</span>
+                Anlık Karşılığı: <span id="conversionResult" style="color:#10b981">Yükleniyor...</span>
             </div>
-            <span style="font-size: 11px; color:var(--text-muted); display:block; margin-top:5px;">*Kurlar simüle edilmiştir, canlı API bağlanabilir.</span>
+            <span style="font-size: 11px; color:var(--text-muted); display:block; margin-top:5px;">*Kurlar internetten canlı ve otomatik olarak çekilmektedir.</span>
         </div>
 
         <div class="monetize-zone">
             <h3 style="margin: 0; font-size: 20px; color: #ff9900;">🛒 Önerilen Yazılımcı & Göçebe Ekipmanları</h3>
-            <p style="color: var(--text-muted); font-size: 14px; margin: 5px 0 15px 0;">Çayını yudumlarken konforunu artıracak, dünya genelinde en çok satan Amazon ürünleri</p>
-            
+            <p style="color: var(--text-muted); font-size: 14px; margin: 5px 0 15px 0;">Konforunu artıracak, dünya genelinde en çok satan Amazon ürünleri</p>
             <div class="amazon-links">
                 <a href="https://www.amazon.com" target="_blank" class="amazon-btn">Ortopedik Çalışma Minderi 💺</a>
                 <a href="https://www.amazon.com" target="_blank" class="amazon-btn">RGB Mekanik Klavye ⌨️</a>
                 <a href="https://www.amazon.com" target="_blank" class="amazon-btn">Termoslu Akıllı Çay Kupası ☕</a>
             </div>
-
             <div class="ad-placeholder">
                 [ REKLAM ALANI - GOOGLE ADSENSE BAĞLANTISI BURAYA GELECEK ]
             </div>
@@ -253,57 +245,61 @@
         function updateTimerDisplay() {
             let minutes = Math.floor(timeLeft / 60);
             let seconds = timeLeft % 60;
-            document.getElementById('timer').innerText = 
-                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            document.getElementById('timer').innerText = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
         }
 
         function startTimer() {
             if (isRunning) return;
             isRunning = true;
             timer = setInterval(() => {
-                if (timeLeft > 0) {
-                    timeLeft--;
-                    updateTimerDisplay();
-                } else {
-                    clearInterval(timer);
-                    alert("Mola Zamanı! Kendine güzel bir çay koy.");
-                    resetTimer();
-                }
+                if (timeLeft > 0) { timeLeft--; updateTimerDisplay(); } else { clearInterval(timer); alert("Mola Zamanı!"); resetTimer(); }
             }, 1000);
         }
 
-        function pauseTimer() {
-            clearInterval(timer);
-            isRunning = false;
-        }
-
-        function resetTimer() {
-            clearInterval(timer);
-            isRunning = false;
-            timeLeft = 25 * 60;
-            updateTimerDisplay();
-        }
+        function pauseTimer() { clearInterval(timer); isRunning = false; }
+        function resetTimer() { clearInterval(timer); isRunning = false; timeLeft = 25 * 60; updateTimerDisplay(); }
 
         // --- KELİME SAYICI ---
         function countText() {
             let text = document.getElementById('textInput').value.trim();
-            let chars = text.length;
-            let words = text === "" ? 0 : text.split(/\s+/).length;
-            
-            document.getElementById('charCount').innerText = chars;
-            document.getElementById('wordCount').innerText = words;
+            document.getElementById('charCount').innerText = text.length;
+            document.getElementById('wordCount').innerText = text === "" ? 0 : text.split(/\s+/).length;
         }
 
-        // --- DÖVİZ ÇEVİRİCİ ---
+        // --- CANLI İNTERNETTEN DÖVİZ ÇEKME SİHRİ ---
+        let exchangeRates = { USD: 0, EUR: 0, GBP: 0 };
+
+        function fetchLiveRates() {
+            // Serbest ve ücretsiz döviz API'sinden TL kurlarını çekiyoruz
+            fetch('https://open.er-api.com/v6/latest/TRY')
+                .then(response => response.json())
+                .then(data => {
+                    // Gelen veriler TRY tabanlı olduğu için tersini alıp güncel kurları buluyoruz
+                    exchangeRates.USD = 1 / data.rates.USD;
+                    exchangeRates.EUR = 1 / data.rates.EUR;
+                    exchangeRates.GBP = 1 / data.rates.GBP;
+                    convertCurrency(); // Kurlar yüklenince ilk hesaplamayı yap
+                })
+                .catch(err => {
+                    console.error("Döviz kurları çekilemedi:", err);
+                    document.getElementById('conversionResult').innerText = "Bağlantı Hatası";
+                });
+        }
+
         function convertCurrency() {
             let amount = document.getElementById('amount').value;
             let from = document.getElementById('fromCurrency').value;
-            let rate = from === "USD" ? 34.20 : 36.50; // Güncel tahmini kurlar
-            let result = amount * rate;
+            let currentRate = exchangeRates[from];
             
+            if(currentRate === 0) return; // Kurlar henüz yüklenmediyse bekle
+
+            let result = amount * currentRate;
             document.getElementById('conversionResult').innerText = 
                 new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY' }).format(result);
         }
+
+        // Sayfa ilk açıldığında canlı kurları internetten getir
+        window.onload = fetchLiveRates;
     </script>
 </body>
 </html>
