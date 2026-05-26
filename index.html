@@ -319,6 +319,81 @@
             margin: 5px 0;
             font-size: 13px;
         }
+
+        /* 📋 SİTE ALTI FOOTER VE SÖZLEŞME POPUP STİLLERİ (YENİ EKLEME - TASARIMA ZARARI YOKTUR) */
+        footer {
+            margin-top: 50px;
+            padding: 20px 0;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 13px;
+            width: 100%;
+            max-width: 1200px;
+            border-top: 1px solid var(--border);
+        }
+        footer .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        footer .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+        footer .footer-links a:hover {
+            color: var(--accent-color);
+        }
+        .custom-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(4, 7, 16, 0.85);
+            backdrop-filter: blur(4px);
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            padding: 20px;
+        }
+        .custom-modal-content {
+            background: var(--card-bg);
+            border: 2px solid var(--accent-color);
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+        }
+        .custom-close-btn {
+            position: absolute;
+            top: 15px; right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-muted);
+            font-weight: bold;
+        }
+        .custom-close-btn:hover {
+            color: #ef4444;
+        }
+        .custom-modal-content h3 {
+            color: var(--accent-color);
+            margin-top: 0;
+            font-size: 20px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
+        }
+        .custom-modal-content p {
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text-main);
+        }
     </style>
 </head>
 <body>
@@ -470,6 +545,48 @@
 
     </div>
 
+    <footer>
+        <div class="footer-links">
+            <a id="link-about" onclick="openModal('modal-about')">Hakkımızda</a>
+            <a id="link-privacy" onclick="openModal('modal-privacy')">Gizlilik İlkesi</a>
+            <a id="link-terms" onclick="openModal('modal-terms')">Hizmet Şartları</a>
+            <a id="link-contact" onclick="openModal('modal-contact')">İletişim</a>
+        </div>
+        <p>© 2026 NomadStation. All Rights Reserved.</p>
+    </footer>
+
+    <div id="modal-about" class="custom-modal">
+        <div class="custom-modal-content">
+            <span class="custom-close-btn" onclick="closeModal('modal-about')">&times;</span>
+            <h3 id="m-about-title">Hakkımızda</h3>
+            <p id="m-about-text">NomadStation; tüm dünyadan dijital göçebeler, freelancer çalışanlar ve içerik üreticileri için tasarlanmış bağımsız bir verimlilik istasyonudur. Günlük iş akışınızı hızlandıracak araçları tek bir ekranda sunar.</p>
+        </div>
+    </div>
+
+    <div id="modal-privacy" class="custom-modal">
+        <div class="custom-modal-content">
+            <span class="custom-close-btn" onclick="closeModal('modal-privacy')">&times;</span>
+            <h3 id="m-privacy-title">Gizlilik İlkesi</h3>
+            <p id="m-privacy-text">Gizliliğinize saygı duyuyoruz. NomadStation üzerinde girdiğiniz hiçbir veri (görev listeleriniz, hesaplamalarınız veya metinleriniz) sunucularımıza kaydedilmez. Tüm veriler tamamen tarayıcınızın yerel hafızasında (LocalStorage) güvenli bir şekilde saklanır.</p>
+        </div>
+    </div>
+
+    <div id="modal-terms" class="custom-modal">
+        <div class="custom-modal-content">
+            <span class="custom-close-btn" onclick="closeModal('modal-terms')">&times;</span>
+            <h3 id="m-terms-title">Hizmet Şartları</h3>
+            <p id="m-terms-text">Bu sitede sunulan döviz ve kripto para hesaplama araçları üçüncü taraf API'lerden anlık veri çekmektedir ve sadece genel bilgilendirme amacı taşır. Sitede paylaşılan dış bağlantılar (Amazon iş ortaklığı linkleri) kullanıcı yönlendirmesi içindir.</p>
+        </div>
+    </div>
+
+    <div id="modal-contact" class="custom-modal">
+        <div class="custom-modal-content">
+            <span class="custom-close-btn" onclick="closeModal('modal-contact')">&times;</span>
+            <h3 id="m-contact-title">İletişim</h3>
+            <p id="m-contact-text">Geri bildirimleriniz, sponsorluk görüşmeleriniz veya her türlü sorunuz için bizimle resmi e-posta adresimiz üzerinden iletişime geçebilirsiniz:<br><br><b>ekipmansefi@gmail.com</b></p>
+        </div>
+    </div>
+
     <script>
         // --- DİL SİSTEMİ VERİLERİ ---
         let currentLang = 'tr';
@@ -487,7 +604,13 @@
                 monAd: "📢 SPONSORLUK & REKLAM ALANI // İLETİŞİM İÇİN BAŞVURUN",
                 alertTimer: "Harika İş! 30 Dakikalık Odaklanma Bitti. Şimdi kalk, bir bardak su iç ve gözlerini dinlendir! 💧👁️",
                 alertCopy: "AI Şablonu panoya kopyalandı! ChatGPT'ye yapıştırabilirsiniz.",
-                amz1: "Ergonomik Laptop Standı 💻", amz2: "Termoslu Akıllı Çay Kupası ☕", amz3: "Oyuncu Kulaklığı 🎧", amz4: "Ortopedik Çalışma Minderi 💺"
+                amz1: "Ergonomik Laptop Standı 💻", amz2: "Termoslu Akıllı Çay Kupası ☕", amz3: "Oyuncu Kulaklığı 🎧", amz4: "Ortopedik Çalışma Minderi 💺",
+                // Yeni Eklenen Footer Çevirileri
+                lnkAbout: "Hakkımızda", lnkPrivacy: "Gizlilik İlkesi", lnkTerms: "Hizmet Şartları", lnkContact: "İletişim",
+                popAboutT: "Hakkımızda", popAboutX: "NomadStation; tüm dünyadan dijital göçebeler, freelancer çalışanlar ve içerik üreticileri için tasarlanmış bağımsız bir verimlilik istasyonudur. Günlük iş akışınızı hızlandıracak araçları tek bir ekranda sunar.",
+                popPrivT: "Gizlilik İlkesi", popPrivX: "Gizliliğinize saygı duyuyoruz. NomadStation üzerinde girdiğiniz hiçbir veri (görev listeleriniz, hesaplamalarınız veya metinleriniz) sunucularımıza kaydedilmez. Tüm veriler tamamen tarayıcınızın yerel hafızasında (LocalStorage) güvenli bir şekilde saklanır.",
+                popTermsT: "Hizmet Şartları", popTermsX: "Bu sitede sunulan döviz ve kripto para hesaplama araçları üçüncü taraf API'lerden anlık veri çekmektedir ve sadece genel bilgilendirme amacı taşır. Sitede paylaşılan dış bağlantılar (Amazon iş ortaklığı linkleri) kullanıcı yönlendirmesi içindir.",
+                popContT: "İletişim", popContX: "Geri bildirimleriniz, sponsorluk görüşmeleriniz veya her türlü sorunuz için bizimle resmi e-posta adresimiz üzerinden iletişime geçebilirsiniz:<br><br><b>ekipmansefi@gmail.com</b>"
             },
             en: {
                 mainTitle: "NomadStation", mainSubtitle: "Productivity Hub for Digital Nomads & Freelancers",
@@ -502,7 +625,13 @@
                 monAd: "📢 SPONSORSHIP & AD SPACE // CONTACT FOR APPLICATION",
                 alertTimer: "Great Job! 30-minute focus session is over. Stand up, drink some water, and rest your eyes! 💧👁️",
                 alertCopy: "AI Template copied to clipboard! You can paste it into ChatGPT.",
-                amz1: "Ergonomic Laptop Stand 💻", amz2: "Smart Tea Mug ☕", amz3: "Gaming Headset 🎧", amz4: "Orthopedic Seat Cushion 💺"
+                amz1: "Ergonomic Laptop Stand 💻", amz2: "Smart Tea Mug ☕", amz3: "Gaming Headset 🎧", amz4: "Orthopedic Seat Cushion 💺",
+                // Yeni Eklenen Footer Çevirileri
+                lnkAbout: "About Us", lnkPrivacy: "Privacy Policy", lnkTerms: "Terms of Service", lnkContact: "Contact",
+                popAboutT: "About Us", popAboutX: "NomadStation is an independent productivity hub designed for digital nomads, freelancers, and content creators worldwide. It offers simple tools to streamline your daily workflow on a single screen.",
+                popPrivT: "Privacy Policy", popPrivX: "We respect your privacy. None of the data you enter on NomadStation (tasks, metrics, or texts) is saved on our servers. All information stays safely inside your browser's LocalStorage.",
+                popTermsT: "Terms of Service", popTermsX: "The calculation and exchange rate tools on this site fetch real-time data from third-party APIs and are intended for general information only. External links are for user reference.",
+                popContT: "Contact Us", popContX: "For feedback, sponsorship inquiries, or any questions, feel free to reach out via our official support email address:<br><br><b>ekipmansefi@gmail.com</b>"
             }
         };
 
@@ -552,6 +681,21 @@
             document.getElementById('amz-2').innerText = t.amz2;
             document.getElementById('amz-3').innerText = t.amz3;
             document.getElementById('amz-4').innerText = t.amz4;
+
+            // Yeni Eklenen Menü Elemanlarının Dil Güncellemesi
+            document.getElementById('link-about').innerText = t.lnkAbout;
+            document.getElementById('link-privacy').innerText = t.lnkPrivacy;
+            document.getElementById('link-terms').innerText = t.lnkTerms;
+            document.getElementById('link-contact').innerText = t.lnkContact;
+            
+            document.getElementById('m-about-title').innerText = t.popAboutT;
+            document.getElementById('m-about-text').innerHTML = t.popAboutX;
+            document.getElementById('m-privacy-title').innerText = t.popPrivT;
+            document.getElementById('m-privacy-text').innerHTML = t.popPrivX;
+            document.getElementById('m-terms-title').innerText = t.popTermsT;
+            document.getElementById('m-terms-text').innerHTML = t.popTermsX;
+            document.getElementById('m-contact-title').innerText = t.popContT;
+            document.getElementById('m-contact-text').innerHTML = t.popContX;
 
             convertCurrency();
         }
@@ -701,23 +845,26 @@
             if(!cryptoData[selected] || isNaN(amount)) return;
             let price = cryptoData[selected].usd;
             let total = amount * price;
-            document.getElementById('cryptoResultText').innerText = "$" + total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            document.getElementById('cryptoResultText').innerText = "$" + total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         }
 
-        // --- SAYFA YÜKLENİŞİ ---
-        window.onload = function() {
+        // --- YENİ POPUP AÇMA KAPATMA FONKSİYONLARI ---
+        function openModal(id) {
+            document.getElementById(id).style.display = "flex";
+        }
+        function closeModal(id) {
+            document.getElementById(id).style.display = "none";
+        }
+
+        // --- SAYFA YÜKLENİŞİNDEKİ TETİKLER ---
+        window.addEventListener('DOMContentLoaded', () => {
             let savedLang = localStorage.getItem('nomad_lang') || 'tr';
             setLanguage(savedLang);
             fetchLiveRates();
-            fetchCryptoPrices();
             renderTodos();
-            setInterval(fetchCryptoPrices, 60000);
-
-            // Enter tuşuyla görev ekleme desteği
-            document.getElementById('todoInput').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') addTodo();
-            });
-        };
+            fetchCryptoPrices();
+            setInterval(fetchCryptoPrices, 60000); // 60 saniyede bir kriptoları tazele
+        });
     </script>
 </body>
 </html>
