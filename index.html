@@ -11,15 +11,18 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NomadStation // Freelancer Araç Kiti</title>
+    <title>NomadStation // Digital Nomad & Freelancer Workspace</title>
     <style>
         :root {
-            --bg-color: #080c14;
-            --card-bg: #0f172a;
+            --bg-color: #060a12;
+            --card-bg: #0b1329;
             --accent-color: #10b981; 
+            --accent-glow: rgba(16, 185, 129, 0.3);
             --text-main: #f8fafc;
             --text-muted: #64748b;
             --border: #1e293b;
+            --neon-blue: #3b82f6;
+            --blue-glow: rgba(59, 130, 246, 0.3);
         }
 
         body {
@@ -38,24 +41,55 @@
             margin-bottom: 30px;
             width: 100%;
             max-width: 1200px;
+            position: relative;
+        }
+
+        /* Dil Değiştirici Butonlar */
+        .lang-switch {
+            position: absolute;
+            top: 0;
+            right: 10px;
+            display: flex;
+            gap: 5px;
+        }
+
+        .lang-btn {
+            background: #111827;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: bold;
+        }
+
+        .lang-btn.active {
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+            box-shadow: 0 0 10px var(--accent-glow);
         }
 
         header h1 {
-            font-size: 36px;
+            font-size: 38px;
             margin: 0;
             background: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            font-weight: 800;
+            letter-spacing: -0.5px;
         }
 
         header p {
             color: var(--text-muted);
             margin: 5px 0 0 0;
+            font-size: 15px;
         }
 
         .dashboard-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
             gap: 20px;
             width: 100%;
             max-width: 1200px;
@@ -65,67 +99,91 @@
             background-color: var(--card-bg);
             border: 1px solid var(--border);
             border-radius: 16px;
-            padding: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            padding: 22px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .card:hover {
+            border-color: #1e3a8a;
         }
 
         .card h2 {
-            font-size: 17px;
+            font-size: 16px;
             margin-top: 0;
             color: var(--accent-color);
             border-bottom: 1px solid var(--border);
             padding-bottom: 10px;
             margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .timer-display {
-            font-size: 42px;
+            font-size: 48px;
             font-weight: bold;
             text-align: center;
-            margin: 10px 0;
+            margin: 15px 0;
             font-family: monospace;
+            text-shadow: 0 0 10px rgba(255,255,255,0.1);
         }
+
         .btn-group {
             display: flex;
             gap: 10px;
             margin-top: 10px;
         }
+
         button {
             flex: 1;
-            background-color: #1e293b;
+            background-color: #111827;
             border: 1px solid var(--border);
             color: white;
-            padding: 10px;
+            padding: 11px;
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
             transition: all 0.2s;
         }
+
         button:hover {
             background-color: var(--accent-color);
             color: #000;
+            box-shadow: 0 0 12px var(--accent-glow);
+            border-color: var(--accent-color);
+        }
+
+        textarea, select, input {
+            background: #020617;
+            border: 1px solid var(--border);
+            color: white;
+            padding: 11px;
+            border-radius: 8px;
+            outline: none;
+            box-sizing: border-box;
+            transition: all 0.2s;
+        }
+
+        textarea:focus, select:focus, input:focus {
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 8px var(--blue-glow);
         }
 
         textarea {
             width: 100%;
-            height: 100px;
-            background-color: #020617;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: white;
-            padding: 10px;
-            box-sizing: border-box;
+            height: 95px;
             resize: none;
-            outline: none;
         }
+
         .counter-stats {
             display: flex;
             justify-content: space-between;
             margin-top: 10px;
-            font-size: 14px;
+            font-size: 13px;
             color: var(--text-muted);
         }
 
@@ -135,33 +193,84 @@
             gap: 8px;
             margin-bottom: 12px;
         }
-        select, input {
-            background: #020617;
-            border: 1px solid var(--border);
-            color: white;
-            padding: 10px;
-            border-radius: 8px;
-            outline: none;
-        }
 
+        /* Kripto Listesi */
         .crypto-list {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
         }
+
         .crypto-row {
             display: flex;
             justify-content: space-between;
             padding: 6px 10px;
             background: #020617;
-            border-radius: 6px;
-            border: 1px solid #1e293b;
-            font-size: 14px;
+            border-radius: 8px;
+            border: 1px solid #141f36;
+            font-size: 13px;
         }
 
+        /* To-Do List Stilleri */
+        .todo-input-group {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .todo-list-container {
+            max-height: 110px;
+            overflow-y: auto;
+            margin-top: 5px;
+        }
+        .todo-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #020617;
+            padding: 6px 10px;
+            border-radius: 6px;
+            margin-bottom: 5px;
+            font-size: 13px;
+            border: 1px solid #141f36;
+        }
+        .todo-item.completed span {
+            text-decoration: line-through;
+            color: var(--text-muted);
+        }
+        .todo-item button {
+            flex: none;
+            padding: 2px 6px;
+            background: #1e293b;
+            font-size: 11px;
+            border-radius: 4px;
+        }
+        .todo-item button:hover {
+            background: #ef4444;
+            color: white;
+            box-shadow: none;
+        }
+
+        /* AI Prompt Hub Stilleri */
+        .ai-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+        .ai-btn {
+            font-size: 12px;
+            padding: 8px;
+            background: #0f172a;
+            border: 1px solid var(--border);
+            text-align: left;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* Monetize Zone */
         .monetize-zone {
             grid-column: 1 / -1;
-            background: linear-gradient(90deg, #1e1b4b 0%, #0f172a 100%);
+            background: linear-gradient(90deg, #091124 0%, #060e1f 100%);
             border: 1px dashed var(--accent-color);
             border-radius: 16px;
             padding: 20px;
@@ -172,7 +281,7 @@
         .amazon-links {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 15px;
             flex-wrap: wrap;
             margin-top: 15px;
             margin-bottom: 20px;
@@ -181,69 +290,75 @@
         .amazon-btn {
             background-color: #ff9900; 
             color: #000000;
-            padding: 12px 20px;
+            padding: 11px 18px;
             text-decoration: none;
             border-radius: 30px;
             font-weight: bold;
-            font-size: 14px;
-            transition: transform 0.2s;
+            font-size: 13px;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
         .amazon-btn:hover {
-            transform: scale(1.05);
+            transform: scale(1.03);
             background-color: #ffb347;
+            box-shadow: 0 0 10px rgba(255, 153, 0, 0.4);
         }
 
         .ad-placeholder {
             border: 1px dashed #3b82f6; 
-            padding: 15px; 
+            padding: 12px; 
             color: #3b82f6; 
             border-radius: 8px; 
             font-weight: bold;
+            font-size: 13px;
             background-color: #020617;
             margin-top: 15px;
         }
         .checkbox-group {
             display: flex;
             gap: 15px;
-            margin: 8px 0;
-            font-size: 14px;
+            margin: 5px 0;
+            font-size: 13px;
         }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>NomadStation</h1>
-        <p>Dijital Göçebeler ve Freelancerlar İçin Verimlilik Üssü</p>
+        <div class="lang-switch">
+            <button class="lang-btn active" id="btn-tr" onclick="setLanguage('tr')">TR</button>
+            <button class="lang-btn" id="btn-en" onclick="setLanguage('en')">EN</button>
+        </div>
+        <h1 id="main-title">NomadStation</h1>
+        <p id="main-subtitle">Dijital Göçebeler ve Freelancerlar İçin Verimlilik Üssü</p>
     </header>
 
     <div class="dashboard-grid">
 
         <div class="card">
-            <h2>⏱️ Odaklanma & Çay Molası</h2>
+            <h2 id="title-timer">⏱️ Odaklanma & Çay Molası</h2>
             <div>
                 <div class="timer-display" id="timer">30:00</div>
                 <div class="btn-group">
-                    <button onclick="startTimer()">Başlat</button>
-                    <button onclick="pauseTimer()">Durdur</button>
-                    <button onclick="resetTimer()">Sıfırla</button>
+                    <button onclick="startTimer()" id="btn-start">Başlat</button>
+                    <button onclick="pauseTimer()" id="btn-pause">Durdur</button>
+                    <button onclick="resetTimer()" id="btn-reset">Sıfırla</button>
                 </div>
             </div>
         </div>
 
         <div class="card">
-            <h2>✍️ Kelime & Karakter Sayıcı</h2>
+            <h2 id="title-counter">✍️ Kelime & Karakter Sayıcı</h2>
             <div>
                 <textarea id="textInput" placeholder="Metninizi buraya yapıştırın..." oninput="countText()"></textarea>
                 <div class="counter-stats">
-                    <span>Kelime: <b id="wordCount" style="color:white">0</b></span>
-                    <span>Karakter: <b id="charCount" style="color:white">0</b></span>
+                    <span><span id="lbl-words">Kelime</span>: <b id="wordCount" style="color:white">0</b></span>
+                    <span><span id="lbl-chars">Karakter</span>: <b id="charCount" style="color:white">0</b></span>
                 </div>
             </div>
         </div>
 
         <div class="card">
-            <h2>💵 Canlı Döviz Kuru</h2>
+            <h2 id="title-forex">💵 Canlı Döviz Kuru</h2>
             <div>
                 <div class="row-item">
                     <input type="number" id="amount" value="100" oninput="convertCurrency()">
@@ -257,68 +372,98 @@
                         <option value="CHF">İsviçre Frangı (CHF)</option>
                     </select>
                 </div>
-                <div style="font-size: 16px; margin-top: 10px; font-weight: bold;">
-                    Anlık Karşılığı: <span id="conversionResult" style="color:#10b981">Yükleniyor...</span>
+                <div style="font-size: 15px; margin-top: 10px; font-weight: bold;">
+                    <span id="lbl-rate-result">Anlık Karşılığı</span>: <span id="conversionResult" style="color:#10b981">...</span>
                 </div>
             </div>
         </div>
 
         <div class="card">
-            <h2>🔒 Güçlü Şifre Oluşturucu</h2>
+            <h2 id="title-todo">🎯 Günlük Görevlerim</h2>
             <div>
-                <div class="row-item">
-                    <label style="font-size:12px; color:var(--text-muted)">Şifre Uzunluğu</label>
+                <div class="todo-input-group">
+                    <input type="text" id="todoInput" placeholder="Yeni görev ekle..." style="flex:1;">
+                    <button onclick="addTodo()" style="flex:none; padding:10px 15px;">+</button>
+                </div>
+                <div class="todo-list-container" id="todoList"></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 id="title-ai">🤖 AI Freelancer Asistanı</h2>
+            <div class="ai-grid">
+                <button class="ai-btn" onclick="copyPrompt('mail')">📧 <span id="ai-p1">Mail Oluştur</span> 📋</button>
+                <button class="ai-btn" onclick="copyPrompt('proposal')">💼 <span id="ai-p2">Upwork Proposal</span> 📋</button>
+                <button class="ai-btn" onclick="copyPrompt('fiverr')">📝 <span id="ai-p3">Fiverr Açıklaması</span> 📋</button>
+                <button class="ai-btn" onclick="copyPrompt('caption')">📱 <span id="ai-p4">Sosyal Medya</span> 📋</button>
+            </div>
+            <div style="font-size:11px; color:var(--text-muted); text-align:center; margin-top:10px;" id="lbl-ai-hint">Butona bas, şablonu kopyala ve ChatGPT'ye yapıştır!</div>
+        </div>
+
+        <div class="card">
+            <h2 id="title-pw">🔒 Güçlü Şifre Oluşturucu</h2>
+            <div>
+                <div class="row-item" style="margin-bottom:8px;">
                     <input type="number" id="pwLength" value="12" min="6" max="32">
                 </div>
                 <div class="checkbox-group">
-                    <label><input type="checkbox" id="pwSymbols" checked> Sembol</label>
-                    <label><input type="checkbox" id="pwNumbers" checked> Sayı</label>
+                    <label><input type="checkbox" id="pwSymbols" checked> <span id="lbl-sym">Sembol</span></label>
+                    <label><input type="checkbox" id="pwNumbers" checked> <span id="lbl-num">Sayı</span></label>
                 </div>
-                <button onclick="generatePassword()" style="width:100%; margin-top:5px;">Şifre Üret</button>
-                <input type="text" id="pwResult" readonly placeholder="Şifreniz burada görünecek" style="width:100%; margin-top:10px; text-align:center; font-family:monospace; color:#10b981;">
+                <button onclick="generatePassword()" style="width:100%; margin-top:5px;" id="btn-pw">Şifre Üret</button>
+                <input type="text" id="pwResult" readonly placeholder="..." style="width:100%; margin-top:10px; text-align:center; font-family:monospace; color:#10b981;">
             </div>
         </div>
 
         <div class="card">
-            <h2>💰 Saatlik Ücret Hesaplayıcı</h2>
+            <h2 id="title-calc">💰 Saatlik Ücret Hesaplayıcı</h2>
             <div>
                 <div class="row-item" style="gap:4px; margin-bottom:8px;">
-                    <input type="number" id="targetIncome" value="50000" placeholder="Aylık Hedef Ciro (TL)">
-                    <input type="number" id="workDays" value="5" placeholder="Haftalık Çalışma Günü" min="1" max="7">
-                    <input type="number" id="workHours" value="6" placeholder="Günlük Çalışma Saati" min="1" max="24">
+                    <input type="number" id="targetIncome" value="50000" placeholder="Aylık Hedef Gelir">
+                    <input type="number" id="workDays" value="5" placeholder="Haftalık Gün" min="1" max="7">
+                    <input type="number" id="workHours" value="6" placeholder="Günlük Saat" min="1" max="24">
                 </div>
-                <button onclick="calculateHourlyRate()" style="width:100%;">Hesapla</button>
-                <div style="font-size: 14px; margin-top: 10px; font-weight: bold; text-align:center;">
-                    Minimum Saatlik Ücretin: <span id="hourlyResult" style="color:#3b82f6">---</span>
+                <button onclick="calculateHourlyRate()" style="width:100%;" id="btn-calc">Hesapla</button>
+                <div style="font-size: 13px; margin-top: 10px; font-weight: bold; text-align:center;">
+                    <span id="lbl-calc-res">Minimum Saatlik Ücretin</span>: <span id="hourlyResult" style="color:#3b82f6">---</span>
                 </div>
             </div>
         </div>
 
         <div class="card">
-            <h2>🪙 Canlı Kripto Fiyatları (USD)</h2>
-            <div class="crypto-list">
+            <h2 id="title-crypto">🪙 Canlı Kripto Fiyatları (USD)</h2>
+            <div class="crypto-list" style="margin-bottom: 12px;">
                 <div class="crypto-row"><span>Bitcoin (BTC)</span><b id="btc-price" style="color:#ff9900">$...</b></div>
                 <div class="crypto-row"><span>Ethereum (ETH)</span><b id="eth-price" style="color:#3b82f6">$...</b></div>
                 <div class="crypto-row"><span>Solana (SOL)</span><b id="sol-price" style="color:#10b981">$...</b></div>
                 <div class="crypto-row"><span>Binance (BNB)</span><b id="bnb-price" style="color:#f3ba2f">$...</b></div>
                 <div class="crypto-row"><span>Ripple (XRP)</span><b id="xrp-price" style="color:#23292f">$...</b></div>
-                <div class="crypto-row"><span>Cardano (ADA)</span><b id="ada-price" style="color:#0033ad">$...</b></div>
-                <div class="crypto-row"><span>Dogecoin (DOGE)</span><b id="doge-price" style="color:#ba9f33">$...</b></div>
+            </div>
+            <div style="border-top: 1px solid var(--border); padding-top: 8px; display: flex; gap: 4px;">
+                <input type="number" id="cryptoAmount" value="1" style="width: 35%; font-size:12px; padding:6px;" oninput="calculateCryptoValue()">
+                <select id="cryptoSelect" style="width: 35%; font-size:12px; padding:6px;" onchange="calculateCryptoValue()">
+                    <option value="bitcoin">BTC</option>
+                    <option value="ethereum">ETH</option>
+                    <option value="solana">SOL</option>
+                    <option value="binancecoin">BNB</option>
+                    <option value="ripple">XRP</option>
+                </select>
+                <div style="width:30%; font-size:12px; display:flex; align-items:center; justify-content:center; font-weight:bold; color:#10b981;" id="cryptoResultText">$0.00</div>
             </div>
         </div>
 
         <div class="monetize-zone">
-            <h3 style="margin: 0; font-size: 20px; color: #ff9900;">🛒 Önerilen Yazılımcı & Göçebe Ekipmanları</h3>
-            <p style="color: var(--text-muted); font-size: 14px; margin: 5px 0 15px 0;">Konforunu artıracak, dünya genelinde en çok satan Amazon ürünleri</p>
+            <h3 style="margin: 0; font-size: 20px; color: #ff9900;" id="mon-title">🛒 Önerilen Yazılımcı & Göçebe Ekipmanları</h3>
+            <p style="color: var(--text-muted); font-size: 14px; margin: 5px 0 15px 0;" id="mon-subtitle">Konforunu artıracak, dünya genelinde en çok satan Amazon ürünleri</p>
             
             <div class="amazon-links">
-                <a href="https://amzn.to/4a7y9ro" target="_blank" class="amazon-btn">Ergonomik Laptop Standı 💻</a>
-                <a href="https://amzn.to/3PATtPh" target="_blank" class="amazon-btn">Termoslu Akıllı Çay Kupası ☕</a>
-                <a href="https://amzn.to/4nYkNUf" target="_blank" class="amazon-btn">Oyuncu Kulaklığı 🎧</a>
-                <a href="https://amzn.to/4dIcS8J" target="_blank" class="amazon-btn">Ortopedik Çalışma Minderi 💺</a>
+                <a href="https://amzn.to/4a7y9ro" target="_blank" class="amazon-btn" id="amz-1">Ergonomik Laptop Standı 💻</a>
+                <a href="https://amzn.to/3PATtPh" target="_blank" class="amazon-btn" id="amz-2">Termoslu Akıllı Çay Kupası ☕</a>
+                <a href="https://amzn.to/4nYkNUf" target="_blank" class="amazon-btn" id="amz-3">Oyuncu Kulaklığı 🎧</a>
+                <a href="https://amzn.to/4dIcS8J" target="_blank" class="amazon-btn" id="amz-4">Ortopedik Çalışma Minderi 💺</a>
             </div>
 
-            <div class="ad-placeholder">
+            <div class="ad-placeholder" id="mon-ad">
                 📢 SPONSORLUK & REKLAM ALANI // İLETİŞİM İÇİN BAŞVURUN
             </div>
         </div>
@@ -326,6 +471,91 @@
     </div>
 
     <script>
+        // --- DİL SİSTEMİ VERİLERİ ---
+        let currentLang = 'tr';
+        const translations = {
+            tr: {
+                mainTitle: "NomadStation", mainSubtitle: "Dijital Göçebeler ve Freelancerlar İçin Verimlilik Üssü",
+                titleTimer: "⏱️ Odaklanma & Çay Molası", btnStart: "Başlat", btnPause: "Durdur", btnReset: "Sıfırla",
+                titleCounter: "✍️ Kelime & Karakter Sayıcı", txtPlc: "Metninizi buraya yapıştırın...", lblWords: "Kelime", lblChars: "Karakter",
+                titleForex: "💵 Canlı Döviz Kuru", lblRateRes: "Anlık Karşılığı", titleTodo: "🎯 Günlük Görevlerim", todoPlc: "Yeni görev ekle...",
+                titleAi: "🤖 AI Freelancer Asistanı", aiP1: "Mail Oluştur", aiP2: "Upwork Proposal", aiP3: "Fiverr Açıklaması", aiP4: "Sosyal Medya",
+                aiHint: "Butona bas, şablonu kopyala ve ChatGPT'ye yapıştır!", titlePw: "🔒 Güçlü Şifre Oluşturucu", lblSym: "Sembol", lblNum: "Sayı",
+                btnPw: "Şifre Üret", titleCalc: "💰 Saatlik Ücret Hesaplayıcı", incPlc: "Aylık Hedef Gelir (TL veya $)", daysPlc: "Haftalık Gün",
+                hoursPlc: "Günlük Saat", btnCalc: "Hesapla", lblCalcRes: "Minimum Saatlik Ücretin", titleCrypto: "🪙 Canlı Kripto Fiyatları (USD)",
+                monTitle: "🛒 Önerilen Yazılımcı & Göçebe Ekipmanları", monSub: "Konforunu artıracak, dünya genelinde en çok satan Amazon ürünleri",
+                monAd: "📢 SPONSORLUK & REKLAM ALANI // İLETİŞİM İÇİN BAŞVURUN",
+                alertTimer: "Harika İş! 30 Dakikalık Odaklanma Bitti. Şimdi kalk, bir bardak su iç ve gözlerini dinlendir! 💧👁️",
+                alertCopy: "AI Şablonu panoya kopyalandı! ChatGPT'ye yapıştırabilirsiniz.",
+                amz1: "Ergonomik Laptop Standı 💻", amz2: "Termoslu Akıllı Çay Kupası ☕", amz3: "Oyuncu Kulaklığı 🎧", amz4: "Ortopedik Çalışma Minderi 💺"
+            },
+            en: {
+                mainTitle: "NomadStation", mainSubtitle: "Productivity Hub for Digital Nomads & Freelancers",
+                titleTimer: "⏱️ Focus Timer & Break", btnStart: "Start", btnPause: "Pause", btnReset: "Reset",
+                titleCounter: "✍️ Word & Character Counter", txtPlc: "Paste your text here...", lblWords: "Words", lblChars: "Characters",
+                titleForex: "💵 Live Exchange Rates", lblRateRes: "Live Conversion", titleTodo: "🎯 Daily Todo List", todoPlc: "Add new task...",
+                titleAi: "🤖 AI Freelancer Assistant", aiP1: "Write Email", aiP2: "Upwork Proposal", aiP3: "Fiverr Description", aiP4: "Social Caption",
+                aiHint: "Click a button to copy the prompt, then paste into ChatGPT!", titlePw: "🔒 Strong Password Generator", lblSym: "Symbols", lblNum: "Numbers",
+                btnPw: "Generate", titleCalc: "💰 Hourly Rate Calculator", incPlc: "Target Monthly Income", daysPlc: "Days / Week",
+                hoursPlc: "Hours / Day", btnCalc: "Calculate", lblCalcRes: "Your Min Hourly Rate", titleCrypto: "🪙 Live Crypto Prices (USD)",
+                monTitle: "🛒 Recommended Nomad Gear", monSub: "Boost your comfort with top-selling Amazon tech accessories global",
+                monAd: "📢 SPONSORSHIP & AD SPACE // CONTACT FOR APPLICATION",
+                alertTimer: "Great Job! 30-minute focus session is over. Stand up, drink some water, and rest your eyes! 💧👁️",
+                alertCopy: "AI Template copied to clipboard! You can paste it into ChatGPT.",
+                amz1: "Ergonomic Laptop Stand 💻", amz2: "Smart Tea Mug ☕", amz3: "Gaming Headset 🎧", amz4: "Orthopedic Seat Cushion 💺"
+            }
+        };
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('nomad_lang', lang);
+            
+            document.getElementById('btn-tr').classList.toggle('active', lang === 'tr');
+            document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+
+            const t = translations[lang];
+            document.getElementById('main-title').innerText = t.mainTitle;
+            document.getElementById('main-subtitle').innerText = t.mainSubtitle;
+            document.getElementById('title-timer').innerText = t.titleTimer;
+            document.getElementById('btn-start').innerText = t.btnStart;
+            document.getElementById('btn-pause').innerText = t.btnPause;
+            document.getElementById('btn-reset').innerText = t.btnReset;
+            document.getElementById('title-counter').innerText = t.titleCounter;
+            document.getElementById('textInput').placeholder = t.txtPlc;
+            document.getElementById('lbl-words').innerText = t.lblWords;
+            document.getElementById('lbl-chars').innerText = t.lblChars;
+            document.getElementById('title-forex').innerText = t.titleForex;
+            document.getElementById('lbl-rate-result').innerText = t.lblRateRes;
+            document.getElementById('title-todo').innerText = t.titleTodo;
+            document.getElementById('todoInput').placeholder = t.todoPlc;
+            document.getElementById('title-ai').innerText = t.titleAi;
+            document.getElementById('ai-p1').innerText = t.aiP1;
+            document.getElementById('ai-p2').innerText = t.aiP2;
+            document.getElementById('ai-p3').innerText = t.aiP3;
+            document.getElementById('ai-p4').innerText = t.aiP4;
+            document.getElementById('lbl-ai-hint').innerText = t.aiHint;
+            document.getElementById('title-pw').innerText = t.titlePw;
+            document.getElementById('lbl-sym').innerText = t.lblSym;
+            document.getElementById('lbl-num').innerText = t.lblNum;
+            document.getElementById('btn-pw').innerText = t.btnPw;
+            document.getElementById('title-calc').innerText = t.titleCalc;
+            document.getElementById('targetIncome').placeholder = t.incPlc;
+            document.getElementById('workDays').placeholder = t.daysPlc;
+            document.getElementById('workHours').placeholder = t.hoursPlc;
+            document.getElementById('btn-calc').innerText = t.btnCalc;
+            document.getElementById('lbl-calc-res').innerText = t.lblCalcRes;
+            document.getElementById('title-crypto').innerText = t.titleCrypto;
+            document.getElementById('mon-title').innerText = t.monTitle;
+            document.getElementById('mon-subtitle').innerText = t.monSub;
+            document.getElementById('mon-ad').innerText = t.monAd;
+            document.getElementById('amz-1').innerText = t.amz1;
+            document.getElementById('amz-2').innerText = t.amz2;
+            document.getElementById('amz-3').innerText = t.amz3;
+            document.getElementById('amz-4').innerText = t.amz4;
+
+            convertCurrency();
+        }
+
         // --- POMODORO SİSTEMİ ---
         let timer;
         let timeLeft = 30 * 60; 
@@ -346,12 +576,11 @@
                     updateTimerDisplay(); 
                 } else { 
                     clearInterval(timer); 
-                    alert("Harika İş! 30 Dakikalık Odaklanma Bitti. Şimdi kalk, bir bardak su iç ve gözlerini 20 saniye uzağa bakarak dinlendir! 💧👁️"); 
+                    alert(translations[currentLang].alertTimer); 
                     resetTimer(); 
                 }
             }, 1000);
         }
-
         function pauseTimer() { clearInterval(timer); isRunning = false; }
         function resetTimer() { clearInterval(timer); isRunning = false; timeLeft = 30 * 60; updateTimerDisplay(); }
 
@@ -364,7 +593,6 @@
 
         // --- CANLI DÖVİZ MOTORU ---
         let exchangeRates = { USD: 0, EUR: 0, GBP: 0, CAD: 0, AUD: 0, JPY: 0, CHF: 0 };
-
         function fetchLiveRates() {
             fetch('https://open.er-api.com/v6/latest/TRY')
                 .then(response => response.json())
@@ -377,10 +605,7 @@
                     exchangeRates.JPY = 1 / data.rates.JPY;
                     exchangeRates.CHF = 1 / data.rates.CHF;
                     convertCurrency();
-                })
-                .catch(err => {
-                    document.getElementById('conversionResult').innerText = "Bağlantı Hatası";
-                });
+                }).catch(() => {});
         }
 
         function convertCurrency() {
@@ -389,7 +614,45 @@
             let currentRate = exchangeRates[from];
             if(!currentRate) return;
             let result = amount * currentRate;
-            document.getElementById('conversionResult').innerText = new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY' }).format(result);
+            document.getElementById('conversionResult').innerText = new Intl.NumberFormat(currentLang == 'tr' ? 'tr-TR' : 'en-US', { style: 'currency', currency: 'TRY' }).format(result);
+        }
+
+        // --- TO-DO LIST (HAFIZALI) ---
+        let todos = JSON.parse(localStorage.getItem('nomad_todos')) || [];
+        function renderTodos() {
+            const container = document.getElementById('todoList');
+            container.innerHTML = '';
+            todos.forEach((todo, index) => {
+                const item = document.createElement('div');
+                item.className = `todo-item ${todo.completed ? 'completed' : ''}`;
+                item.innerHTML = `
+                    <span onclick="toggleTodo(${index})" style="cursor:pointer; flex:1;">${todo.text}</span>
+                    <button onclick="deleteTodo(${index})">X</button>
+                `;
+                container.appendChild(item);
+            });
+        }
+        function addTodo() {
+            const input = document.getElementById('todoInput');
+            if (input.value.trim() === '') return;
+            todos.push({ text: input.value.trim(), completed: false });
+            input.value = '';
+            saveTodos();
+        }
+        function toggleTodo(index) { todos[index].completed = !todos[index].completed; saveTodos(); }
+        function deleteTodo(index) { todos.splice(index, 1); saveTodos(); }
+        function saveTodos() { localStorage.setItem('nomad_todos', JSON.stringify(todos)); renderTodos(); }
+
+        // --- AI PROMPT HUB ---
+        const prompts = {
+            mail: "Act as an expert remote copywriter. Write a professional email to a client explaining a small project delay due to technical issues, but reassure them with high-quality updates. Keep it smooth and professional.",
+            proposal: "Act as an elite Upwork freelancer. Write a winning job proposal for a Web Development project. Explain why I am the best fit, ask 2 relevant project questions, and keep it under 200 words.",
+            fiverr: "Create a highly optimized Fiverr gig description for 'Custom Web Application Tools development using HTML/CSS/JS'. Include sections for Why Me, Services offered, and a clear Call to Action.",
+            caption: "Write 3 viral Instagram caption options for a post showing a high-end clean software engineering desk setup. Include relevant tech and digital nomad hashtags."
+        };
+        function copyPrompt(key) {
+            navigator.clipboard.writeText(prompts[key]);
+            alert(translations[currentLang].alertCopy);
         }
 
         // --- ŞİFRE OLUŞTURUCU ---
@@ -397,15 +660,11 @@
             let length = document.getElementById('pwLength').value;
             let includeSymbols = document.getElementById('pwSymbols').checked;
             let includeNumbers = document.getElementById('pwNumbers').checked;
-            
             let chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
             if (includeNumbers) chars += "0123456789";
             if (includeSymbols) chars += "!@#$%^&*()_+~`|}{[]:;?><,./-=";
-            
             let password = "";
-            for (let i = 0; i < length; i++) {
-                password += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
+            for (let i = 0; i < length; i++) password += chars.charAt(Math.floor(Math.random() * chars.length));
             document.getElementById('pwResult').value = password;
         }
 
@@ -414,37 +673,50 @@
             let target = parseFloat(document.getElementById('targetIncome').value);
             let days = parseInt(document.getElementById('workDays').value);
             let hours = parseInt(document.getElementById('workHours').value);
-            
             if(!target || !days || !hours) return;
-            
             let totalHoursInMonth = days * hours * 4.33; 
             let hourlyRate = target / totalHoursInMonth;
-            
-            document.getElementById('hourlyResult').innerText = new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY' }).format(hourlyRate);
+            document.getElementById('hourlyResult').innerText = new Intl.NumberFormat(currentLang == 'tr' ? 'tr-TR' : 'en-US', { maxFractionDigits: 2 }).format(hourlyRate) + " unit";
         }
 
-        // --- CANLI KRİPTO FİYATLARI SİHRİ ---
+        // --- CANLI KRİPTO VE HESAP MAKİNESİ ---
+        let cryptoData = {};
         function fetchCryptoPrices() {
-            fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana,binancecoin,ripple,cardano,dogecoin&vs_currencies=usd')
+            fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana,binancecoin,ripple&vs_currencies=usd')
                 .then(res => res.json())
                 .then(data => {
+                    cryptoData = data;
                     document.getElementById('btc-price').innerText = "$" + data.bitcoin.usd.toLocaleString();
                     document.getElementById('eth-price').innerText = "$" + data.ethereum.usd.toLocaleString();
                     document.getElementById('sol-price').innerText = "$" + data.solana.usd.toLocaleString();
                     document.getElementById('bnb-price').innerText = "$" + data.binancecoin.usd.toLocaleString();
                     document.getElementById('xrp-price').innerText = "$" + data.ripple.usd.toFixed(4);
-                    document.getElementById('ada-price').innerText = "$" + data.cardano.usd.toFixed(4);
-                    document.getElementById('doge-price').innerText = "$" + data.dogecoin.usd.toFixed(4);
-                })
-                .catch(err => {
-                    console.log("Kripto verisi çekilemedi, tekrar deneniyor...");
-                });
+                    calculateCryptoValue();
+                }).catch(() => {});
         }
 
+        function calculateCryptoValue() {
+            let amount = parseFloat(document.getElementById('cryptoAmount').value);
+            let selected = document.getElementById('cryptoSelect').value;
+            if(!cryptoData[selected] || isNaN(amount)) return;
+            let price = cryptoData[selected].usd;
+            let total = amount * price;
+            document.getElementById('cryptoResultText').innerText = "$" + total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        }
+
+        // --- SAYFA YÜKLENİŞİ ---
         window.onload = function() {
+            let savedLang = localStorage.getItem('nomad_lang') || 'tr';
+            setLanguage(savedLang);
             fetchLiveRates();
             fetchCryptoPrices();
-            setInterval(fetchCryptoPrices, 60000); // Kriptoları her dakikada bir otomatik yeniler
+            renderTodos();
+            setInterval(fetchCryptoPrices, 60000);
+
+            // Enter tuşuyla görev ekleme desteği
+            document.getElementById('todoInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') addTodo();
+            });
         };
     </script>
 </body>
