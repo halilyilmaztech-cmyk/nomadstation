@@ -697,26 +697,22 @@
             document.getElementById('m-terms-text').innerHTML = t.popTermsX;
             document.getElementById('m-contact-title').innerText = t.popContT;
             document.getElementById('m-contact-text').innerHTML = t.popContX;
+            
+            renderTodoList();
         }
 
-        // --- POPUP MODAL SİSTEMİ ---
-        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
-        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-        window.onclick = function(e) { if(e.target.classList.contains('custom-modal')) { e.target.style.display = 'none'; } };
-
-        // --- 1. ODAKLANMA ZAMANLAYICI (POMODORO) ---
+        // --- ODAKLANMA SAYACI FONKSİYONLARI ---
         let timerInterval = null;
-        let timeLeft = 30 * 60; 
+        let timeLeft = 1800; // 30 dakika
 
         function updateTimerDisplay() {
-            let mins = Math.floor(timeLeft / 60);
-            let secs = timeLeft % 60;
-            document.getElementById('timer').innerText = 
-                (mins < 10 ? '0' : '') + mins + ':' + (secs < 10 ? '0' : '') + secs;
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            document.getElementById('timer').innerText = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
         }
 
         function startTimer() {
-            if (timerInterval !== null) return;
+            if (timerInterval) return;
             timerInterval = setInterval(() => {
                 if (timeLeft > 0) {
                     timeLeft--;
@@ -725,8 +721,7 @@
                     clearInterval(timerInterval);
                     timerInterval = null;
                     alert(translations[currentLang].alertTimer);
-                    timeLeft = 30 * 60;
-                    updateTimerDisplay();
+                    resetTimer();
                 }
             }, 1000);
         }
@@ -739,154 +734,144 @@
         function resetTimer() {
             clearInterval(timerInterval);
             timerInterval = null;
-            timeLeft = 30 * 60;
+            timeLeft = 1800;
             updateTimerDisplay();
         }
 
-        // --- 2. KELİME & KARAKTER SAYICI ---
+        // --- METİN SAYICI ---
         function countText() {
-            let text = document.getElementById('textInput').value;
+            const text = document.getElementById('textInput').value;
             document.getElementById('charCount').innerText = text.length;
-            let words = text.trim().split(/\s+/).filter(w => w.length > 0);
+            const words = text.trim().split(/\s+/).filter(w => w.length > 0);
             document.getElementById('wordCount').innerText = words.length;
         }
 
-        // --- 3. DÖVİZ KURU HESAPLAMA (USD TRY KURU BAZLI ÜCRETSİZ API) ---
-        let trwRates = { USD: 1, EUR: 1.08, GBP: 1.26, CAD: 0.73, AUD: 0.66, JPY: 0.0064, CHF: 1.11, TRY: 0.030 }; 
-        
-        async function fetchExchangeRates() {
-            try {
-                let res = await fetch('https://open.er-api.com/v6/latest/USD');
-                if(res.ok) {
-                    let data = await res.json();
-                    trwRates = data.rates;
-                }
-            } catch(e) { console.log("Döviz verisi çekilemedi, local hafıza devrede."); }
-            convertCurrency();
-        }
-
+        // --- DÖVİZ KURU HESAPLAMA (MOCK DATA) ---
         function convertCurrency() {
-            let amount = parseFloat(document.getElementById('amount').value) || 0;
-            let from = document.getElementById('fromCurrency').value;
-            if(!trwRates[from] || !trwRates['TRY']) return;
-            let usdValue = amount / trwRates[from];
-            let tryValue = usdValue * trwRates['TRY'];
-            document.getElementById('conversionResult').innerText = tryValue.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' TRY';
+            const amount = parseFloat(document.getElementById('amount').value) || 0;
+            const from = document.getElementById('fromCurrency').value;
+            const rates = { USD: 32.5, EUR: 35.1, GBP: 41.2, CAD: 23.8, AUD: 21.5, JPY: 0.21, CHF: 36.0 };
+            const resultInTRY = amount * (rates[from] || 1);
+            document.getElementById('conversionResult').innerText = resultInTRY.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' TRY';
         }
 
-        // --- 4. TO-DO LIST (LOCALSTORAGE DESTEKLİ GÖREVLER) ---
+        // --- TO-DO LIST SİSTEMİ ---
         let todos = JSON.parse(localStorage.getItem('nomad_todos')) || [];
-        function renderTodos() {
-            let container = document.getElementById('todoList');
-            container.innerHTML = '';
-            todos.forEach((todo, idx) => {
-                let div = document.createElement('div');
-                div.className = 'todo-item' + (todo.done ? ' completed' : '');
-                div.innerHTML = `
-                    <span onclick="toggleTodo(${idx})" style="cursor:pointer; flex:1;">${todo.text}</span>
-                    <button onclick="deleteTodo(${idx})">✕</button>
-                `;
-                container.appendChild(div);
-            });
+
+        function saveTodos() {
             localStorage.setItem('nomad_todos', JSON.stringify(todos));
         }
-        function addTodo() {
-            let input = document.getElementById('todoInput');
-            if(input.value.trim() === '') return;
-            todos.push({ text: input.value.trim(), done: false });
-            input.value = '';
-            renderTodos();
-        }
-        function toggleTodo(idx) {
-            todos[idx].done = !todos[idx].done;
-            renderTodos();
-        }
-        function deleteTodo(idx) {
-            todos.splice(idx, 1);
-            renderTodos();
-        }
-        document.getElementById('todoInput')?.addEventListener('keypress', function(e) {
-            if(e.key === 'Enter') addTodo();
-        });
 
-        // --- 5. AI PROMPT HUB (KOPYALAMA SİSTEMİ) ---
-        const prompts = {
-            mail: "Bir freelance projesinde gecikme yaşanacağını müşteriye profesyonel ve kurumsal bir dille anlatacak e-posta taslağı hazırla.",
-            proposal: "Upwork üzerinde Full-Stack Web Development ilanı için Gen-Z diline uygun, dinamik, dikkat çeken bir ön yazı (proposal) yaz.",
-            fiverr: "Fiverr üzerinde logo tasarımı ve kurumsal kimlik hizmeti sunan gig'im (hizmetim) için SEO uyumlu bir servis açıklaması metni kütüphanesi hazırla.",
-            caption: "Instagram ve LinkedIn üzerinde paylaşılabilecek, 'Uzaktan yazılımcı olarak çalışmanın 3 altın kuralı' temalı viral bir sosyal medya açıklaması ve hashtag havuzu oluştur."
-        };
-        function copyPrompt(key) {
-            navigator.clipboard.writeText(prompts[key]);
+        function renderTodoList() {
+            const container = document.getElementById('todoList');
+            container.innerHTML = '';
+            todos.forEach((todo, index) => {
+                const item = document.createElement('div');
+                item.className = `todo-item ${todo.completed ? 'completed' : ''}`;
+                item.innerHTML = `
+                    <span onclick="toggleTodo(${index})" style="cursor:pointer; flex:1;">${todo.text}</span>
+                    <button onclick="deleteTodo(${index})">X</button>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function addTodo() {
+            const input = document.getElementById('todoInput');
+            const text = input.value.trim();
+            if (!text) return;
+            todos.push({ text, completed: false });
+            input.value = '';
+            saveTodos();
+            renderTodoList();
+        }
+
+        function toggleTodo(index) {
+            todos[index].completed = !todos[index].completed;
+            saveTodos();
+            renderTodoList();
+        }
+
+        function deleteTodo(index) {
+            todos.splice(index, 1);
+            saveTodos();
+            renderTodoList();
+        }
+
+        // --- AI PROMPT COPIER ---
+        function copyPrompt(type) {
+            const prompts = {
+                mail: "Bir freelancer olarak müşteriye kibar, profesyonel bir iş teslimi/durum güncelleme e-postası taslağı hazırla.",
+                proposal: "Upwork üzerinde ilan edilmiş bir Full-Stack web geliştirme projesi için dikkat çekici, kısa ve net bir başvuru (proposal) mektubu yaz.",
+                fiverr: "Fiverr üzerinde açacağım web sitesi kurulum hizmeti (Gig) için SEO uyumlu, profesyonel bir profil ve hizmet açıklaması yaz.",
+                caption: "Instagram ve LinkedIn üzerinde paylaşılmak üzere dijital göçebelik, evden çalışma düzeni ve üretkenlik temalı ilgi çekici bir sosyal medya açıklaması ve hashtag havuzu oluştur."
+            };
+            navigator.clipboard.writeText(prompts[type]);
             alert(translations[currentLang].alertCopy);
         }
 
-        // --- 6. ŞİFRE ÜRETİCİ ---
+        // --- ŞİFRE ÜRETİCİ ---
         function generatePassword() {
-            let len = parseInt(document.getElementById('pwLength').value) || 12;
-            let syms = document.getElementById('pwSymbols').checked;
-            let nums = document.getElementById('pwNumbers').checked;
+            const length = parseInt(document.getElementById('pwLength').value) || 12;
+            const useSymbols = document.getElementById('pwSymbols').checked;
+            const useNumbers = document.getElementById('pwNumbers').checked;
+            
             let chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            if(nums) chars += "0123456789";
-            if(syms) chars += "!@#$%^&*()_+~`|}{[]:;?><,./-=";
-            let pw = "";
-            for(let i=0; i<len; i++) {
-                pw += chars.charAt(Math.floor(Math.random() * chars.length));
+            if (useNumbers) chars += "0123456789";
+            if (useSymbols) chars += "!@#$%^&*()_+~`|}{[]:;?><,./-=";
+            
+            let password = "";
+            for (let i = 0; i < length; i++) {
+                password += chars.charAt(Math.floor(Math.random() * chars.length));
             }
-            document.getElementById('pwResult').value = pw;
+            document.getElementById('pwResult').value = password;
         }
 
-        // --- 7. SAATLİK ÜCRET HESAPLAYICI ---
+        // --- SAATLİK ÜCRET HESAPLAYICI ---
         function calculateHourlyRate() {
-            let target = parseFloat(document.getElementById('targetIncome').value) || 0;
-            let days = parseFloat(document.getElementById('workDays').value) || 5;
-            let hours = parseFloat(document.getElementById('workHours').value) || 6;
-            let totalHoursMonth = (days * 4.33) * hours;
-            let rate = totalHoursMonth > 0 ? (target / totalHoursMonth) : 0;
-            document.getElementById('hourlyResult').innerText = rate.toFixed(2) + " / Saatlik";
+            const target = parseFloat(document.getElementById('targetIncome').value) || 0;
+            const days = parseInt(document.getElementById('workDays').value) || 5;
+            const hours = parseInt(document.getElementById('workHours').value) || 6;
+            
+            const totalHoursMonthly = (days * 4) * hours;
+            const rate = totalHoursMonthly > 0 ? (target / totalHoursMonthly) : 0;
+            
+            document.getElementById('hourlyResult').innerText = rate.toFixed(2) + ' / saat';
         }
 
-        // --- 8. CANLI KRİPTO PARALAR VE HESAPLAYICI ---
-        let cryptoPrices = { bitcoin: 0, ethereum: 0, solana: 0, binancecoin: 0, ripple: 0 };
-        async function fetchCryptoPrices() {
-            try {
-                let res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana,binancecoin,ripple&vs_currencies=usd');
-                if(res.ok) {
-                    let data = await res.json();
-                    cryptoPrices.bitcoin = data.bitcoin.usd;
-                    cryptoPrices.ethereum = data.ethereum.usd;
-                    cryptoPrices.solana = data.solana.usd;
-                    cryptoPrices.binancecoin = data.binancecoin.usd;
-                    cryptoPrices.ripple = data.ripple.usd;
-
-                    document.getElementById('btc-price').innerText = '$' + cryptoPrices.bitcoin.toLocaleString();
-                    document.getElementById('eth-price').innerText = '$' + cryptoPrices.ethereum.toLocaleString();
-                    document.getElementById('sol-price').innerText = '$' + cryptoPrices.solana.toLocaleString();
-                    document.getElementById('bnb-price').innerText = '$' + cryptoPrices.binancecoin.toLocaleString();
-                    document.getElementById('xrp-price').innerText = '$' + cryptoPrices.ripple.toFixed(4);
-                }
-            } catch(e) { console.log("Kripto verisi çekilemedi."); }
+        // --- KRİPTO SİSTEMİ (MOCK VERİLER) ---
+        const cryptoPrices = { bitcoin: 67500, ethereum: 3500, solana: 150, binancecoin: 580, ripple: 0.52 };
+        
+        function updateCryptoPrices() {
+            document.getElementById('btc-price').innerText = '$' + cryptoPrices.bitcoin.toLocaleString();
+            document.getElementById('eth-price').innerText = '$' + cryptoPrices.ethereum.toLocaleString();
+            document.getElementById('sol-price').innerText = '$' + cryptoPrices.solana.toLocaleString();
+            document.getElementById('bnb-price').innerText = '$' + cryptoPrices.binancecoin.toLocaleString();
+            document.getElementById('xrp-price').innerText = '$' + cryptoPrices.ripple.toLocaleString();
             calculateCryptoValue();
         }
 
         function calculateCryptoValue() {
-            let amt = parseFloat(document.getElementById('cryptoAmount').value) || 0;
-            let selected = document.getElementById('cryptoSelect').value;
-            let price = cryptoPrices[selected] || 0;
-            let total = amt * price;
+            const amount = parseFloat(document.getElementById('cryptoAmount').value) || 0;
+            const selected = document.getElementById('cryptoSelect').value;
+            const total = amount * (cryptoPrices[selected] || 0);
             document.getElementById('cryptoResultText').innerText = '$' + total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         }
 
-        // --- SİTE İLK ÇALIŞMA AYARLARI ---
+        // --- MODAL POPUP KONTROLLERİ ---
+        function openModal(id) {
+            document.getElementById(id).style.display = 'flex';
+        }
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+
+        // --- SAYFA AÇILIŞ AYARLARI ---
         window.onload = function() {
-            let savedLang = localStorage.getItem('nomad_lang') || 'tr';
+            const savedLang = localStorage.getItem('nomad_lang') || 'tr';
             setLanguage(savedLang);
-            renderTodos();
-            generatePassword();
-            fetchExchangeRates();
-            fetchCryptoPrices();
-            setInterval(fetchExchangeRates, 60000 * 5); // 5 dakikada bir kurları güncelle
-            setInterval(fetchCryptoPrices, 60000 * 2);   // 2 dakikada bir kriptoyu güncelle
+            convertCurrency();
+            updateCryptoPrices();
         };
     </script>
 </body>
