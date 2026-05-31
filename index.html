@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
+    <!-- Google Tag Manager -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-PDGE4NDWT9"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -48,7 +49,6 @@
             position: relative;
         }
 
-        /* Dil Değiştirici Butonlar */
         .lang-switch {
             position: absolute;
             top: 0;
@@ -198,7 +198,6 @@
             margin-bottom: 12px;
         }
 
-        /* Kripto Listesi */
         .crypto-list {
             display: flex;
             flex-direction: column;
@@ -215,7 +214,6 @@
             font-size: 13px;
         }
 
-        /* To-Do List Stilleri */
         .todo-input-group {
             display: flex;
             gap: 8px;
@@ -254,7 +252,6 @@
             box-shadow: none;
         }
 
-        /* AI Prompt Hub Stilleri */
         .ai-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -271,7 +268,6 @@
             justify-content: space-between;
         }
 
-        /* Monetize Zone */
         .monetize-zone {
             grid-column: 1 / -1;
             background: linear-gradient(90deg, #091124 0%, #060e1f 100%);
@@ -324,7 +320,6 @@
             font-size: 13px;
         }
 
-        /* FOOTER VE SÖZLEŞME POPUP STİLLERİ */
         footer {
             margin-top: 50px;
             padding: 20px 0;
@@ -446,9 +441,6 @@
                         <option value="EUR">Euro (EUR)</option>
                         <option value="GBP">Sterlin (GBP)</option>
                         <option value="CAD">Kanada Doları (CAD)</option>
-                        <option value="AUD">Avustralya Doları (AUD)</option>
-                        <option value="JPY">Japon Yeni (JPY)</option>
-                        <option value="CHF">İsviçre Frangı (CHF)</option>
                     </select>
                 </div>
                 <div style="font-size: 15px; margin-top: 10px; font-weight: bold;">
@@ -516,7 +508,6 @@
                 <div class="crypto-row"><span>Ethereum (ETH)</span><b id="eth-price" style="color:#3b82f6">$...</b></div>
                 <div class="crypto-row"><span>Solana (SOL)</span><b id="sol-price" style="color:#10b981">$...</b></div>
                 <div class="crypto-row"><span>Binance (BNB)</span><b id="bnb-price" style="color:#f3ba2f">$...</b></div>
-                <div class="crypto-row"><span>Ripple (XRP)</span><b id="xrp-price" style="color:#23292f">$...</b></div>
             </div>
             <div style="border-top: 1px solid var(--border); padding-top: 8px; display: flex; gap: 4px;">
                 <input type="number" id="cryptoAmount" value="1" style="width: 35%; font-size:12px; padding:6px;" oninput="calculateCryptoValue()">
@@ -525,7 +516,6 @@
                     <option value="ethereum">ETH</option>
                     <option value="solana">SOL</option>
                     <option value="binancecoin">BNB</option>
-                    <option value="ripple">XRP</option>
                 </select>
                 <div style="width:30%; font-size:12px; display:flex; align-items:center; justify-content:center; font-weight:bold; color:#10b981;" id="cryptoResultText">$0.00</div>
             </div>
@@ -579,7 +569,7 @@
         <div class="custom-modal-content">
             <span class="custom-close-btn" onclick="closeModal('modal-terms')">&times;</span>
             <h3 id="m-terms-title">Hizmet Şartları</h3>
-            <p id="m-terms-text">Bu siden sunulan döviz ve kripto para hesaplama araçları üçüncü taraf API'lerden anlık veri çekmektedir ve sadece genel bilgilendirme amacı taşır. Sitede paylaşılan dış bağlantılar (Amazon iş ortaklığı linkleri) kullanıcı yönlendirmesi içindir.</p>
+            <p id="m-terms-text">Bu sitede sunulan döviz ve kripto para hesaplama araçları üçüncü taraf API'lerden anlık veri çekmektedir ve sadece genel bilgilendirme amacı taşır. Sitede paylaşılan dış bağlantılar (Amazon iş ortaklığı linkleri) kullanıcı yönlendirmesi içindir.</p>
         </div>
     </div>
 
@@ -602,7 +592,7 @@
                 titleForex: "💵 Canlı Döviz Kuru", lblRateRes: "Anlık Karşılığı", titleTodo: "🎯 Günlük Görevlerim", todoPlc: "Yeni görev ekle...",
                 titleAi: "🤖 AI Freelancer Asistanı", aiP1: "Mail Oluştur", aiP2: "Upwork Proposal", aiP3: "Fiverr Açıklaması", aiP4: "Sosyal Medya",
                 aiHint: "Butona bas, şablonu kopyala ve ChatGPT'ye yapıştır!", titlePw: "🔒 Güçlü Şifre Oluşturucu", lblSym: "Sembol", lblNum: "Sayı",
-                btnPw: "Şifre Üret", titleCalc: "💰 Saatlik Ücret Hesaplayıcı", incPlc: "Aylık Hedef Gelir (TL veya $)", daysPlc: "Haftalık Gün",
+                btnPw: "Şifre Üret", titleCalc: "💰 Saatlik Ücret Hesaplayıcı", incPlc: "Aylık Hedef Gelir", daysPlc: "Haftalık Gün",
                 hoursPlc: "Günlük Saat", btnCalc: "Hesapla", lblCalcRes: "Minimum Saatlik Ücretin", titleCrypto: "🪙 Canlı Kripto Fiyatları (USD)",
                 monTitle: "🛒 Önerilen Yazılımcı & Göçebe Ekipmanları", monSub: "Konforunu artıracak, dünya genelinde en çok satan Amazon ürünleri",
                 monAd: "📢 SPONSORLUK & REKLAM ALANI // İLETİŞİM İÇİN BAŞVURUN",
@@ -701,9 +691,9 @@
             renderTodoList();
         }
 
-        // --- ODAKLANMA SAYACI FONKSİYONLARI ---
+        // --- ODAKLANMA SAYACI ---
         let timerInterval = null;
-        let timeLeft = 1800; // 30 dakika
+        let timeLeft = 1800;
 
         function updateTimerDisplay() {
             const minutes = Math.floor(timeLeft / 60);
@@ -746,12 +736,35 @@
             document.getElementById('wordCount').innerText = words.length;
         }
 
-        // --- DÖVİZ KURU HESAPLAMA (MOCK DATA) ---
+        // --- CANLI DÖVİZ KURU ENTEGRASYON SİSTEMİ ---
+        let liveRates = { USD: 45.89, EUR: 53.49, GBP: 61.76, CAD: 33.26 }; // Haziran 2026 stabil yedek havuzu
+
+        async function fetchLiveRates() {
+            try {
+                // Açık kaynaklı ve API Key gerektirmeyen güvenilir global kur servisi
+                const response = await fetch('https://open.er-api.com/v6/latest/USD');
+                const data = await response.json();
+                
+                if(data && data.rates && data.rates.TRY) {
+                    const usdToTry = data.rates.TRY;
+                    liveRates = {
+                        USD: usdToTry,
+                        EUR: usdToTry / data.rates.EUR,
+                        GBP: usdToTry / data.rates.GBP,
+                        CAD: usdToTry / data.rates.CAD
+                    };
+                    console.log("Canlı kurlar API üzerinden başarıyla çekildi:", liveRates);
+                    convertCurrency();
+                }
+            } catch (error) {
+                console.error("Canlı kurlara erişilemedi, yedek sistem devrede:", error);
+            }
+        }
+
         function convertCurrency() {
             const amount = parseFloat(document.getElementById('amount').value) || 0;
             const from = document.getElementById('fromCurrency').value;
-            const rates = { USD: 32.5, EUR: 35.1, GBP: 41.2, CAD: 23.8, AUD: 21.5, JPY: 0.21, CHF: 36.0 };
-            const resultInTRY = amount * (rates[from] || 1);
+            const resultInTRY = amount * (liveRates[from] || 1);
             document.getElementById('conversionResult').innerText = resultInTRY.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' TRY';
         }
 
@@ -839,15 +852,32 @@
             document.getElementById('hourlyResult').innerText = rate.toFixed(2) + ' / saat';
         }
 
-        // --- KRİPTO SİSTEMİ (MOCK VERİLER) ---
-        const cryptoPrices = { bitcoin: 67500, ethereum: 3500, solana: 150, binancecoin: 580, ripple: 0.52 };
-        
-        function updateCryptoPrices() {
+        // --- CANLI KRİPTO SİSTEMİ ENTEGRASYONU ---
+        let cryptoPrices = { bitcoin: 67500, ethereum: 3500, solana: 150, binancecoin: 580 };
+
+        async function fetchLiveCryptoPrices() {
+            try {
+                // Coingecko API üzerinden anlık fiyat verilerini çekiyoruz
+                const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana,binancecoin&vs_currencies=usd');
+                const data = await response.json();
+                
+                if (data) {
+                    cryptoPrices.bitcoin = data.bitcoin.usd;
+                    cryptoPrices.ethereum = data.ethereum.usd;
+                    cryptoPrices.solana = data.solana.usd;
+                    cryptoPrices.binancecoin = data.binancecoin.usd;
+                }
+            } catch (error) {
+                console.error("Kripto fiyatları çekilirken hata oluştu, yerel havuz kullanılıyor.", error);
+            }
+            updateCryptoUI();
+        }
+
+        function updateCryptoUI() {
             document.getElementById('btc-price').innerText = '$' + cryptoPrices.bitcoin.toLocaleString();
             document.getElementById('eth-price').innerText = '$' + cryptoPrices.ethereum.toLocaleString();
             document.getElementById('sol-price').innerText = '$' + cryptoPrices.solana.toLocaleString();
             document.getElementById('bnb-price').innerText = '$' + cryptoPrices.binancecoin.toLocaleString();
-            document.getElementById('xrp-price').innerText = '$' + cryptoPrices.ripple.toLocaleString();
             calculateCryptoValue();
         }
 
@@ -866,12 +896,14 @@
             document.getElementById(id).style.display = 'none';
         }
 
-        // --- SAYFA AÇILIŞ AYARLARI ---
-        window.onload = function() {
+        // --- ORTAK BAŞLANGIÇ TETİKLEYİCİSİ ---
+        window.onload = async function() {
             const savedLang = localStorage.getItem('nomad_lang') || 'tr';
             setLanguage(savedLang);
-            convertCurrency();
-            updateCryptoPrices();
+            
+            // Canlı entegrasyonları başlat
+            await fetchLiveRates();
+            await fetchLiveCryptoPrices();
         };
     </script>
 </body>
