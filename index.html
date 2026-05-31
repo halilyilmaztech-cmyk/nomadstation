@@ -9,6 +9,10 @@
       gtag('config', 'G-PDGE4NDWT9');
     </script>
 
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5016135750052512"
+         crossorigin="anonymous"></script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NomadStation // Digital Nomad & Freelancer Workspace</title>
@@ -320,7 +324,7 @@
             font-size: 13px;
         }
 
-        /* 📋 SİTE ALTI FOOTER VE SÖZLEŞME POPUP STİLLERİ (YENİ EKLEME - TASARIMA ZARARI YOKTUR) */
+        /* FOOTER VE SÖZLEŞME POPUP STİLLERİ */
         footer {
             margin-top: 50px;
             padding: 20px 0;
@@ -530,7 +534,7 @@
         <div class="monetize-zone">
             <h3 style="margin: 0; font-size: 20px; color: #ff9900;" id="mon-title">🛒 Önerilen Yazılımcı & Göçebe Ekipmanları</h3>
             <p style="color: var(--text-muted); font-size: 14px; margin: 5px 0 15px 0;" id="mon-subtitle">Konforunu artıracak, dünya genelinde en çok satan Amazon ürünleri</p>
-            
+             
             <div class="amazon-links">
                 <a href="https://amzn.to/4a7y9ro" target="_blank" class="amazon-btn" id="amz-1">Ergonomik Laptop Standı 💻</a>
                 <a href="https://amzn.to/3PATtPh" target="_blank" class="amazon-btn" id="amz-2">Termoslu Akıllı Çay Kupası ☕</a>
@@ -575,7 +579,7 @@
         <div class="custom-modal-content">
             <span class="custom-close-btn" onclick="closeModal('modal-terms')">&times;</span>
             <h3 id="m-terms-title">Hizmet Şartları</h3>
-            <p id="m-terms-text">Bu sitede sunulan döviz ve kripto para hesaplama araçları üçüncü taraf API'lerden anlık veri çekmektedir ve sadece genel bilgilendirme amacı taşır. Sitede paylaşılan dış bağlantılar (Amazon iş ortaklığı linkleri) kullanıcı yönlendirmesi içindir.</p>
+            <p id="m-terms-text">Bu siden sunulan döviz ve kripto para hesaplama araçları üçüncü taraf API'lerden anlık veri çekmektedir ve sadece genel bilgilendirme amacı taşır. Sitede paylaşılan dış bağlantılar (Amazon iş ortaklığı linkleri) kullanıcı yönlendirmesi içindir.</p>
         </div>
     </div>
 
@@ -605,7 +609,6 @@
                 alertTimer: "Harika İş! 30 Dakikalık Odaklanma Bitti. Şimdi kalk, bir bardak su iç ve gözlerini dinlendir! 💧👁️",
                 alertCopy: "AI Şablonu panoya kopyalandı! ChatGPT'ye yapıştırabilirsiniz.",
                 amz1: "Ergonomik Laptop Standı 💻", amz2: "Termoslu Akıllı Çay Kupası ☕", amz3: "Oyuncu Kulaklığı 🎧", amz4: "Ortopedik Çalışma Minderi 💺",
-                // Yeni Eklenen Footer Çevirileri
                 lnkAbout: "Hakkımızda", lnkPrivacy: "Gizlilik İlkesi", lnkTerms: "Hizmet Şartları", lnkContact: "İletişim",
                 popAboutT: "Hakkımızda", popAboutX: "NomadStation; tüm dünyadan dijital göçebeler, freelancer çalışanlar ve içerik üreticileri için tasarlanmış bağımsız bir verimlilik istasyonudur. Günlük iş akışınızı hızlandıracak araçları tek bir ekranda sunar.",
                 popPrivT: "Gizlilik İlkesi", popPrivX: "Gizliliğinize saygı duyuyoruz. NomadStation üzerinde girdiğiniz hiçbir veri (görev listeleriniz, hesaplamalarınız veya metinleriniz) sunucularımıza kaydedilmez. Tüm veriler tamamen tarayıcınızın yerel hafızasında (LocalStorage) güvenli bir şekilde saklanır.",
@@ -626,7 +629,6 @@
                 alertTimer: "Great Job! 30-minute focus session is over. Stand up, drink some water, and rest your eyes! 💧👁️",
                 alertCopy: "AI Template copied to clipboard! You can paste it into ChatGPT.",
                 amz1: "Ergonomic Laptop Stand 💻", amz2: "Smart Tea Mug ☕", amz3: "Gaming Headset 🎧", amz4: "Orthopedic Seat Cushion 💺",
-                // Yeni Eklenen Footer Çevirileri
                 lnkAbout: "About Us", lnkPrivacy: "Privacy Policy", lnkTerms: "Terms of Service", lnkContact: "Contact",
                 popAboutT: "About Us", popAboutX: "NomadStation is an independent productivity hub designed for digital nomads, freelancers, and content creators worldwide. It offers simple tools to streamline your daily workflow on a single screen.",
                 popPrivT: "Privacy Policy", popPrivX: "We respect your privacy. None of the data you enter on NomadStation (tasks, metrics, or texts) is saved on our servers. All information stays safely inside your browser's LocalStorage.",
@@ -682,7 +684,6 @@
             document.getElementById('amz-3').innerText = t.amz3;
             document.getElementById('amz-4').innerText = t.amz4;
 
-            // Yeni Eklenen Menü Elemanlarının Dil Güncellemesi
             document.getElementById('link-about').innerText = t.lnkAbout;
             document.getElementById('link-privacy').innerText = t.lnkPrivacy;
             document.getElementById('link-terms').innerText = t.lnkTerms;
@@ -696,175 +697,197 @@
             document.getElementById('m-terms-text').innerHTML = t.popTermsX;
             document.getElementById('m-contact-title').innerText = t.popContT;
             document.getElementById('m-contact-text').innerHTML = t.popContX;
-
-            convertCurrency();
         }
 
-        // --- POMODORO SİSTEMİ ---
-        let timer;
+        // --- POPUP MODAL SİSTEMİ ---
+        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+        window.onclick = function(e) { if(e.target.classList.contains('custom-modal')) { e.target.style.display = 'none'; } };
+
+        // --- 1. ODAKLANMA ZAMANLAYICI (POMODORO) ---
+        let timerInterval = null;
         let timeLeft = 30 * 60; 
-        let isRunning = false;
 
         function updateTimerDisplay() {
-            let minutes = Math.floor(timeLeft / 60);
-            let seconds = timeLeft % 60;
-            document.getElementById('timer').innerText = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            let mins = Math.floor(timeLeft / 60);
+            let secs = timeLeft % 60;
+            document.getElementById('timer').innerText = 
+                (mins < 10 ? '0' : '') + mins + ':' + (secs < 10 ? '0' : '') + secs;
         }
 
         function startTimer() {
-            if (isRunning) return;
-            isRunning = true;
-            timer = setInterval(() => {
-                if (timeLeft > 0) { 
-                    timeLeft--; 
-                    updateTimerDisplay(); 
-                } else { 
-                    clearInterval(timer); 
-                    alert(translations[currentLang].alertTimer); 
-                    resetTimer(); 
+            if (timerInterval !== null) return;
+            timerInterval = setInterval(() => {
+                if (timeLeft > 0) {
+                    timeLeft--;
+                    updateTimerDisplay();
+                } else {
+                    clearInterval(timerInterval);
+                    timerInterval = null;
+                    alert(translations[currentLang].alertTimer);
+                    timeLeft = 30 * 60;
+                    updateTimerDisplay();
                 }
             }, 1000);
         }
-        function pauseTimer() { clearInterval(timer); isRunning = false; }
-        function resetTimer() { clearInterval(timer); isRunning = false; timeLeft = 30 * 60; updateTimerDisplay(); }
 
-        // --- KELİME SAYICI ---
-        function countText() {
-            let text = document.getElementById('textInput').value.trim();
-            document.getElementById('charCount').innerText = text.length;
-            document.getElementById('wordCount').innerText = text === "" ? 0 : text.split(/\s+/).length;
+        function pauseTimer() {
+            clearInterval(timerInterval);
+            timerInterval = null;
         }
 
-        // --- CANLI DÖVİZ MOTORU ---
-        let exchangeRates = { USD: 0, EUR: 0, GBP: 0, CAD: 0, AUD: 0, JPY: 0, CHF: 0 };
-        function fetchLiveRates() {
-            fetch('https://open.er-api.com/v6/latest/TRY')
-                .then(response => response.json())
-                .then(data => {
-                    exchangeRates.USD = 1 / data.rates.USD;
-                    exchangeRates.EUR = 1 / data.rates.EUR;
-                    exchangeRates.GBP = 1 / data.rates.GBP;
-                    exchangeRates.CAD = 1 / data.rates.CAD;
-                    exchangeRates.AUD = 1 / data.rates.AUD;
-                    exchangeRates.JPY = 1 / data.rates.JPY;
-                    exchangeRates.CHF = 1 / data.rates.CHF;
-                    convertCurrency();
-                }).catch(() => {});
+        function resetTimer() {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            timeLeft = 30 * 60;
+            updateTimerDisplay();
+        }
+
+        // --- 2. KELİME & KARAKTER SAYICI ---
+        function countText() {
+            let text = document.getElementById('textInput').value;
+            document.getElementById('charCount').innerText = text.length;
+            let words = text.trim().split(/\s+/).filter(w => w.length > 0);
+            document.getElementById('wordCount').innerText = words.length;
+        }
+
+        // --- 3. DÖVİZ KURU HESAPLAMA (USD TRY KURU BAZLI ÜCRETSİZ API) ---
+        let trwRates = { USD: 1, EUR: 1.08, GBP: 1.26, CAD: 0.73, AUD: 0.66, JPY: 0.0064, CHF: 1.11, TRY: 0.030 }; 
+        
+        async function fetchExchangeRates() {
+            try {
+                let res = await fetch('https://open.er-api.com/v6/latest/USD');
+                if(res.ok) {
+                    let data = await res.json();
+                    trwRates = data.rates;
+                }
+            } catch(e) { console.log("Döviz verisi çekilemedi, local hafıza devrede."); }
+            convertCurrency();
         }
 
         function convertCurrency() {
-            let amount = document.getElementById('amount').value;
+            let amount = parseFloat(document.getElementById('amount').value) || 0;
             let from = document.getElementById('fromCurrency').value;
-            let currentRate = exchangeRates[from];
-            if(!currentRate) return;
-            let result = amount * currentRate;
-            document.getElementById('conversionResult').innerText = new Intl.NumberFormat(currentLang == 'tr' ? 'tr-TR' : 'en-US', { style: 'currency', currency: 'TRY' }).format(result);
+            if(!trwRates[from] || !trwRates['TRY']) return;
+            let usdValue = amount / trwRates[from];
+            let tryValue = usdValue * trwRates['TRY'];
+            document.getElementById('conversionResult').innerText = tryValue.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' TRY';
         }
 
-        // --- TO-DO LIST (HAFIZALI) ---
+        // --- 4. TO-DO LIST (LOCALSTORAGE DESTEKLİ GÖREVLER) ---
         let todos = JSON.parse(localStorage.getItem('nomad_todos')) || [];
         function renderTodos() {
-            const container = document.getElementById('todoList');
+            let container = document.getElementById('todoList');
             container.innerHTML = '';
-            todos.forEach((todo, index) => {
-                const item = document.createElement('div');
-                item.className = `todo-item ${todo.completed ? 'completed' : ''}`;
-                item.innerHTML = `
-                    <span onclick="toggleTodo(${index})" style="cursor:pointer; flex:1;">${todo.text}</span>
-                    <button onclick="deleteTodo(${index})">X</button>
+            todos.forEach((todo, idx) => {
+                let div = document.createElement('div');
+                div.className = 'todo-item' + (todo.done ? ' completed' : '');
+                div.innerHTML = `
+                    <span onclick="toggleTodo(${idx})" style="cursor:pointer; flex:1;">${todo.text}</span>
+                    <button onclick="deleteTodo(${idx})">✕</button>
                 `;
-                container.appendChild(item);
+                container.appendChild(div);
             });
+            localStorage.setItem('nomad_todos', JSON.stringify(todos));
         }
         function addTodo() {
-            const input = document.getElementById('todoInput');
-            if (input.value.trim() === '') return;
-            todos.push({ text: input.value.trim(), completed: false });
+            let input = document.getElementById('todoInput');
+            if(input.value.trim() === '') return;
+            todos.push({ text: input.value.trim(), done: false });
             input.value = '';
-            saveTodos();
+            renderTodos();
         }
-        function toggleTodo(index) { todos[index].completed = !todos[index].completed; saveTodos(); }
-        function deleteTodo(index) { todos.splice(index, 1); saveTodos(); }
-        function saveTodos() { localStorage.setItem('nomad_todos', JSON.stringify(todos)); renderTodos(); }
+        function toggleTodo(idx) {
+            todos[idx].done = !todos[idx].done;
+            renderTodos();
+        }
+        function deleteTodo(idx) {
+            todos.splice(idx, 1);
+            renderTodos();
+        }
+        document.getElementById('todoInput')?.addEventListener('keypress', function(e) {
+            if(e.key === 'Enter') addTodo();
+        });
 
-        // --- AI PROMPT HUB ---
+        // --- 5. AI PROMPT HUB (KOPYALAMA SİSTEMİ) ---
         const prompts = {
-            mail: "Act as an expert remote copywriter. Write a professional email to a client explaining a small project delay due to technical issues, but reassure them with high-quality updates. Keep it smooth and professional.",
-            proposal: "Act as an elite Upwork freelancer. Write a winning job proposal for a Web Development project. Explain why I am the best fit, ask 2 relevant project questions, and keep it under 200 words.",
-            fiverr: "Create a highly optimized Fiverr gig description for 'Custom Web Application Tools development using HTML/CSS/JS'. Include sections for Why Me, Services offered, and a clear Call to Action.",
-            caption: "Write 3 viral Instagram caption options for a post showing a high-end clean software engineering desk setup. Include relevant tech and digital nomad hashtags."
+            mail: "Bir freelance projesinde gecikme yaşanacağını müşteriye profesyonel ve kurumsal bir dille anlatacak e-posta taslağı hazırla.",
+            proposal: "Upwork üzerinde Full-Stack Web Development ilanı için Gen-Z diline uygun, dinamik, dikkat çeken bir ön yazı (proposal) yaz.",
+            fiverr: "Fiverr üzerinde logo tasarımı ve kurumsal kimlik hizmeti sunan gig'im (hizmetim) için SEO uyumlu bir servis açıklaması metni kütüphanesi hazırla.",
+            caption: "Instagram ve LinkedIn üzerinde paylaşılabilecek, 'Uzaktan yazılımcı olarak çalışmanın 3 altın kuralı' temalı viral bir sosyal medya açıklaması ve hashtag havuzu oluştur."
         };
         function copyPrompt(key) {
             navigator.clipboard.writeText(prompts[key]);
             alert(translations[currentLang].alertCopy);
         }
 
-        // --- ŞİFRE OLUŞTURUCU ---
+        // --- 6. ŞİFRE ÜRETİCİ ---
         function generatePassword() {
-            let length = document.getElementById('pwLength').value;
-            let includeSymbols = document.getElementById('pwSymbols').checked;
-            let includeNumbers = document.getElementById('pwNumbers').checked;
+            let len = parseInt(document.getElementById('pwLength').value) || 12;
+            let syms = document.getElementById('pwSymbols').checked;
+            let nums = document.getElementById('pwNumbers').checked;
             let chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            if (includeNumbers) chars += "0123456789";
-            if (includeSymbols) chars += "!@#$%^&*()_+~`|}{[]:;?><,./-=";
-            let password = "";
-            for (let i = 0; i < length; i++) password += chars.charAt(Math.floor(Math.random() * chars.length));
-            document.getElementById('pwResult').value = password;
+            if(nums) chars += "0123456789";
+            if(syms) chars += "!@#$%^&*()_+~`|}{[]:;?><,./-=";
+            let pw = "";
+            for(let i=0; i<len; i++) {
+                pw += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            document.getElementById('pwResult').value = pw;
         }
 
-        // --- SAATLİK ÜCRET HESAPLAYICI ---
+        // --- 7. SAATLİK ÜCRET HESAPLAYICI ---
         function calculateHourlyRate() {
-            let target = parseFloat(document.getElementById('targetIncome').value);
-            let days = parseInt(document.getElementById('workDays').value);
-            let hours = parseInt(document.getElementById('workHours').value);
-            if(!target || !days || !hours) return;
-            let totalHoursInMonth = days * hours * 4.33; 
-            let hourlyRate = target / totalHoursInMonth;
-            document.getElementById('hourlyResult').innerText = new Intl.NumberFormat(currentLang == 'tr' ? 'tr-TR' : 'en-US', { maxFractionDigits: 2 }).format(hourlyRate) + " unit";
+            let target = parseFloat(document.getElementById('targetIncome').value) || 0;
+            let days = parseFloat(document.getElementById('workDays').value) || 5;
+            let hours = parseFloat(document.getElementById('workHours').value) || 6;
+            let totalHoursMonth = (days * 4.33) * hours;
+            let rate = totalHoursMonth > 0 ? (target / totalHoursMonth) : 0;
+            document.getElementById('hourlyResult').innerText = rate.toFixed(2) + " / Saatlik";
         }
 
-        // --- CANLI KRİPTO VE HESAP MAKİNESİ ---
-        let cryptoData = {};
-        function fetchCryptoPrices() {
-            fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana,binancecoin,ripple&vs_currencies=usd')
-                .then(res => res.json())
-                .then(data => {
-                    cryptoData = data;
-                    document.getElementById('btc-price').innerText = "$" + data.bitcoin.usd.toLocaleString();
-                    document.getElementById('eth-price').innerText = "$" + data.ethereum.usd.toLocaleString();
-                    document.getElementById('sol-price').innerText = "$" + data.solana.usd.toLocaleString();
-                    document.getElementById('bnb-price').innerText = "$" + data.binancecoin.usd.toLocaleString();
-                    document.getElementById('xrp-price').innerText = "$" + data.ripple.usd.toFixed(4);
-                    calculateCryptoValue();
-                }).catch(() => {});
+        // --- 8. CANLI KRİPTO PARALAR VE HESAPLAYICI ---
+        let cryptoPrices = { bitcoin: 0, ethereum: 0, solana: 0, binancecoin: 0, ripple: 0 };
+        async function fetchCryptoPrices() {
+            try {
+                let res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana,binancecoin,ripple&vs_currencies=usd');
+                if(res.ok) {
+                    let data = await res.json();
+                    cryptoPrices.bitcoin = data.bitcoin.usd;
+                    cryptoPrices.ethereum = data.ethereum.usd;
+                    cryptoPrices.solana = data.solana.usd;
+                    cryptoPrices.binancecoin = data.binancecoin.usd;
+                    cryptoPrices.ripple = data.ripple.usd;
+
+                    document.getElementById('btc-price').innerText = '$' + cryptoPrices.bitcoin.toLocaleString();
+                    document.getElementById('eth-price').innerText = '$' + cryptoPrices.ethereum.toLocaleString();
+                    document.getElementById('sol-price').innerText = '$' + cryptoPrices.solana.toLocaleString();
+                    document.getElementById('bnb-price').innerText = '$' + cryptoPrices.binancecoin.toLocaleString();
+                    document.getElementById('xrp-price').innerText = '$' + cryptoPrices.ripple.toFixed(4);
+                }
+            } catch(e) { console.log("Kripto verisi çekilemedi."); }
+            calculateCryptoValue();
         }
 
         function calculateCryptoValue() {
-            let amount = parseFloat(document.getElementById('cryptoAmount').value);
+            let amt = parseFloat(document.getElementById('cryptoAmount').value) || 0;
             let selected = document.getElementById('cryptoSelect').value;
-            if(!cryptoData[selected] || isNaN(amount)) return;
-            let price = cryptoData[selected].usd;
-            let total = amount * price;
-            document.getElementById('cryptoResultText').innerText = "$" + total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            let price = cryptoPrices[selected] || 0;
+            let total = amt * price;
+            document.getElementById('cryptoResultText').innerText = '$' + total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         }
 
-        // --- YENİ POPUP AÇMA KAPATMA FONKSİYONLARI ---
-        function openModal(id) {
-            document.getElementById(id).style.display = "flex";
-        }
-        function closeModal(id) {
-            document.getElementById(id).style.display = "none";
-        }
-
-        // --- SAYFA YÜKLENİŞİNDEKİ TETİKLER ---
-        window.addEventListener('DOMContentLoaded', () => {
+        // --- SİTE İLK ÇALIŞMA AYARLARI ---
+        window.onload = function() {
             let savedLang = localStorage.getItem('nomad_lang') || 'tr';
             setLanguage(savedLang);
-            fetchLiveRates();
             renderTodos();
+            generatePassword();
+            fetchExchangeRates();
             fetchCryptoPrices();
-            setInterval(fetchCryptoPrices, 60000); // 60 saniyede bir kriptoları tazele
-        });
+            setInterval(fetchExchangeRates, 60000 * 5); // 5 dakikada bir kurları güncelle
+            setInterval(fetchCryptoPrices, 60000 * 2);   // 2 dakikada bir kriptoyu güncelle
+        };
     </script>
 </body>
 </html>
