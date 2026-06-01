@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <!-- Google Tag Manager -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-PDGE4NDWT9"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -10,7 +9,6 @@
       gtag('config', 'G-PDGE4NDWT9');
     </script>
 
-    <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5016135750052512"
          crossorigin="anonymous"></script>
 
@@ -444,7 +442,7 @@
                     </select>
                 </div>
                 <div style="font-size: 15px; margin-top: 10px; font-weight: bold;">
-                    <span id="lbl-rate-result">Anlık Karşılığı</span>: <span id="conversionResult" style="color:#10b981">...</span>
+                    <span id="lbl-rate-result">Anlık Karşılığı</span>: <span id="conversionResult" style="color:#10b981">Yükleniyor...</span>
                 </div>
             </div>
         </div>
@@ -504,10 +502,10 @@
         <div class="card">
             <h2 id="title-crypto">🪙 Canlı Kripto Fiyatları (USD)</h2>
             <div class="crypto-list" style="margin-bottom: 12px;">
-                <div class="crypto-row"><span>Bitcoin (BTC)</span><b id="btc-price" style="color:#ff9900">$...</b></div>
-                <div class="crypto-row"><span>Ethereum (ETH)</span><b id="eth-price" style="color:#3b82f6">$...</b></div>
-                <div class="crypto-row"><span>Solana (SOL)</span><b id="sol-price" style="color:#10b981">$...</b></div>
-                <div class="crypto-row"><span>Binance (BNB)</span><b id="bnb-price" style="color:#f3ba2f">$...</b></div>
+                <div class="crypto-row"><span>Bitcoin (BTC)</span><b id="btc-price" style="color:#ff9900">$Yükleniyor...</b></div>
+                <div class="crypto-row"><span>Ethereum (ETH)</span><b id="eth-price" style="color:#3b82f6">$Yükleniyor...</b></div>
+                <div class="crypto-row"><span>Solana (SOL)</span><b id="sol-price" style="color:#10b981">$Yükleniyor...</b></div>
+                <div class="crypto-row"><span>Binance (BNB)</span><b id="bnb-price" style="color:#f3ba2f">$Yükleniyor...</b></div>
             </div>
             <div style="border-top: 1px solid var(--border); padding-top: 8px; display: flex; gap: 4px;">
                 <input type="number" id="cryptoAmount" value="1" style="width: 35%; font-size:12px; padding:6px;" oninput="calculateCryptoValue()">
@@ -569,7 +567,7 @@
         <div class="custom-modal-content">
             <span class="custom-close-btn" onclick="closeModal('modal-terms')">&times;</span>
             <h3 id="m-terms-title">Hizmet Şartları</h3>
-            <p id="m-terms-text">Bu sitede sunulan döviz ve kripto para hesaplama araçları üçüncü taraf API'lerden anlık veri çekmektedir ve sadece genel bilgilendirme amacı taşır. Sitede paylaşılan dış bağlantılar (Amazon iş ortaklığı linkleri) kullanıcı yönlendirmesi içindir.</p>
+            <p id="m-terms-text">Bu sidenizde sunulan döviz ve kripto para hesaplama araçları üçüncü taraf API'lerden anlık veri çekmektedir ve sadece genel bilgilendirme amacı taşır. Sitede paylaşılan dış bağlantılar (Amazon iş ortaklığı linkleri) kullanıcı yönlendirmesi içindir.</p>
         </div>
     </div>
 
@@ -698,7 +696,8 @@
         function updateTimerDisplay() {
             const minutes = Math.floor(timeLeft / 60);
             const seconds = timeLeft % 60;
-            document.getElementById('timer').innerText = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            document.getElementById('timer').innerText = 
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
         }
 
         function startTimer() {
@@ -730,95 +729,112 @@
 
         // --- METİN SAYICI ---
         function countText() {
-            const text = document.getElementById('textInput').value;
-            document.getElementById('charCount').innerText = text.length;
-            const words = text.trim().split(/\s+/).filter(w => w.length > 0);
-            document.getElementById('wordCount').innerText = words.length;
+            const text = document.getElementById('textInput').value.trim();
+            const words = text === "" ? 0 : text.split(/\s+/).length;
+            const chars = text.length;
+            document.getElementById('wordCount').innerText = words;
+            document.getElementById('charCount').innerText = chars;
         }
 
-        // --- CANLI DÖVİZ KURU ENTEGRASYON SİSTEMİ ---
-        let liveRates = { USD: 45.89, EUR: 53.49, GBP: 61.76, CAD: 33.26 }; // Haziran 2026 stabil yedek havuzu
+        // --- CANLI DÖVİZ VE KRİPTO ALTYAPISI ---
+        let rates = { TRY: 32.50, EUR: 0.92, GBP: 0.79, CAD: 1.36, USD: 1 }; 
+        let cryptoPrices = { bitcoin: 0, ethereum: 0, solana: 0, binancecoin: 0 };
 
         async function fetchLiveRates() {
             try {
-                // Açık kaynaklı ve API Key gerektirmeyen güvenilir global kur servisi
-                const response = await fetch('https://open.er-api.com/v6/latest/USD');
-                const data = await response.json();
-                
-                if(data && data.rates && data.rates.TRY) {
-                    const usdToTry = data.rates.TRY;
-                    liveRates = {
-                        USD: usdToTry,
-                        EUR: usdToTry / data.rates.EUR,
-                        GBP: usdToTry / data.rates.GBP,
-                        CAD: usdToTry / data.rates.CAD
-                    };
-                    console.log("Canlı kurlar API üzerinden başarıyla çekildi:", liveRates);
+                // Ücretsiz ve anahtarsız döviz sağlayıcı
+                const forexRes = await fetch('https://open.er-api.com/v6/latest/USD');
+                const forexData = await forexRes.json();
+                if(forexData && forexData.rates) {
+                    rates = forexData.rates;
                     convertCurrency();
                 }
+
+                // Kripto fiyatları sağlayıcı (CoinGecko)
+                const cryptoRes = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana,binancecoin&vs_currencies=usd');
+                const cryptoData = await cryptoRes.json();
+                if(cryptoData) {
+                    cryptoPrices = cryptoData;
+                    document.getElementById('btc-price').innerText = `$${cryptoData.bitcoin.usd.toLocaleString()}`;
+                    document.getElementById('eth-price').innerText = `$${cryptoData.ethereum.usd.toLocaleString()}`;
+                    document.getElementById('sol-price').innerText = `$${cryptoData.solana.usd.toLocaleString()}`;
+                    document.getElementById('bnb-price').innerText = `$${cryptoData.binancecoin.usd.toLocaleString()}`;
+                    calculateCryptoValue();
+                }
             } catch (error) {
-                console.error("Canlı kurlara erişilemedi, yedek sistem devrede:", error);
+                console.log("Canlı veriler alınamadı, yerel hafıza kullanılıyor.", error);
             }
         }
 
         function convertCurrency() {
             const amount = parseFloat(document.getElementById('amount').value) || 0;
             const from = document.getElementById('fromCurrency').value;
-            const resultInTRY = amount * (liveRates[from] || 1);
-            document.getElementById('conversionResult').innerText = resultInTRY.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' TRY';
+            
+            // USD bazlı çevrim yapıp doğrudan Türk Lirasına vuruyoruz
+            const amountInUSD = amount / rates[from];
+            const amountInTRY = amountInUSD * rates['TRY'];
+            
+            document.getElementById('conversionResult').innerText = amountInTRY.toFixed(2) + " TRY";
         }
 
-        // --- TO-DO LIST SİSTEMİ ---
+        function calculateCryptoValue() {
+            const amount = parseFloat(document.getElementById('cryptoAmount').value) || 0;
+            const selected = document.getElementById('cryptoSelect').value;
+            const price = cryptoPrices[selected] ? cryptoPrices[selected].usd : 0;
+            document.getElementById('cryptoResultText').innerText = `$${(amount * price).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+        }
+
+        // --- GÖREV LİSTESİ (TODO) ---
         let todos = JSON.parse(localStorage.getItem('nomad_todos')) || [];
-
-        function saveTodos() {
-            localStorage.setItem('nomad_todos', JSON.stringify(todos));
-        }
-
-        function renderTodoList() {
-            const container = document.getElementById('todoList');
-            container.innerHTML = '';
-            todos.forEach((todo, index) => {
-                const item = document.createElement('div');
-                item.className = `todo-item ${todo.completed ? 'completed' : ''}`;
-                item.innerHTML = `
-                    <span onclick="toggleTodo(${index})" style="cursor:pointer; flex:1;">${todo.text}</span>
-                    <button onclick="deleteTodo(${index})">X</button>
-                `;
-                container.appendChild(item);
-            });
-        }
 
         function addTodo() {
             const input = document.getElementById('todoInput');
-            const text = input.value.trim();
-            if (!text) return;
-            todos.push({ text, completed: false });
-            input.value = '';
-            saveTodos();
-            renderTodoList();
+            if (input.value.trim() === "") return;
+            todos.push({ text: input.value.trim(), completed: false });
+            input.value = "";
+            saveAndRenderTodos();
         }
 
         function toggleTodo(index) {
             todos[index].completed = !todos[index].completed;
-            saveTodos();
-            renderTodoList();
+            saveAndRenderTodos();
         }
 
-        function deleteTodo(index) {
+        function deleteTodo(index, event) {
+            event.stopPropagation();
             todos.splice(index, 1);
-            saveTodos();
+            saveAndRenderTodos();
+        }
+
+        function saveAndRenderTodos() {
+            localStorage.setItem('nomad_todos', JSON.stringify(todos));
             renderTodoList();
         }
 
-        // --- AI PROMPT COPIER ---
+        function renderTodoList() {
+            const container = document.getElementById('todoList');
+            container.innerHTML = "";
+            todos.forEach((todo, index) => {
+                const div = document.createElement('div');
+                div.className = `todo-item ${todo.completed ? 'completed' : ''}`;
+                div.onclick = () => toggleTodo(index);
+                div.innerHTML = `
+                    <span>${todo.text}</span>
+                    <button onclick="deleteTodo(${index}, event)">X</button>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        // --- AI PROMPT KOPYALAYICI ---
+        const prompts = {
+            mail: "Bir freelance çalışan olarak müşteriye projenin durumu hakkında profesyonel, net ve kibar bir güncelleme e-postası tasarla.",
+            proposal: "Upwork üzerinde bir web geliştirme projesine başvurmak için dikkat çekici, yeteneklerimi öne çıkaran bir ön yazı (proposal) yaz.",
+            fiverr: "Fiverr platformunda listelemek üzere detaylı, güven veren ve sunduğum hizmetlerin avantajlarını listeleyen bir Gig açıklaması metni hazıkla.",
+            caption: "Yazılım geliştirme veya uzaktan çalışma temalı bir Instagram/LinkedIn gönderisi için etkileşimi artıracak, hashtag içeren modern bir alt yazı üret."
+        };
+
         function copyPrompt(type) {
-            const prompts = {
-                mail: "Bir freelancer olarak müşteriye kibar, profesyonel bir iş teslimi/durum güncelleme e-postası taslağı hazırla.",
-                proposal: "Upwork üzerinde ilan edilmiş bir Full-Stack web geliştirme projesi için dikkat çekici, kısa ve net bir başvuru (proposal) mektubu yaz.",
-                fiverr: "Fiverr üzerinde açacağım web sitesi kurulum hizmeti (Gig) için SEO uyumlu, profesyonel bir profil ve hizmet açıklaması yaz.",
-                caption: "Instagram ve LinkedIn üzerinde paylaşılmak üzere dijital göçebelik, evden çalışma düzeni ve üretkenlik temalı ilgi çekici bir sosyal medya açıklaması ve hashtag havuzu oluştur."
-            };
             navigator.clipboard.writeText(prompts[type]);
             alert(translations[currentLang].alertCopy);
         }
@@ -829,81 +845,41 @@
             const useSymbols = document.getElementById('pwSymbols').checked;
             const useNumbers = document.getElementById('pwNumbers').checked;
             
-            let chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            if (useNumbers) chars += "0123456789";
-            if (useSymbols) chars += "!@#$%^&*()_+~`|}{[]:;?><,./-=";
+            let charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            if (useNumbers) charset += "0123456789";
+            if (useSymbols) charset += "!@#$%^&*()_+~`|}{[]:;?><,./-=";
             
             let password = "";
             for (let i = 0; i < length; i++) {
-                password += chars.charAt(Math.floor(Math.random() * chars.length));
+                password += charset.charAt(Math.floor(Math.random() * charset.length));
             }
             document.getElementById('pwResult').value = password;
         }
 
         // --- SAATLİK ÜCRET HESAPLAYICI ---
         function calculateHourlyRate() {
-            const target = parseFloat(document.getElementById('targetIncome').value) || 0;
-            const days = parseInt(document.getElementById('workDays').value) || 5;
-            const hours = parseInt(document.getElementById('workHours').value) || 6;
+            const income = parseFloat(document.getElementById('targetIncome').value) || 0;
+            const days = parseFloat(document.getElementById('workDays').value) || 5;
+            const hours = parseFloat(document.getElementById('workHours').value) || 6;
             
+            // Aylık toplam çalışma saati hesabı
             const totalHoursMonthly = (days * 4) * hours;
-            const rate = totalHoursMonthly > 0 ? (target / totalHoursMonthly) : 0;
+            const hourlyRate = totalHoursMonthly > 0 ? (income / totalHoursMonthly) : 0;
             
-            document.getElementById('hourlyResult').innerText = rate.toFixed(2) + ' / saat';
+            document.getElementById('hourlyResult').innerText = hourlyRate.toFixed(2) + " TL / Saat";
         }
 
-        // --- CANLI KRİPTO SİSTEMİ ENTEGRASYONU ---
-        let cryptoPrices = { bitcoin: 67500, ethereum: 3500, solana: 150, binancecoin: 580 };
+        // --- MODAL (HAKKIMIZDA VB.) ---
+        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-        async function fetchLiveCryptoPrices() {
-            try {
-                // Coingecko API üzerinden anlık fiyat verilerini çekiyoruz
-                const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana,binancecoin&vs_currencies=usd');
-                const data = await response.json();
-                
-                if (data) {
-                    cryptoPrices.bitcoin = data.bitcoin.usd;
-                    cryptoPrices.ethereum = data.ethereum.usd;
-                    cryptoPrices.solana = data.solana.usd;
-                    cryptoPrices.binancecoin = data.binancecoin.usd;
-                }
-            } catch (error) {
-                console.error("Kripto fiyatları çekilirken hata oluştu, yerel havuz kullanılıyor.", error);
-            }
-            updateCryptoUI();
-        }
-
-        function updateCryptoUI() {
-            document.getElementById('btc-price').innerText = '$' + cryptoPrices.bitcoin.toLocaleString();
-            document.getElementById('eth-price').innerText = '$' + cryptoPrices.ethereum.toLocaleString();
-            document.getElementById('sol-price').innerText = '$' + cryptoPrices.solana.toLocaleString();
-            document.getElementById('bnb-price').innerText = '$' + cryptoPrices.binancecoin.toLocaleString();
-            calculateCryptoValue();
-        }
-
-        function calculateCryptoValue() {
-            const amount = parseFloat(document.getElementById('cryptoAmount').value) || 0;
-            const selected = document.getElementById('cryptoSelect').value;
-            const total = amount * (cryptoPrices[selected] || 0);
-            document.getElementById('cryptoResultText').innerText = '$' + total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-        }
-
-        // --- MODAL POPUP KONTROLLERİ ---
-        function openModal(id) {
-            document.getElementById(id).style.display = 'flex';
-        }
-        function closeModal(id) {
-            document.getElementById(id).style.display = 'none';
-        }
-
-        // --- ORTAK BAŞLANGIÇ TETİKLEYİCİSİ ---
-        window.onload = async function() {
+        // --- BAŞLANGIÇ AYARLARI ---
+        window.onload = () => {
             const savedLang = localStorage.getItem('nomad_lang') || 'tr';
             setLanguage(savedLang);
-            
-            // Canlı entegrasyonları başlat
-            await fetchLiveRates();
-            await fetchLiveCryptoPrices();
+            fetchLiveRates();
+            // Piyasaları her 5 dakikada bir otomatik yenile
+            setInterval(fetchLiveRates, 300000);
         };
     </script>
 </body>
