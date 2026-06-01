@@ -14,6 +14,17 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="NomadStation - Dijital göçebeler ve freelancerlar için ücretsiz verimlilik aracı. Timer, döviz çevirici, kripto takibi, görev listesi ve daha fazlası.">
+    <meta name="keywords" content="freelancer, digital nomad, verimlilik, çalışma araçları, timer, döviz çevirici, kripto">
+    <meta name="author" content="NomadStation">
+    <meta name="robots" content="index, follow">
+    <meta name="google-site-verification" content="your-google-verification-code">
+    <meta property="og:title" content="NomadStation - Dijital Göçebeler İçin Verimlilik Üssü">
+    <meta property="og:description" content="Tüm araçlarınız bir platformda. Timer, hesaplama, döviz, kripto, görev takibi ve daha fazlası.">
+    <meta property="og:image" content="https://nomadstation.com/og-image.png">
+    <meta property="og:url" content="https://halilyilmaztech-cmyk.github.io/nomadstation/">
+    <meta property="og:type" content="website">
+    <link rel="canonical" href="https://halilyilmaztech-cmyk.github.io/nomadstation/">
     <title>NomadStation // Digital Nomad & Freelancer Workspace</title>
     <style>
         :root {
@@ -539,45 +550,12 @@
 
     <footer>
         <div class="footer-links">
-            <a id="link-about" onclick="openModal('modal-about')">Hakkımızda</a>
-            <a id="link-privacy" onclick="openModal('modal-privacy')">Gizlilik İlkesi</a>
-            <a id="link-terms" onclick="openModal('modal-terms')">Hizmet Şartları</a>
-            <a id="link-contact" onclick="openModal('modal-contact')">İletişim</a>
+            <a href="privacy-policy.html">Gizlilik İlkesi</a>
+            <a href="terms-of-service.html">Hizmet Şartları</a>
+            <a href="mailto:ekipmansefi@gmail.com">İletişim</a>
         </div>
         <p>© 2026 NomadStation. All Rights Reserved.</p>
     </footer>
-
-    <div id="modal-about" class="custom-modal">
-        <div class="custom-modal-content">
-            <span class="custom-close-btn" onclick="closeModal('modal-about')">&times;</span>
-            <h3 id="m-about-title">Hakkımızda</h3>
-            <p id="m-about-text">NomadStation; tüm dünyadan dijital göçebeler, freelancer çalışanlar ve içerik üreticileri için tasarlanmış bağımsız bir verimlilik istasyonudur. Günlük iş akışınızı hızlandıracak araçları tek bir ekranda sunar.</p>
-        </div>
-    </div>
-
-    <div id="modal-privacy" class="custom-modal">
-        <div class="custom-modal-content">
-            <span class="custom-close-btn" onclick="closeModal('modal-privacy')">&times;</span>
-            <h3 id="m-privacy-title">Gizlilik İlkesi</h3>
-            <p id="m-privacy-text">Gizliliğinize saygı duyuyoruz. NomadStation üzerinde girdiğiniz hiçbir veri (görev listeleriniz, hesaplamalarınız veya metinleriniz) sunucularımıza kaydedilmez. Tüm veriler tamamen tarayıcınızın yerel hafızasında (LocalStorage) güvenli bir şekilde saklanır.</p>
-        </div>
-    </div>
-
-    <div id="modal-terms" class="custom-modal">
-        <div class="custom-modal-content">
-            <span class="custom-close-btn" onclick="closeModal('modal-terms')">&times;</span>
-            <h3 id="m-terms-title">Hizmet Şartları</h3>
-            <p id="m-terms-text">Bu sidenizde sunulan döviz ve kripto para hesaplama araçları üçüncü taraf API'lerden anlık veri çekmektedir ve sadece genel bilgilendirme amacı taşır. Sitede paylaşılan dış bağlantılar (Amazon iş ortaklığı linkleri) kullanıcı yönlendirmesi içindir.</p>
-        </div>
-    </div>
-
-    <div id="modal-contact" class="custom-modal">
-        <div class="custom-modal-content">
-            <span class="custom-close-btn" onclick="closeModal('modal-contact')">&times;</span>
-            <h3 id="m-contact-title">İletişim</h3>
-            <p id="m-contact-text">Geri bildirimleriniz, sponsorluk görüşmeleriniz veya her türlü sorunuz için bizimle resmi e-posta adresimiz üzerinden iletişime geçebilirsiniz:<br><br><b>ekipmansefi@gmail.com</b></p>
-        </div>
-    </div>
 
     <script>
         // --- DİL SİSTEMİ VERİLERİ ---
@@ -596,12 +574,7 @@
                 monAd: "📢 SPONSORLUK & REKLAM ALANI // İLETİŞİM İÇİN BAŞVURUN",
                 alertTimer: "Harika İş! 30 Dakikalık Odaklanma Bitti. Şimdi kalk, bir bardak su iç ve gözlerini dinlendir! 💧👁️",
                 alertCopy: "AI Şablonu panoya kopyalandı! ChatGPT'ye yapıştırabilirsiniz.",
-                amz1: "Ergonomik Laptop Standı 💻", amz2: "Termoslu Akıllı Çay Kupası ☕", amz3: "Oyuncu Kulaklığı 🎧", amz4: "Ortopedik Çalışma Minderi 💺",
-                lnkAbout: "Hakkımızda", lnkPrivacy: "Gizlilik İlkesi", lnkTerms: "Hizmet Şartları", lnkContact: "İletişim",
-                popAboutT: "Hakkımızda", popAboutX: "NomadStation; tüm dünyadan dijital göçebeler, freelancer çalışanlar ve içerik üreticileri için tasarlanmış bağımsız bir verimlilik istasyonudur. Günlük iş akışınızı hızlandıracak araçları tek bir ekranda sunar.",
-                popPrivT: "Gizlilik İlkesi", popPrivX: "Gizliliğinize saygı duyuyoruz. NomadStation üzerinde girdiğiniz hiçbir veri (görev listeleriniz, hesaplamalarınız veya metinleriniz) sunucularımıza kaydedilmez. Tüm veriler tamamen tarayıcınızın yerel hafızasında (LocalStorage) güvenli bir şekilde saklanır.",
-                popTermsT: "Hizmet Şartları", popTermsX: "Bu sitede sunulan döviz ve kripto para hesaplama araçları üçüncü taraf API'lerden anlık veri çekmektedir ve sadece genel bilgilendirme amacı taşır. Sitede paylaşılan dış bağlantılar (Amazon iş ortaklığı linkleri) kullanıcı yönlendirmesi içindir.",
-                popContT: "İletişim", popContX: "Geri bildirimleriniz, sponsorluk görüşmeleriniz veya her türlü sorunuz için bizimle resmi e-posta adresimiz üzerinden iletişime geçebilirsiniz:<br><br><b>ekipmansefi@gmail.com</b>"
+                amz1: "Ergonomik Laptop Standı 💻", amz2: "Termoslu Akıllı Çay Kupası ☕", amz3: "Oyuncu Kulaklığı 🎧", amz4: "Ortopedik Çalışma Minderi 💺"
             },
             en: {
                 mainTitle: "NomadStation", mainSubtitle: "Productivity Hub for Digital Nomads & Freelancers",
@@ -616,12 +589,7 @@
                 monAd: "📢 SPONSORSHIP & AD SPACE // CONTACT FOR APPLICATION",
                 alertTimer: "Great Job! 30-minute focus session is over. Stand up, drink some water, and rest your eyes! 💧👁️",
                 alertCopy: "AI Template copied to clipboard! You can paste it into ChatGPT.",
-                amz1: "Ergonomic Laptop Stand 💻", amz2: "Smart Tea Mug ☕", amz3: "Gaming Headset 🎧", amz4: "Orthopedic Seat Cushion 💺",
-                lnkAbout: "About Us", lnkPrivacy: "Privacy Policy", lnkTerms: "Terms of Service", lnkContact: "Contact",
-                popAboutT: "About Us", popAboutX: "NomadStation is an independent productivity hub designed for digital nomads, freelancers, and content creators worldwide. It offers simple tools to streamline your daily workflow on a single screen.",
-                popPrivT: "Privacy Policy", popPrivX: "We respect your privacy. None of the data you enter on NomadStation (tasks, metrics, or texts) is saved on our servers. All information stays safely inside your browser's LocalStorage.",
-                popTermsT: "Terms of Service", popTermsX: "The calculation and exchange rate tools on this site fetch real-time data from third-party APIs and are intended for general information only. External links are for user reference.",
-                popContT: "Contact Us", popContX: "For feedback, sponsorship inquiries, or any questions, feel free to reach out via our official support email address:<br><br><b>ekipmansefi@gmail.com</b>"
+                amz1: "Ergonomic Laptop Stand 💻", amz2: "Smart Tea Mug ☕", amz3: "Gaming Headset 🎧", amz4: "Orthopedic Seat Cushion 💺"
             }
         };
 
@@ -671,20 +639,6 @@
             document.getElementById('amz-2').innerText = t.amz2;
             document.getElementById('amz-3').innerText = t.amz3;
             document.getElementById('amz-4').innerText = t.amz4;
-
-            document.getElementById('link-about').innerText = t.lnkAbout;
-            document.getElementById('link-privacy').innerText = t.lnkPrivacy;
-            document.getElementById('link-terms').innerText = t.lnkTerms;
-            document.getElementById('link-contact').innerText = t.lnkContact;
-            
-            document.getElementById('m-about-title').innerText = t.popAboutT;
-            document.getElementById('m-about-text').innerHTML = t.popAboutX;
-            document.getElementById('m-privacy-title').innerText = t.popPrivT;
-            document.getElementById('m-privacy-text').innerHTML = t.popPrivX;
-            document.getElementById('m-terms-title').innerText = t.popTermsT;
-            document.getElementById('m-terms-text').innerHTML = t.popTermsX;
-            document.getElementById('m-contact-title').innerText = t.popContT;
-            document.getElementById('m-contact-text').innerHTML = t.popContX;
             
             renderTodoList();
         }
@@ -868,10 +822,6 @@
             
             document.getElementById('hourlyResult').innerText = hourlyRate.toFixed(2) + " TL / Saat";
         }
-
-        // --- MODAL (HAKKIMIZDA VB.) ---
-        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
-        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
         // --- BAŞLANGIÇ AYARLARI ---
         window.onload = () => {
