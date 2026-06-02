@@ -278,6 +278,147 @@
             align-items: center;
             justify-content: space-between;
         }
+        .resource-list {
+            display: grid;
+            gap: 12px;
+        }
+        .resource-row {
+            padding: 14px;
+            background: #020617;
+            border: 1px solid #14203b;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .resource-row a {
+            color: #3b82f6;
+            text-decoration: none;
+        }
+        .tip-box {
+            background: #020617;
+            border: 1px solid #14203b;
+            border-radius: 12px;
+            padding: 16px;
+            min-height: 100px;
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+        .quiz-answers {
+            display: grid;
+            gap: 8px;
+        }
+        .quiz-answer {
+            padding: 12px 14px;
+            border: 1px solid #14203b;
+            border-radius: 10px;
+            background: #020617;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .quiz-answer:hover {
+            background: rgba(16, 185, 129, 0.08);
+            border-color: #10b981;
+        }
+        .roadmap-list {
+            display: grid;
+            gap: 10px;
+        }
+        .roadmap-step {
+            padding: 12px 14px;
+            border: 1px solid #14203b;
+            border-radius: 10px;
+            background: #020617;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .roadmap-step:hover,
+        .roadmap-step.active {
+            border-color: #3b82f6;
+            background: rgba(59, 130, 246, 0.08);
+        }
+        .chat-box {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background: #020617;
+            border: 1px solid #14203b;
+            border-radius: 16px;
+            padding: 16px;
+        }
+        .chat-output {
+            min-height: 140px;
+            background: #0b1329;
+            border: 1px solid #14203b;
+            border-radius: 14px;
+            padding: 14px;
+            overflow-y: auto;
+        }
+        .chat-message {
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        .chat-message.user {
+            text-align: right;
+            color: #f8fafc;
+        }
+        .chat-message.bot {
+            text-align: left;
+            color: #a5f3fc;
+        }
+        .pill-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 12px;
+            border-radius: 999px;
+            border: 1px solid #14203b;
+            background: #111827;
+            color: #ffffff;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .pill:hover {
+            background: #111b2e;
+        }
+        .career-list,
+        .news-list {
+            display: grid;
+            gap: 10px;
+        }
+        .career-card,
+        .news-item {
+            background: #020617;
+            border: 1px solid #14203b;
+            border-radius: 14px;
+            padding: 14px;
+        }
+        .career-card strong {
+            display: block;
+            margin-bottom: 8px;
+            color: #3b82f6;
+        }
+        .news-item h4 {
+            margin: 0 0 8px 0;
+            font-size: 14px;
+        }
+        .news-item p {
+            margin: 0;
+            line-height: 1.6;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+        .news-source {
+            margin-top: 8px;
+            font-size: 12px;
+            color: #60a5fa;
+        }
 
         .monetize-zone {
             grid-column: 1 / -1;
@@ -472,14 +613,42 @@
         </div>
 
         <div class="card">
-            <h2 id="title-ai">🤖 AI Freelancer Asistanı</h2>
-            <div class="ai-grid">
-                <button class="ai-btn" onclick="copyPrompt('mail')">📧 <span id="ai-p1">Mail Oluştur</span> 📋</button>
-                <button class="ai-btn" onclick="copyPrompt('proposal')">💼 <span id="ai-p2">Upwork Proposal</span> 📋</button>
-                <button class="ai-btn" onclick="copyPrompt('fiverr')">📝 <span id="ai-p3">Fiverr Açıklaması</span> 📋</button>
-                <button class="ai-btn" onclick="copyPrompt('caption')">📱 <span id="ai-p4">Sosyal Medya</span> 📋</button>
+            <h2>🌟 Günün Aracı</h2>
+            <div class="resource-list" id="dailyResourceList"></div>
+            <button onclick="refreshDailyTools()" style="margin-top:12px;">Bugünün Araçlarını Yenile</button>
+        </div>
+
+        <div class="card">
+            <h2>🎲 Bugün Ne Öğrenelim?</h2>
+            <div class="tip-box" id="learningTip">Hazır olunca butona bas.</div>
+            <button onclick="showLearningTip()" style="margin-top:12px;">Bana bir şey öğret</button>
+        </div>
+
+        <div class="card" id="quiz-card">
+            <h2>🧠 Mini Quiz: Yazılım Hafızanı Test Et</h2>
+            <div id="quizContent">
+                <div id="quizQuestion" style="margin-bottom:12px;">Hadi başlayalım, hemen bir soru soracağım.</div>
+                <div class="quiz-answers" id="quizAnswers"></div>
+                <button onclick="startQuiz()" id="quizStartBtn" style="margin-top:12px;">Quizi Başlat</button>
+                <div id="quizResult" style="margin-top:12px; font-weight:bold;"></div>
             </div>
-            <div style="font-size:11px; color:var(--text-muted); text-align:center; margin-top:10px;" id="lbl-ai-hint">Butona bas, şablonu kopyala ve ChatGPT'ye yapıştır!</div>
+        </div>
+
+        <div class="card">
+            <h2>🛣️ Yazılım Yol Haritası</h2>
+            <div class="roadmap-list" id="roadmapList"></div>
+            <div id="roadmapDetail" style="margin-top:12px; font-size:13px; color:var(--text-muted);"></div>
+        </div>
+
+        <div class="card">
+            <h2 id="title-ai">🤖 Yapay Zeka Prompt Kütüphanesi</h2>
+            <div class="ai-grid">
+                <button class="ai-btn" onclick="copyPrompt('chatgpt')">💬 <span id="ai-p1">ChatGPT</span> 📋</button>
+                <button class="ai-btn" onclick="copyPrompt('claude')">🧠 <span id="ai-p2">Claude</span> 📋</button>
+                <button class="ai-btn" onclick="copyPrompt('gemini')">🌟 <span id="ai-p3">Gemini</span> 📋</button>
+                <button class="ai-btn" onclick="copyPrompt('cursor')">🚀 <span id="ai-p4">Cursor</span> 📋</button>
+            </div>
+            <div style="font-size:11px; color:var(--text-muted); text-align:center; margin-top:10px;" id="lbl-ai-hint">Kopyala, yapıştır ve AI ile hızlı sonuç al.</div>
         </div>
 
         <div class="card">
@@ -532,6 +701,33 @@
             </div>
         </div>
 
+        <div class="card">
+            <h2>💬 NomadStation AI</h2>
+            <div class="chat-box">
+                <div class="chat-output" id="chatOutput">
+                    <div class="chat-message bot">Merhaba! Sorunu sor veya hızlı bir öneri seç.</div>
+                </div>
+                <div class="pill-group">
+                    <div class="pill" onclick="selectAiQuestion('Hangi yazılım dilini öğreneyim?')">Hangi dili öğreneyim?</div>
+                    <div class="pill" onclick="selectAiQuestion('CV\'m nasıl olsun?')">CV nasıl olsun?</div>
+                    <div class="pill" onclick="selectAiQuestion('Uzaktan iş bulabilir miyim?')">Uzaktan iş bulur muyum?</div>
+                </div>
+                <input type="text" id="aiQuestionInput" placeholder="Sorunu buraya yaz..." onkeydown="if(event.key==='Enter') askAiQuestion()">
+                <button onclick="askAiQuestion()">Soruyu Gönder</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>📈 En Çok Kazandıran Meslekler</h2>
+            <div class="career-list" id="careerList"></div>
+        </div>
+
+        <div class="card">
+            <h2>📰 Teknoloji Haberleri</h2>
+            <div class="news-list" id="newsList"></div>
+            <button onclick="refreshTechNews()" style="margin-top:12px;">Haberleri Yenile</button>
+        </div>
+
         <div class="monetize-zone">
             <h3 style="margin: 0; font-size: 20px; color: #ff9900;" id="mon-title">🛒 Önerilen Yazılımcı & Göçebe Ekipmanları</h3>
             <p style="color: var(--text-muted); font-size: 14px; margin: 5px 0 15px 0;" id="mon-subtitle">Konforunu artıracak, dünya genelinde en çok satan Amazon ürünleri</p>
@@ -568,8 +764,8 @@
                 titleTimer: "⏱️ Odaklanma & Çay Molası", btnStart: "Başlat", btnPause: "Durdur", btnReset: "Sıfırla",
                 titleCounter: "✍️ Kelime & Karakter Sayıcı", txtPlc: "Metninizi buraya yapıştırın...", lblWords: "Kelime", lblChars: "Karakter",
                 titleForex: "💵 Canlı Döviz Kuru", lblRateRes: "Anlık Karşılığı", titleTodo: "🎯 Günlük Görevlerim", todoPlc: "Yeni görev ekle...",
-                titleAi: "🤖 AI Freelancer Asistanı", aiP1: "Mail Oluştur", aiP2: "Upwork Proposal", aiP3: "Fiverr Açıklaması", aiP4: "Sosyal Medya",
-                aiHint: "Butona bas, şablonu kopyala ve ChatGPT'ye yapıştır!", titlePw: "🔒 Güçlü Şifre Oluşturucu", lblSym: "Sembol", lblNum: "Sayı",
+                titleAi: "🤖 Yapay Zeka Prompt Kütüphanesi", aiP1: "ChatGPT", aiP2: "Claude", aiP3: "Gemini", aiP4: "Cursor",
+                aiHint: "Kopyala, yapıştır ve AI ile hızlı sonuç al.", titlePw: "🔒 Güçlü Şifre Oluşturucu", lblSym: "Sembol", lblNum: "Sayı",
                 btnPw: "Şifre Üret", titleCalc: "💰 Saatlik Ücret Hesaplayıcı", incPlc: "Aylık Hedef Gelir", daysPlc: "Haftalık Gün",
                 hoursPlc: "Günlük Saat", btnCalc: "Hesapla", lblCalcRes: "Minimum Saatlik Ücretin", titleCrypto: "🪙 Canlı Kripto Fiyatları (USD)",
                 monTitle: "🛒 Önerilen Yazılımcı & Göçebe Ekipmanları", monSub: "Konforunu artıracak, dünya genelinde en çok satan Amazon ürünleri",
@@ -583,8 +779,8 @@
                 titleTimer: "⏱️ Focus Timer & Break", btnStart: "Start", btnPause: "Pause", btnReset: "Reset",
                 titleCounter: "✍️ Word & Character Counter", txtPlc: "Paste your text here...", lblWords: "Words", lblChars: "Characters",
                 titleForex: "💵 Live Exchange Rates", lblRateRes: "Live Conversion", titleTodo: "🎯 Daily Todo List", todoPlc: "Add new task...",
-                titleAi: "🤖 AI Freelancer Assistant", aiP1: "Write Email", aiP2: "Upwork Proposal", aiP3: "Fiverr Description", aiP4: "Social Caption",
-                aiHint: "Click a button to copy the prompt, then paste into ChatGPT!", titlePw: "🔒 Strong Password Generator", lblSym: "Symbols", lblNum: "Numbers",
+                titleAi: "🤖 AI Prompt Library", aiP1: "ChatGPT", aiP2: "Claude", aiP3: "Gemini", aiP4: "Cursor",
+                aiHint: "Copy, paste, and get answers fast from AI.", titlePw: "🔒 Strong Password Generator", lblSym: "Symbols", lblNum: "Numbers",
                 btnPw: "Generate", titleCalc: "💰 Hourly Rate Calculator", incPlc: "Target Monthly Income", daysPlc: "Days / Week",
                 hoursPlc: "Hours / Day", btnCalc: "Calculate", lblCalcRes: "Your Min Hourly Rate", titleCrypto: "🪙 Live Crypto Prices (USD)",
                 monTitle: "🛒 Recommended Nomad Gear", monSub: "Boost your comfort with top-selling Amazon tech accessories global",
@@ -782,12 +978,224 @@
             });
         }
 
+        const dailyToolSets = [
+            {
+                tools: [
+                    { category: "Günün Yapay Zeka Aracı", title: "ChatGPT", desc: "İçerik, kod ve kreatif fikirler için AI asistanı.", url: "https://chat.openai.com/" },
+                    { category: "Günün Ücretsiz Kursu", title: "freeCodeCamp", desc: "Ücretsiz Python ve web geliştirme kursları.", url: "https://www.freecodecamp.org/learn/" },
+                    { category: "Günün Uzaktan İş İlanı", title: "Remote OK", desc: "Yeni uzaktan çalışma fırsatlarına göz at.", url: "https://remoteok.com/" },
+                    { category: "Günün Web Sitesi", title: "Nomad List", desc: "Göçebe yaşam, şehir ve uzaktan çalışma rehberi.", url: "https://nomadlist.com/" }
+                ]
+            },
+            {
+                tools: [
+                    { category: "Günün Yapay Zeka Aracı", title: "Runway", desc: "Hızlı video ve görsel üretim araçları.", url: "https://runway.com/" },
+                    { category: "Günün Ücretsiz Kursu", title: "Codecademy Free", desc: "Web geliştirme ve veri bilimi dersleri.", url: "https://www.codecademy.com/" },
+                    { category: "Günün Uzaktan İş İlanı", title: "We Work Remotely", desc: "Global uzaktan iş fırsatları.", url: "https://weworkremotely.com/" },
+                    { category: "Günün Web Sitesi", title: "Built With", desc: "Popüler teknoloji ve araç keşfi.", url: "https://builtwith.com/" }
+                ]
+            },
+            {
+                tools: [
+                    { category: "Günün Yapay Zeka Aracı", title: "Canva AI", desc: "Tasarım ve içerik üretimi için hızlı öneriler.", url: "https://www.canva.com/" },
+                    { category: "Günün Ücretsiz Kursu", title: "Coursera Free", desc: "Ücretsiz sertifikalı öğrenme seçenekleri.", url: "https://www.coursera.org/" },
+                    { category: "Günün Uzaktan İş İlanı", title: "AngelList Remote", desc: "Startup odaklı uzaktan iş fırsatları.", url: "https://angel.co/" },
+                    { category: "Günün Web Sitesi", title: "Product Hunt", desc: "Yeni teknolojiler ve ürünler keşfet.", url: "https://www.producthunt.com/" }
+                ]
+            }
+        ];
+
+        const learningTips = [
+            { category: "Python ipucu", text: "List comprehension, döngüleri kısaltır ve daha okunabilir kod sağlar." },
+            { category: "Siber güvenlik bilgisi", text: "Güçlü parolalar ve iki faktörlü kimlik doğrulama, hesapları korumanın temelidir." },
+            { category: "Yapay zeka bilgisi", text: "Veri kalitesi, model başarısını belirleyen en kritik faktörlerden biridir." },
+            { category: "Yazılım terimi", text: "Refactoring, çalışan kodu değiştirmeden daha iyi ve sürdürülebilir hale getirme işlemidir." }
+        ];
+
+        const quizQuestions = [
+            { question: "Python'da bir listeyi ters çevirmek için hangi yöntem kullanılır?", options: ["reverse()", "invert()", "flip()", "transpose()"], correct: 0 },
+            { question: "HTML hangi tür bir dildir?", options: ["Programlama dili", "Biçimlendirme dili", "Veri tabanı dili", "Sunucu dili"], correct: 1 },
+            { question: "Git'te yeni bir dal oluşturmak için hangi komut kullanılmaz?", options: ["git branch yeni", "git checkout -b yeni", "git clone yeni", "git switch -c yeni"], correct: 2 },
+            { question: "API ne için kullanılır?", options: ["Veri saklama", "Sunucu performansını artırma", "Uygulamalar arası iletişim", "Tasarım oluşturma"], correct: 2 },
+            { question: "CSS'te bir sınıfı seçmek için hangi sembol kullanılır?", options: ["#", ".", "$", "&"], correct: 1 }
+        ];
+
+        let quizState = { current: 0, score: 0, started: false };
+
+        const roadmapSteps = [
+            { title: "Başlangıç", detail: "Programlama mantığını, temel değişkenleri ve akış kontrolünü öğrenin." },
+            { title: "Python", detail: "Python ile otomasyon, veri analizi ve backend geliştirme başlayın." },
+            { title: "Git & Github", detail: "Sürüm kontrol, işbirliği ve portföy yönetimi için git öğrenin." },
+            { title: "Web", detail: "HTML, CSS ve JavaScript ile interaktif web uygulamaları inşa edin." },
+            { title: "Veritabanı", detail: "SQL ve NoSQL ile veri depolama ve sorgulama becerisi geliştirin." },
+            { title: "İlk İş", detail: "Hazır projeler, CV ve freelance platformları ile iş başvurun." }
+        ];
+
+        function renderDailyTools() {
+            const index = Math.floor(Date.now() / 86400000) % dailyToolSets.length;
+            const tools = dailyToolSets[index].tools;
+            const list = document.getElementById('dailyResourceList');
+            list.innerHTML = tools.map(tool => `
+                <div class="resource-row">
+                    <strong>${tool.category}</strong>
+                    <a href="${tool.url}" target="_blank">${tool.title}</a>
+                    <span>${tool.desc}</span>
+                </div>
+            `).join('');
+        }
+
+        function refreshDailyTools() {
+            renderDailyTools();
+        }
+
+        function showLearningTip() {
+            const tip = learningTips[Math.floor(Math.random() * learningTips.length)];
+            document.getElementById('learningTip').innerHTML = `<strong>${tip.category}</strong><br>${tip.text}`;
+        }
+
+        function startQuiz() {
+            quizState = { current: 0, score: 0, started: true };
+            document.getElementById('quizStartBtn').style.display = 'none';
+            renderQuizQuestion();
+        }
+
+        function renderQuizQuestion() {
+            const questionBox = document.getElementById('quizQuestion');
+            const answersBox = document.getElementById('quizAnswers');
+            const resultBox = document.getElementById('quizResult');
+            if (quizState.current >= quizQuestions.length) {
+                questionBox.innerHTML = `Quiz tamamlandı! Puanın: ${quizState.score}/${quizQuestions.length}`;
+                answersBox.innerHTML = "";
+                resultBox.innerText = "Tekrar oynamak için butona bas.";
+                const btn = document.getElementById('quizStartBtn');
+                btn.style.display = 'block';
+                btn.innerText = 'Yeniden Başlat';
+                return;
+            }
+
+            const current = quizQuestions[quizState.current];
+            questionBox.innerText = current.question;
+            answersBox.innerHTML = "";
+            current.options.forEach((option, index) => {
+                const answerEl = document.createElement('div');
+                answerEl.className = 'quiz-answer';
+                answerEl.innerText = option;
+                answerEl.onclick = () => submitQuizAnswer(index);
+                answersBox.appendChild(answerEl);
+            });
+            resultBox.innerText = `Soru ${quizState.current + 1} / ${quizQuestions.length}`;
+        }
+
+        function submitQuizAnswer(index) {
+            if (!quizState.started) return;
+            if (quizQuestions[quizState.current].correct === index) {
+                quizState.score += 1;
+            }
+            quizState.current += 1;
+            renderQuizQuestion();
+        }
+
+        function renderRoadmap() {
+            const roadmapList = document.getElementById('roadmapList');
+            roadmapList.innerHTML = "";
+            roadmapSteps.forEach((step, index) => {
+                const stepEl = document.createElement('div');
+                stepEl.className = 'roadmap-step';
+                stepEl.innerText = step.title;
+                stepEl.onclick = () => showRoadmapStep(index);
+                roadmapList.appendChild(stepEl);
+            });
+            showRoadmapStep(0);
+        }
+
+        function showRoadmapStep(index) {
+            const detailEl = document.getElementById('roadmapDetail');
+            const items = document.querySelectorAll('.roadmap-step');
+            items.forEach((item, idx) => item.classList.toggle('active', idx === index));
+            detailEl.innerHTML = `<strong>${roadmapSteps[index].title}</strong><p style="margin: 8px 0 0 0;">${roadmapSteps[index].detail}</p>`;
+        }
+
+        const careerJobs = [
+            { title: "Siber Güvenlik Uzmanı", salary: "18.000 - 32.000 TL", description: "Hack koruması, ağ güvenliği ve veri sızıntılarına karşı uzmanlık." },
+            { title: "Veri Analisti", salary: "14.000 - 28.000 TL", description: "Büyük veri setlerinden anlam çıkarma ve iş kararlarına destek." },
+            { title: "Yazılım Mühendisi", salary: "15.000 - 30.000 TL", description: "Web, mobil ve backend projelerinde yüksek talep gören teknik rol." },
+            { title: "AI Mühendisi", salary: "20.000 - 38.000 TL", description: "Makine öğrenmesi ve yapay zeka çözümleri geliştiren uzman." },
+            { title: "Cloud Engineer", salary: "16.000 - 34.000 TL", description: "Bulut altyapıları, ölçeklenebilir servisler ve maliyet optimizasyonu." }
+        ];
+
+        const techNews = [
+            { title: "AI araçları artık daha akıllı seçimler sunuyor", summary: "Yapay zeka destekli araçlar günlük iş akışını hızlandırıyor; küçük işletmeler bile yaratıcılık ve üretkenlik kazanıyor.", source: "Kaynak: TechNews" },
+            { title: "Uzaktan çalışma için yeni güvenlik trendleri", summary: "Şirketler VPN ve parola yönetimini güçlendiriyor; çalışanlar için güvenli erişim artık kritik.", source: "Kaynak: CyberByte" },
+            { title: "Bulut altyapıları hızla büyüyor", summary: "Cloud hizmetleri artık daha uygun maliyetli; geliştiriciler düşük bütçeyle yüksek performans alabiliyor.", source: "Kaynak: CloudPulse" }
+        ];
+
+        function renderCareerList() {
+            const list = document.getElementById('careerList');
+            list.innerHTML = careerJobs.map(job => `
+                <div class="career-card">
+                    <strong>${job.title}</strong>
+                    <div>${job.salary}</div>
+                    <div style="margin-top:8px; color: var(--text-muted); font-size:13px;">${job.description}</div>
+                </div>
+            `).join('');
+        }
+
+        function renderTechNews() {
+            const list = document.getElementById('newsList');
+            list.innerHTML = techNews.map(item => `
+                <div class="news-item">
+                    <h4>${item.title}</h4>
+                    <p>${item.summary}</p>
+                    <div class="news-source">${item.source}</div>
+                </div>
+            `).join('');
+        }
+
+        function refreshTechNews() {
+            renderTechNews();
+        }
+
+        function selectAiQuestion(text) {
+            document.getElementById('aiQuestionInput').value = text;
+            askAiQuestion();
+        }
+
+        function askAiQuestion() {
+            const input = document.getElementById('aiQuestionInput');
+            const question = input.value.trim();
+            if (!question) return;
+
+            const output = document.getElementById('chatOutput');
+            const userMsg = document.createElement('div');
+            userMsg.className = 'chat-message user';
+            userMsg.innerText = question;
+            output.appendChild(userMsg);
+
+            let answer = 'Bu konuda hızlı bir öneri hazırlıyorum...';
+            if (/dil|öğren/i.test(question)) {
+                answer = 'Python ve JavaScript, özellikle uzaktan serbest çalışanlar için en iyi başlangıç dilleridir. Python veri bilimi ve otomasyon için, JavaScript ise web projeleri için güçlüdür.';
+            } else if (/cv|özgeçmiş/i.test(question)) {
+                answer = 'CV kısa, temiz ve proje odaklı olmalı. Başarıların, kullandığın teknolojiler ve gerçekleştirdiğin işler en öne çıkan bölümler olsun.';
+            } else if (/uzaktan/i.test(question)) {
+                answer = 'Uzaktan iş bulmak için LinkedIn, Remote OK ve AngelList gibi platformları kullan. Portföyün ve açık iletişim yeteneklerin seni öne çıkarır.';
+            } else {
+                answer = 'Güçlü yanlarını belirleyip küçük projelerle başlaman en sağlam yoldur. Her gün küçük bir adım atmak büyük fark yaratır.';
+            }
+
+            const botMsg = document.createElement('div');
+            botMsg.className = 'chat-message bot';
+            botMsg.innerText = answer;
+            output.appendChild(botMsg);
+            output.scrollTop = output.scrollHeight;
+            input.value = '';
+        }
+
         // --- AI PROMPT KOPYALAYICI ---
         const prompts = {
-            mail: "Bir freelance çalışan olarak müşteriye projenin durumu hakkında profesyonel, net ve kibar bir güncelleme e-postası tasarla.",
-            proposal: "Upwork üzerinde bir web geliştirme projesine başvurmak için dikkat çekici, yeteneklerimi öne çıkaran bir ön yazı (proposal) yaz.",
-            fiverr: "Fiverr platformunda listelemek üzere detaylı, güven veren ve sunduğum hizmetlerin avantajlarını listeleyen bir Gig açıklaması metni hazıkla.",
-            caption: "Yazılım geliştirme veya uzaktan çalışma temalı bir Instagram/LinkedIn gönderisi için etkileşimi artıracak, hashtag içeren modern bir alt yazı üret."
+            chatgpt: "ChatGPT için: Dijital göçebe ya da uzaktan çalışanlar için modern bir kişisel portföy sitesi tasarımı öner. Özellikler, kullanıcı deneyimi ve dikkat çekici başlık örnekleri ekle.",
+            claude: "Claude için: Freelance yazılım geliştiricinin müşteriye teklif sunması için samimi, net ve profesyonel bir teklif metni hazırla.",
+            gemini: "Gemini için: AI destekli bir ürün lansmanı için kısa, etkileyici bir sosyal medya tanıtım metni oluştur.",
+            cursor: "Cursor için: Python ile basit bir maaş hesaplayıcı nasıl yazılır? Adım adım kod ve açıklama sun."
         };
 
         function copyPrompt(type) {
@@ -829,6 +1237,10 @@
         window.onload = () => {
             const savedLang = localStorage.getItem('nomad_lang') || 'tr';
             setLanguage(savedLang);
+            renderDailyTools();
+            renderRoadmap();
+            renderCareerList();
+            renderTechNews();
             fetchLiveRates();
             // Piyasaları her 5 dakikada bir otomatik yenile
             setInterval(fetchLiveRates, 300000);
