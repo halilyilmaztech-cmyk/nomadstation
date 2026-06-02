@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="NomadStation Blog - Yazılım, Freelance, AI ve Dijital Göçebe Yaşamı Hakkında Makaleler">
+    <meta name="keywords" content="yazılım, python, freelance, ai, dijital göçebe, blog, rehber">
+    <title>NomadStation Blog - Yazılım & Freelance Rehberleri</title>
+    <style>
+        :root {
+            --bg-color: #060a12;
+            --card-bg: #0b1329;
+            --accent-color: #10b981;
+            --text-main: #f8fafc;
+            --text-muted: #64748b;
+            --border: #1e293b;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        header h1 {
+            font-size: 42px;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        header p {
+            color: var(--text-muted);
+            font-size: 16px;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .nav-buttons a {
+            padding: 10px 20px;
+            background: #111827;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        
+        .nav-buttons a:hover {
+            background: var(--accent-color);
+            color: #000;
+        }
+        
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .blog-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        
+        .blog-card:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+        
+        .blog-card .category {
+            display: inline-block;
+            padding: 4px 10px;
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--accent-color);
+            border-radius: 4px;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+        
+        .blog-card h3 {
+            margin-bottom: 10px;
+            font-size: 18px;
+            line-height: 1.4;
+        }
+        
+        .blog-card p {
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .blog-card .meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        .blog-card .read-time {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .article-content {
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.8;
+            display: none;
+        }
+        
+        .article-content.active {
+            display: block;
+        }
+        
+        .article-content h2 {
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+        
+        .article-content p {
+            margin-bottom: 15px;
+            color: var(--text-muted);
+        }
+        
+        .article-content ul, .article-content ol {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .article-content li {
+            margin-bottom: 8px;
+        }
+        
+        .article-content code {
+            background: #020617;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #10b981;
+            font-family: monospace;
+        }
+        
+        .article-content blockquote {
+            border-left: 4px solid var(--accent-color);
+            padding-left: 16px;
+            margin: 20px 0;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+        
+        .back-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #111827;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .back-btn:hover {
+            background: var(--accent-color);
+            color: #000;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>📚 NomadStation Blog</h1>
+        <p>Yazılım, Freelance, AI ve Dijital Göçebe Yaşamı Rehberleri</p>
+    </header>
+    
+    <div class="nav-buttons">
+        <a href="index.html">← Ana Sayfa</a>
+        <a href="#" onclick="filterCategory('all')">Tüm Yazılar</a>
+        <a href="#" onclick="filterCategory('yazilim')">Yazılım</a>
+        <a href="#" onclick="filterCategory('freelance')">Freelance</a>
+        <a href="#" onclick="filterCategory('ai')">AI</a>
+    </div>
+    
+    <!-- BLOG GRID -->
+    <div id="blogGrid" class="blog-grid"></div>
+    
+    <!-- ARTICLE CONTENT -->
+    <div id="articleContent" class="article-content"></div>
+    
+    <button class="back-btn" id="backBtn" onclick="backToGrid()" style="display: none;">← Yazılara Geri Dön</button>
+    
+    <footer>
+        <p>© 2026 NomadStation. Tüm Hakları Saklıdır.</p>
+    </footer>
+    
+    <script>
+        const articles = [
+            {
+                id: 1,
+                title: "Python'a Başlamak: Sıfırdan Uzman Olmaya Kadar",
+                category: "yazilim",
+                excerpt: "Python öğrenmeyi hedefliyorsan, bu rehber seni adım adım yönlendirecek. Neden Python? Nasıl başlarsın? Kaç ayda öğrenebilirsin?",
+                readTime: "12 dk",
+                date: "2026-05-28",
+                content: `
+                    <h2>Python'a Başlamak: Sıfırdan Uzman Olmaya Kadar</h2>
+                    
+                    <p><strong>Python neden bu kadar popüler?</strong> Çünkü kolay öğrenilebilir, güçlü ve her alanda kullanılıyor: web geliştirme, veri bilimi, AI, otomasyonlar...</p>
+                    
+                    <h2>1. Adım: Temel Kavramlar (2 Hafta)</h2>
+                    <p>Başlangıçta şunları öğren:</p>
+                    <ul>
+                        <li>Değişkenler ve veri tipleri (int, str, list, dict)</li>
+                        <li>Koşullu ifadeler (if, else)</li>
+                        <li>Döngüler (for, while)</li>
+                        <li>Fonksiyonlar</li>
+                    </ul>
+                    <p><strong>Kaynak:</strong> Codecademy Free, YouTube'da Bro Code Python series</p>
+                    
+                    <h2>2. Adım: Veri Yapıları (1 Hafta)</h2>
+                    <p>Listeler, sözlükler, setler ve bu yapılarla nasıl çalışırsın?</p>
+                    
+                    <h2>3. Adım: Dosya İşlemleri ve Modüller (1 Hafta)</h2>
+                    <p>Dosyalardan veri oku/yaz, kütüphaneleri kullan.</p>
+                    
+                    <h2>4. Adım: İlk Projeni Yap (2 Hafta)</h2>
+                    <p>Örneğin: Hava durumu uygulaması, Todo listesi, Kütüphane sistemi vs.</p>
+                    
+                    <h2>5. Adım: NumPy & Pandas ile Veri İşleme (3 Hafta)</h2>
+                    <p>Veri bilimi yolunu seçersen bu adım gerekli.</p>
+                    
+                    <h2>6. Adım: Veritabanı (SQL) (2 Hafta)</h2>
+                    <p>Veri nasıl saklanır, sorgulanır?</p>
+                    
+                    <blockquote>
+                        "Python'u gerçekten öğrenmek için: dinle → yaz → uygula → tekrar et döngüsünü takip et."
+                    </blockquote>
+                    
+                    <h2>İlk 3 Ayda Neler Başarabileceğin?</h2>
+                    <ul>
+                        <li>Basit CLI uygulamaları</li>
+                        <li>Dosya işlemleri</li>
+                        <li>API çağrıları</li>
+                        <li>Veritabanı işlemleri</li>
+                    </ul>
+                    
+                    <p><strong>Ücretsiz Kaynaklar:</strong></p>
+                    <ul>
+                        <li>Codecademy Python Track</li>
+                        <li>freeCodeCamp YouTube (4-5 saatlik tam kurs)</li>
+                        <li>Codewars (pratik problemler)</li>
+                        <li>Official Python Docs</li>
+                    </ul>
+                `
+            },
+            {
+                id: 2,
+                title: "Freelance Kariyerine Başlama: İlk 6 Ayda Neler Yapmalısın?",
+                category: "freelance",
+                excerpt: "Freelance dünyasında ayakta kalmak için stratejik adımlar at. İlk müşterini nasıl bulursun? Fiyatlandırmayı nasıl belirlersin?",
+                readTime: "10 dk",
+                date: "2026-05-25",
+                content: `
+                    <h2>Freelance Kariyerine Başlama: İlk 6 Ayda Neler Yapmalısın?</h2>
+                    
+                    <p>Freelance kariyeri başlamak cesaret ister. Ancak doğru stratejiyle başlarsan 6 ay sonra istikrarlı gelirin olabilir.</p>
+                    
+                    <h2>Ay 1-2: Hazırlık Dönemi</h2>
+                    <ul>
+                        <li><strong>Becerini seç:</strong> Web development, grafik tasarım, yazarlık vs.</li>
+                        <li><strong>Portfolio oluştur:</strong> 3-5 örnek proje yap</li>
+                        <li><strong>GitHub profil:</strong> Kodlarını göster</li>
+                        <li><strong>LinkedIn & CV:</strong> Profesyonel profil hazırla</li>
+                    </ul>
+                    
+                    <h2>Ay 3: Platform Kaydı</h2>
+                    <ul>
+                        <li>Upwork - En büyük platform</li>
+                        <li>Fiverr - Hizmetleri paket halinde sat</li>
+                        <li>Toptal - Premium müşteriler</li>
+                        <li>Guru - Alternatif platform</li>
+                    </ul>
+                    
+                    <h2>Ay 4-6: İlk İşler</h2>
+                    <p><strong>Tavsiye:</strong> İlk 10 işi düşük ücrette yap. Neden? Review kazanmak için!</p>
+                    <ul>
+                        <li>5-10 yıldız review al</li>
+                        <li>Sabit müşteriler kazan</li>
+                        <li>Fiyatını %30 artır</li>
+                    </ul>
+                    
+                    <blockquote>
+                        "İlk 3 ay zor olur. Ama sabırla devam edersen, 6 ayda referral yolu ile müşteri gelmeye başlar."
+                    </blockquote>
+                    
+                    <h2>Fiyatlandırma Stratejisi</h2>
+                    <ul>
+                        <li><strong>Ay 1-2:</strong> $10-15/saat</li>
+                        <li><strong>Ay 3-4:</strong> $15-25/saat</li>
+                        <li><strong>Ay 5-6:</strong> $25-50/saat</li>
+                        <li><strong>Ay 7+:</strong> $50+ /saat (deneyime göre)</li>
+                    </ul>
+                    
+                    <h2>Sık Yapılan Hatalar</h2>
+                    <ul>
+                        <li>❌ Çok yüksek fiyasla başlamak (review yok = iş yok)</li>
+                        <li>❌ Hastaya proposal göndermek</li>
+                        <li>❌ Müşteri iletişimini ihmal etmek</li>
+                        <li>❌ Vakit tutmamak</li>
+                    </ul>
+                `
+            },
+            {
+                id: 3,
+                title: "AI Çağında Yazılımcı Olmak: 2026'da Ne Bilmeli?",
+                category: "ai",
+                excerpt: "ChatGPT, Claude, Gemini... AI araçları yazılımcıların işini değiştiriyor. Sen ne yapmalısın? Hangi beceriler kritik?",
+                readTime: "8 dk",
+                date: "2026-05-20",
+                content: `
+                    <h2>AI Çağında Yazılımcı Olmak: 2026'da Ne Bilmeli?</h2>
+                    
+                    <p>2025-2026'da AI yardımcıların her yazılımcının yanında. Ama bu seni işsiz yapmamıştır — aksine daha değerli kılmıştır.</p>
+                    
+                    <h2>Yazılımcıların AI ile Çalışmayı Öğrenmesi Lazım</h2>
+                    <p>ChatGPT veya Claude gibi araçları "copilot" olarak kullan:</p>
+                    <ul>
+                        <li>Hızlı prototype yazma</li>
+                        <li>Debug etme</li>
+                        <li>Dokümantasyon oluşturma</li>
+                        <li>Kod review yaptırma</li>
+                    </ul>
+                    
+                    <h2>AI Yazılımcılardan Beklediği Beceriler</h2>
+                    <ul>
+                        <li><strong>Problem çözme:</strong> Doğru soruyu sormak</li>
+                        <li><strong>Kritik düşünce:</strong> AI'ın çıktısını değerlendirmek</li>
+                        <li><strong>System design:</strong> Mimarı kurgulamak</li>
+                        <li><strong>Security:</strong> Güvenliği sağlamak</li>
+                    </ul>
+                    
+                    <h2>Öğrenmesi Gereken Şeyler</h2>
+                    <ul>
+                        <li><strong>LLM'leri nasıl kullanırsın?</strong> Prompt engineering</li>
+                        <li><strong>Vektör veritabanları:</strong> Semantic search, RAG</li>
+                        <li><strong>AI entegrasyonu:</strong> API çağrıları, streaming</li>
+                        <li><strong>Etik:</strong> Bias, privacy, responsibility</li>
+                    </ul>
+                    
+                    <blockquote>
+                        "AI yazılımcıyı değiştirmiyor, eksik olan becerileri öne çıkarıyor. Kritik düşünen, sorun çözen, yönetim yapan yazılımcılar asla işsiz kalmayacak."
+                    </blockquote>
+                    
+                    <h2>Önümüzdeki 6 Ayda Yapman Gereken</h2>
+                    <ul>
+                        <li>Cursor veya GitHub Copilot öğren</li>
+                        <li>Bir AI projedesi yap (Chatbot, AI assistant vs.)</li>
+                        <li>LLM fine-tuning hakkında oku</li>
+                        <li>Topluluk projelere katkı sağla</li>
+                    </ul>
+                `
+            },
+            {
+                id: 4,
+                title: "Döviz Kuru Değişimleri: Freelancerlar İçin Rehber",
+                category: "freelance",
+                excerpt: "Dolar, Euro, Sterlin... Freelancer olarak para kuru nasıl etkiler? Risk yönetimi, fiyatlandırma stratejisi.",
+                readTime: "7 dk",
+                date: "2026-05-18",
+                content: `
+                    <h2>Döviz Kuru Değişimleri: Freelancerlar İçin Rehber</h2>
+                    
+                    <p>Eğer Türkiye'den freelance yapıyorsan, döviz kurları senin gelirini doğrudan etkiliyor.</p>
+                    
+                    <h2>Döviz Riski Nedir?</h2>
+                    <p>1 ay öncesi $1 = 32 TL idi. Bugün $1 = 34 TL. Yani aynı işe daha fazla para kazandın? Hayır!</p>
+                    <ul>
+                        <li>Müşteriler dolar miktarını bildiğinden fiyat sabit</li>
+                        <li>Ama Türk lirası cinsinden gelirin düştü</li>
+                        <li>İşletme maliyetlerin (hosting, yazılım) Türk lirasında arttı</li>
+                    </ul>
+                    
+                    <h2>Koruma Stratejileri</h2>
+                    <h3>1. Fiyatlandırmada Buffer Koy</h3>
+                    <p>Normal hesapladığın fiyata %15-20 ekle. Döviz iniş çıkışlarını bu şekilde absorbe et.</p>
+                    
+                    <h3>2. Ödeme Sıklığını Artır</h3>
+                    <ul>
+                        <li>Aylık ödeme yerine bi-haftalık (10 günde bir) istek et</li>
+                        <li>Upwork'te weekly withdraw yap</li>
+                    </ul>
+                    
+                    <h3>3. Para Taşıma Hizmetini Seç</h3>
+                    <ul>
+                        <li><strong>Wise:</strong> Gerçek kurdan çok düşük komyon</li>
+                        <li><strong>Revolut:</strong> Hızlı ve ucuz</li>
+                        <li><strong>Bankalar:</strong> En pahalısı ama güvenli</li>
+                    </ul>
+                    
+                    <blockquote>
+                        "Döviz riski yönetmek, iş yönetmek kadar önemli. Bir gün para transferine dikkat etmedim, %10 zarar ettim."
+                    </blockquote>
+                    
+                    <h2>Tavsiye Tablosu</h2>
+                    <ul>
+                        <li>✅ Haftalık para transferi</li>
+                        <li>✅ Wise veya Revolut kullan</li>
+                        <li>✅ Fiyatlama buffer'ı koy</li>
+                        <li>❌ Bütün parayı hesapta tut</li>
+                        <li>❌ Sadece banka transferi yapma</li>
+                    </ul>
+                `
+            },
+            {
+                id: 5,
+                title: "Siber Güvenlik 101: Çalışmayan İçin Temel Bilgiler",
+                category: "yazilim",
+                excerpt: "Şifre yönetimi, VPN, iki faktörlü kimlik doğrulama... Dijital göçebeler için temel güvenlik önlemleri.",
+                readTime: "9 dk",
+                date: "2026-05-15",
+                content: `
+                    <h2>Siber Güvenlik 101: Çalışan İçin Temel Bilgiler</h2>
+                    
+                    <p>Uzaktan çalışan, sık sık internet kafede oturan, WiFi kullanan biri misin? Siber güvenlik bilmen çok önemli.</p>
+                    
+                    <h2>En Kritik Tehditler</h2>
+                    <ul>
+                        <li><strong>Phishing:</strong> Yanlış sayttan login bilgilerin çalınması</li>
+                        <li><strong>Man-in-the-middle:</strong> WiFi'deki verilerin dinlenmesi</li>
+                        <li><strong>Weak password:</strong> Basit şifreler</li>
+                        <li><strong>Malware:</strong> Zararlı yazılım</li>
+                    </ul>
+                    
+                    <h2>5 Pratik Koruma Yöntemi</h2>
+                    
+                    <h3>1. Güçlü Şifreler + Şifre Yöneticisi</h3>
+                    <p>Her site için farklı, karmaşık şifre kullan. Remembering app: 1Password, Bitwarden, LastPass.</p>
+                    
+                    <h3>2. 2FA (İki Faktörlü Kimlik Doğrulama)</h3>
+                    <ul>
+                        <li>Gmail → 2FA aç</li>
+                        <li>GitHub → 2FA aç</li>
+                        <li>Upwork → 2FA aç</li>
+                    </ul>
+                    
+                    <h3>3. VPN Kullan</h3>
+                    <p>Kafede çalışıyorsan mutlaka VPN aç. Neden? WiFi trafiği şifrelenmeden geçiyor.</p>
+                    <p>Tavsiye: NordVPN, ExpressVPN, Proton VPN</p>
+                    
+                    <h3>4. Güncel Tutma</h3>
+                    <ul>
+                        <li>OS güncelleme → Oto güncelleme aç</li>
+                        <li>Browser güncelleme</li>
+                        <li>Antivirus güncelleme</li>
+                    </ul>
+                    
+                    <h3>5. Phishing Farkında Olma</h3>
+                    <ul>
+                        <li>URL'ye dikkat et (google.com vs. gogle.com)</li>
+                        <li>Email gönderenin adresi kontrol et</li>
+                        <li>"Hemen tıkla" yazılarına inanma</li>
+                    </ul>
+                    
+                    <blockquote>
+                        "Siber saldırıya uğramak bir gün meselesi değil, an meselesi. Preaktif olmak şart."
+                    </blockquote>
+                `
+            },
+            {
+                id: 6,
+                title: "Dijital Göçebe Yazılımcı: Hangi Ülkelerde En Çok Kazanabilirsin?",
+                category: "freelance",
+                excerpt: "Yaşam maliyeti vs. kazanç. Hangi ülkelerde uzaktan çalışmanın en iyi 'çıktısı' var?",
+                readTime: "11 dk",
+                date: "2026-05-10",
+                content: `
+                    <h2>Dijital Göçebe Yazılımcı: Hangi Ülkelerde En Çok Kazanabilirsin?</h2>
+                    
+                    <p>Yazılımcı olarak bir avantajın var: nerede olursan ol çalışabilirsin. Peki en iyi yerleri seç!</p>
+                    
+                    <h2>En İyi Destinasyonlar (Freelancer Yazılımcı İçin)</h2>
+                    
+                    <h3>1. Türkiye 🇹🇷 (Para Değeri: Düşük)</h3>
+                    <ul>
+                        <li><strong>Yaşam Maliyeti:</strong> Çok düşük ($500-800/ay)</li>
+                        <li><strong>Kazanç:</strong> $20-40/saat → Rahat yaşam</li>
+                        <li><strong>Avantaj:</strong> Aile, alişveriş ucuz</li>
+                        <li><strong>Dezavantaj:</strong> Internet değişken, WiFi zayıf kafeler var</li>
+                    </ul>
+                    
+                    <h3>2. Endonezya / Bali 🇮🇩 (Para Değeri: Çok Düşük)</h3>
+                    <ul>
+                        <li><strong>Yaşam Maliyeti:</strong> Türkiye'den ucuz ($400-600/ay)</li>
+                        <li><strong>Kazanç:</strong> $15-30/saat = kral hayatı</li>
+                        <li><strong>Avantaj:</strong> Yazılımcı topluluğu çok, hava güzel</li>
+                        <li><strong>Dezavantaj:</strong> Visa karmaşası, dil</li>
+                    </ul>
+                    
+                    <h3>3. Tayland 🇹🇭 (Para Değeri: Düşük)</h3>
+                    <ul>
+                        <li><strong>Yaşam Maliyeti:</strong> $500-1000/ay</li>
+                        <li><strong>Kazanç:</strong> $25-50/saat = çok rahat</li>
+                        <li><strong>Avantaj:</strong> Visa uzun, internet iyi, yemek lezzetli</li>
+                        <li><strong>Dezavantaj:</strong> Yüksek turizm mevsiminde pahalı</li>
+                    </ul>
+                    
+                    <h3>4. Meksika 🇲🇽 (Para Değeri: Orta)</h3>
+                    <ul>
+                        <li><strong>Yaşam Maliyeti:</strong> $700-1200/ay</li>
+                        <li><strong>Kazanç:</strong> $30-60/saat = iyi</li>
+                        <li><strong>Avantaj:</strong> Yakın yazılımcı topluluğu, hava güzel</li>
+                    </ul>
+                    
+                    <h3>5. Portekiz 🇵🇹 (Para Değeri: Orta-Yüksek)</h3>
+                    <ul>
+                        <li><strong>Yaşam Maliyeti:</strong> $1000-1500/ay</li>
+                        <li><strong>Kazanç:</strong> $40-80/saat = çok iyi</li>
+                        <li><strong>Avantaj:</strong> Avrupa'nın kapısı, WiFi harika, yazılımcı topluluğu güçlü</li>
+                    </ul>
+                    
+                    <h2>Para Hesapı: Türkiye vs. Bali vs. Portekiz</h2>
+                    <p>$25/saat, aylık 160 saat çalışan birisini düşün ($4000 gelir)</p>
+                    <ul>
+                        <li><strong>Türkiye:</strong> $4000 → 136.000 TL → Rahat yaşam + tasarruf</li>
+                        <li><strong>Bali:</strong> $4000 → Aşırı rahat, lüks hayat</li>
+                        <li><strong>Portekiz:</strong> $4000 → Rahat, ama turist değil gibi yaşarsın</li>
+                    </ul>
+                    
+                    <blockquote>
+                        "En iyi yer nedir? Senin değerinin en yüksek olduğu yer. Bali'de $15/saat = krallık. Portekiz'de $15/saat = yetersiz."
+                    </blockquote>
+                    
+                    <h2>Tavsiye Döngüsü</h2>
+                    <ol>
+                        <li>Yetenekle kazanç artır (Gözül parayla başla → 40-60/saat)</li>
+                        <li>Para düşük yerde yaşa (Bali, Türkiye)</li>
+                        <li>3-4 yıl sonra Avrupa'ya taşın (daha prestijli, network</li>
+                        <li>Sonra nereyi istersin orada kal</li>
+                    </ol>
+                `
+            }
+        ];
+        
+        let currentFilter = 'all';
+        
+        function renderBlogGrid() {
+            const filtered = currentFilter === 'all' ? articles : articles.filter(a => a.category === currentFilter);
+            const html = filtered.map(article => `
+                <div class="blog-card" onclick="readArticle(${article.id})">
+                    <div class="category">${article.category.toUpperCase()}</div>
+                    <h3>${article.title}</h3>
+                    <p>${article.excerpt}</p>
+                    <div class="meta">
+                        <span>${article.date}</span>
+                        <span class="read-time">📖 ${article.readTime}</span>
+                    </div>
+                </div>
+            `).join('');
+            
+            document.getElementById('blogGrid').innerHTML = html;
+        }
+        
+        function filterCategory(category) {
+            currentFilter = category;
+            renderBlogGrid();
+        }
+        
+        function readArticle(id) {
+            const article = articles.find(a => a.id === id);
+            if (!article) return;
+            
+            document.getElementById('blogGrid').style.display = 'none';
+            document.getElementById('articleContent').classList.add('active');
+            document.getElementById('backBtn').style.display = 'inline-block';
+            
+            document.getElementById('articleContent').innerHTML = `
+                <div style="margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid var(--border);">
+                    <span style="display: inline-block; padding: 4px 10px; background: rgba(16, 185, 129, 0.2); color: var(--accent-color); border-radius: 4px; font-size: 12px; margin-bottom: 15px;">${article.category.toUpperCase()}</span>
+                    <h1 style="font-size: 32px; margin-bottom: 10px;">${article.title}</h1>
+                    <div style="display: flex; gap: 20px; color: var(--text-muted); font-size: 14px;">
+                        <span>📅 ${article.date}</span>
+                        <span>📖 ${article.readTime}</span>
+                    </div>
+                </div>
+                ${article.content}
+            `;
+            
+            window.scrollTo(0, 0);
+        }
+        
+        function backToGrid() {
+            document.getElementById('blogGrid').style.display = 'grid';
+            document.getElementById('articleContent').classList.remove('active');
+            document.getElementById('backBtn').style.display = 'none';
+            renderBlogGrid();
+        }
+        
+        // İlk yükleme
+        renderBlogGrid();
+    </script>
+</body>
+</html>

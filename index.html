@@ -499,6 +499,147 @@
         footer .footer-links a:hover {
             color: var(--accent-color);
         }
+
+        /* --- STREAK & DAILY TASKS --- */
+        .streak-header {
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .streak-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            font-weight: bold;
+            font-size: 18px;
+            color: white;
+        }
+
+        .streak-count {
+            font-size: 24px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .daily-tasks {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 8px;
+        }
+
+        .daily-task {
+            padding: 10px;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: white;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        .daily-task:hover {
+            background: rgba(255,255,255,0.25);
+            transform: translateY(-2px);
+        }
+
+        .daily-task.completed {
+            background: rgba(16,185,129,0.3);
+            border-color: #10b981;
+        }
+
+        .daily-task input[type="checkbox"] {
+            margin-right: 5px;
+        }
+
+        /* --- USER PROFILE --- */
+        .user-profile-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);
+            border: 2px solid var(--text-main);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            z-index: 9998;
+            transition: transform 0.2s;
+        }
+
+        .user-profile-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .profile-modal {
+            display: none;
+        }
+
+        /* --- SEARCH BOX --- */
+        .search-container {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .search-box {
+            flex: 1;
+            display: flex;
+            gap: 8px;
+        }
+
+        .search-box input {
+            flex: 1;
+        }
+
+        .search-results {
+            display: none;
+            position: fixed;
+            top: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 400px;
+            overflow-y: auto;
+            z-index: 9999;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .search-result-item {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .search-result-item:hover {
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .search-result-item strong {
+            color: var(--accent-color);
+        }
+
         .custom-modal {
             display: none;
             position: fixed;
@@ -549,6 +690,43 @@
 </head>
 <body>
 
+    <!-- USER PROFILE BUTTON -->
+    <button class="user-profile-btn" onclick="toggleProfileModal()" title="Profil">👤</button>
+
+    <!-- PROFILE MODAL -->
+    <div class="custom-modal profile-modal" id="profileModal">
+        <div class="custom-modal-content">
+            <span class="custom-close-btn" onclick="toggleProfileModal()">✕</span>
+            <h3>👤 Profil</h3>
+            <div style="display: grid; gap: 16px;">
+                <div>
+                    <label style="display: block; margin-bottom: 5px; font-weight: bold;">Kullanıcı Adı:</label>
+                    <input type="text" id="userNameInput" placeholder="Adınız..." style="width: 100%;">
+                </div>
+                <div>
+                    <strong id="levelDisplay">📊 Seviye: 1</strong>
+                    <div style="background: #020617; border: 1px solid #14203b; border-radius: 8px; height: 20px; margin-top: 8px; overflow: hidden;">
+                        <div id="xpBar" style="background: linear-gradient(90deg, #10b981, #3b82f6); height: 100%; width: 0%; transition: width 0.3s;"></div>
+                    </div>
+                    <div style="font-size: 12px; color: var(--text-muted); margin-top: 5px;">
+                        XP: <b id="xpDisplay">0</b> / 100
+                    </div>
+                </div>
+                <div>
+                    <strong>🏆 Rozetler:</strong>
+                    <div style="display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap;" id="badgesDisplay">
+                        <span style="padding: 6px 10px; background: #020617; border-radius: 6px; font-size: 12px;">Başlangıç 🌟</span>
+                    </div>
+                </div>
+                <div>
+                    <strong>❤️ Favori Araçlar:</strong>
+                    <div id="favoriteToolsDisplay" style="margin-top: 8px; font-size: 12px; color: var(--text-muted);">Henüz favorin yok</div>
+                </div>
+                <button onclick="resetProfile()" style="background: #ef4444; margin-top: 10px;">Profili Sıfırla</button>
+            </div>
+        </div>
+    </div>
+
     <header>
         <div class="lang-switch">
             <button class="lang-btn active" id="btn-tr" onclick="setLanguage('tr')">TR</button>
@@ -557,6 +735,29 @@
         <h1 id="main-title">NomadStation</h1>
         <p id="main-subtitle">Dijital Göçebeler ve Freelancerlar İçin Verimlilik Üssü</p>
     </header>
+
+    <!-- STREAK HEADER -->
+    <div class="streak-header">
+        <div class="streak-info">
+            <span><span class="streak-count" id="streakCount">0</span> 🔥 Günlük Seri</span>
+            <span id="streakDate" style="font-size: 14px;"></span>
+        </div>
+        <div class="daily-tasks" id="dailyTasksContainer">
+            <div class="daily-task" onclick="completeTask(0, this)">☐ <span id="task0">Python çalış</span></div>
+            <div class="daily-task" onclick="completeTask(1, this)">☐ <span id="task1">Quiz çöz</span></div>
+            <div class="daily-task" onclick="completeTask(2, this)">☐ <span id="task2">Yeni araç keşfet</span></div>
+            <div class="daily-task" onclick="completeTask(3, this)">☐ <span id="task3">Bana Yol Çiz kullan</span></div>
+        </div>
+    </div>
+
+    <!-- SEARCH BOX -->
+    <div class="search-container">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="🔍 Ne arıyorsun? (Python, AI, Freelance, Araç...)" oninput="searchSite()">
+            <button onclick="clearSearch()" style="padding: 10px 15px; flex: none;">Temizle</button>
+        </div>
+        <div class="search-results" id="searchResults"></div>
+    </div>
 
     <div class="dashboard-grid">
 
@@ -702,18 +903,18 @@
         </div>
 
         <div class="card">
-            <h2>💬 NomadStation AI</h2>
+            <h2>💬 NomadStation AI - Bana Yol Çiz</h2>
             <div class="chat-box">
                 <div class="chat-output" id="chatOutput">
-                    <div class="chat-message bot">Merhaba! Sorunu sor veya hızlı bir öneri seç.</div>
+                    <div class="chat-message bot">Merhaba! Hedefin ne? (Yazılım öğrenmek istiyorum / Freelance başlamak istiyorum vs)</div>
                 </div>
                 <div class="pill-group">
-                    <div class="pill" onclick="selectAiQuestion('Hangi yazılım dilini öğreneyim?')">Hangi dili öğreneyim?</div>
-                    <div class="pill" onclick="selectAiQuestion('CV\'m nasıl olsun?')">CV nasıl olsun?</div>
-                    <div class="pill" onclick="selectAiQuestion('Uzaktan iş bulabilir miyim?')">Uzaktan iş bulur muyum?</div>
+                    <div class="pill" onclick="generateRoadmap('Yazılım öğrenmek istiyorum')">Yazılım öğrenmek</div>
+                    <div class="pill" onclick="generateRoadmap('Freelance kariyeri başlamak istiyorum')">Freelance başlamak</div>
+                    <div class="pill" onclick="generateRoadmap('AI ile uğraşmak istiyorum')">AI'ye başlamak</div>
                 </div>
-                <input type="text" id="aiQuestionInput" placeholder="Sorunu buraya yaz..." onkeydown="if(event.key==='Enter') askAiQuestion()">
-                <button onclick="askAiQuestion()">Soruyu Gönder</button>
+                <input type="text" id="aiQuestionInput" placeholder="Hedefini ya da sorunuı yazarsan adım adım yol gösterim..." onkeydown="if(event.key==='Enter') askAiQuestion()">
+                <button onclick="askAiQuestion()">Yol Çiz</button>
             </div>
         </div>
 
@@ -748,6 +949,7 @@
 
     <footer>
         <div class="footer-links">
+            <a href="blog.html">📚 Blog</a>
             <a href="privacy-policy.html">Gizlilik İlkesi</a>
             <a href="terms-of-service.html">Hizmet Şartları</a>
             <a href="mailto:ekipmansefi@gmail.com">İletişim</a>
@@ -756,6 +958,281 @@
     </footer>
 
     <script>
+        // --- USER PROFILE VERİLERİ ---
+        let userProfile = JSON.parse(localStorage.getItem('nomad_profile')) || {
+            name: 'Göçebe',
+            level: 1,
+            xp: 0,
+            xpNeeded: 100,
+            badges: ['Başlangıç 🌟'],
+            favoriteTools: [],
+            streak: 0,
+            lastLoginDate: new Date().toDateString(),
+            tasksCompleted: [false, false, false, false]
+        };
+
+        function toggleProfileModal() {
+            const modal = document.getElementById('profileModal');
+            modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
+            updateProfileDisplay();
+        }
+
+        function updateProfileDisplay() {
+            document.getElementById('userNameInput').value = userProfile.name;
+            document.getElementById('levelDisplay').innerText = `📊 Seviye: ${userProfile.level}`;
+            document.getElementById('xpDisplay').innerText = userProfile.xp;
+            document.getElementById('xpBar').style.width = (userProfile.xp / userProfile.xpNeeded * 100) + '%';
+            document.getElementById('badgesDisplay').innerHTML = userProfile.badges.map(b => 
+                `<span style="padding: 6px 10px; background: #020617; border-radius: 6px; font-size: 12px;">${b}</span>`
+            ).join('');
+            document.getElementById('favoriteToolsDisplay').innerText = 
+                userProfile.favoriteTools.length > 0 ? userProfile.favoriteTools.join(', ') : 'Henüz favorin yok';
+        }
+
+        function addXP(amount) {
+            userProfile.xp += amount;
+            if (userProfile.xp >= userProfile.xpNeeded) {
+                userProfile.xp -= userProfile.xpNeeded;
+                userProfile.level += 1;
+                userProfile.badges.push(`Seviye ${userProfile.level} 🎖️`);
+                alert(`🎉 Seviyelendi! Yeni seviye: ${userProfile.level}`);
+            }
+            saveProfile();
+            updateProfileDisplay();
+        }
+
+        function saveProfile() {
+            localStorage.setItem('nomad_profile', JSON.stringify(userProfile));
+        }
+
+        function resetProfile() {
+            if (confirm('Profili sıfırlamak istediğin emin misin?')) {
+                userProfile = {
+                    name: 'Göçebe',
+                    level: 1,
+                    xp: 0,
+                    xpNeeded: 100,
+                    badges: ['Başlangıç 🌟'],
+                    favoriteTools: [],
+                    streak: 0,
+                    lastLoginDate: new Date().toDateString(),
+                    tasksCompleted: [false, false, false, false]
+                };
+                saveProfile();
+                updateProfileDisplay();
+                updateStreakDisplay();
+            }
+        }
+
+        // --- STREAK SİSTEMİ ---
+        function checkAndUpdateStreak() {
+            const today = new Date().toDateString();
+            if (userProfile.lastLoginDate !== today) {
+                // Eğer dün giriyordu ve bugün giriyorsa seri devam
+                const yesterday = new Date();
+                yesterday.setDate(yesterday.getDate() - 1);
+                if (userProfile.lastLoginDate === yesterday.toDateString()) {
+                    userProfile.streak += 1;
+                } else {
+                    // Eğer dün girmedi ise seri sıfırlanır
+                    userProfile.streak = 1;
+                }
+                userProfile.lastLoginDate = today;
+                userProfile.tasksCompleted = [false, false, false, false];
+                saveProfile();
+            }
+            updateStreakDisplay();
+        }
+
+        function updateStreakDisplay() {
+            document.getElementById('streakCount').innerText = userProfile.streak;
+            const today = new Date();
+            document.getElementById('streakDate').innerText = today.toLocaleDateString('tr-TR');
+            
+            // Tamamlanan görevleri güncelle
+            const tasksContainer = document.getElementById('dailyTasksContainer');
+            const tasks = tasksContainer.querySelectorAll('.daily-task');
+            tasks.forEach((task, idx) => {
+                if (userProfile.tasksCompleted[idx]) {
+                    task.classList.add('completed');
+                    task.innerHTML = `☑ <span id="task${idx}">${task.querySelector('span').innerText}</span>`;
+                } else {
+                    task.classList.remove('completed');
+                    task.innerHTML = `☐ <span id="task${idx}">${task.querySelector('span').innerText}</span>`;
+                }
+            });
+        }
+
+        function completeTask(index, element) {
+            userProfile.tasksCompleted[index] = !userProfile.tasksCompleted[index];
+            if (userProfile.tasksCompleted[index]) {
+                element.classList.add('completed');
+                element.innerHTML = `☑ <span id="task${index}">${element.querySelector('span').innerText}</span>`;
+                addXP(50);
+            } else {
+                element.classList.remove('completed');
+                element.innerHTML = `☐ <span id="task${index}">${element.querySelector('span').innerText}</span>`;
+            }
+            saveProfile();
+        }
+
+        // --- ARAMA SİSTEMİ ---
+        const searchableItems = [
+            { title: 'Python Öğrenmek', category: 'Yazılım', keyword: 'python' },
+            { title: 'AI Araçları', category: 'Yapay Zeka', keyword: 'ai' },
+            { title: 'Freelance İşleri', category: 'Kariyer', keyword: 'freelance' },
+            { title: 'JavaScript Dersleri', category: 'Yazılım', keyword: 'javascript' },
+            { title: 'Döviz Çevirici', category: 'Araç', keyword: 'döviz' },
+            { title: 'Kripto Takibi', category: 'Araç', keyword: 'kripto' },
+            { title: 'Timer & Pomodoro', category: 'Araç', keyword: 'timer' },
+            { title: 'Web Geliştirme', category: 'Yazılım', keyword: 'web' },
+            { title: 'Git & Github', category: 'Yazılım', keyword: 'git' },
+            { title: 'Siber Güvenlik', category: 'Yazılım', keyword: 'güvenlik' }
+        ];
+
+        function searchSite() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const resultsContainer = document.getElementById('searchResults');
+            
+            if (!query) {
+                resultsContainer.style.display = 'none';
+                return;
+            }
+            
+            const results = searchableItems.filter(item => 
+                item.title.toLowerCase().includes(query) || 
+                item.keyword.includes(query) ||
+                item.category.toLowerCase().includes(query)
+            );
+            
+            if (results.length === 0) {
+                resultsContainer.style.display = 'none';
+                return;
+            }
+            
+            resultsContainer.innerHTML = results.map(item => `
+                <div class="search-result-item" onclick="selectSearch('${item.title}')">
+                    <strong>${item.title}</strong>
+                    <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">${item.category}</div>
+                </div>
+            `).join('');
+            
+            resultsContainer.style.display = 'block';
+        }
+
+        function selectSearch(title) {
+            document.getElementById('searchInput').value = title;
+            document.getElementById('searchResults').style.display = 'none';
+            // Sayfada aşağı kaydırıp ilgili kartı bul ve vurgula
+        }
+
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('searchResults').style.display = 'none';
+        }
+
+        // --- AI ROADMAP GENERATOR ---
+        const roadmaps = {
+            'Yazılım öğrenmek istiyorum': [
+                { step: 1, title: 'Python Temelleri', desc: 'Değişkenler, döngüler, fonksiyonlar', time: '2 hafta' },
+                { step: 2, title: 'Git & Github', desc: 'Sürüm kontrol ve kodunuzu saklaması', time: '3 gün' },
+                { step: 3, title: 'Web Temelleri (HTML/CSS)', desc: 'Frontend temellerini öğren', time: '2 hafta' },
+                { step: 4, title: 'JavaScript', desc: 'Web üzerinde interaktivite', time: '3 hafta' },
+                { step: 5, title: 'Backend (Flask/Django)', desc: 'Python ile backend yap', time: '4 hafta' },
+                { step: 6, title: 'Veritabanı (SQL)', desc: 'Veri depolama ve sorgulama', time: '2 hafta' },
+                { step: 7, title: 'İlk Projeyi Başlat', desc: 'Küçük bir full-stack proje yap', time: '4 hafta' }
+            ],
+            'Freelance kariyeri başlamak istiyorum': [
+                { step: 1, title: 'Teknik Becerileri Geliştir', desc: 'Python, JavaScript, Web gibi bir alan seç', time: '8-12 hafta' },
+                { step: 2, title: 'Portföy Oluştur', desc: '5-10 örnek proje yap ve github\'ta paylaş', time: '4 hafta' },
+                { step: 3, title: 'LinkedIn & CV', desc: 'Profesyonel profil ve CV hazırla', time: '1 hafta' },
+                { step: 4, title: 'Freelance Platformlarına Kaydol', desc: 'Upwork, Fiverr, Guru vb. ', time: '2 gün' },
+                { step: 5, title: 'İlk İşleri Kabul Et', desc: 'Başlangıçta düşük ücretler kabul et, review kazan', time: '1-2 ay' },
+                { step: 6, title: 'Fiyatını Yükselt', desc: '10+ review sonrası fiyatı artır', time: 'Devam eden' }
+            ],
+            'AI ile uğraşmak istiyorum': [
+                { step: 1, title: 'Python Temelleri', desc: 'Veri yapıları ve kütüphaneler', time: '2 hafta' },
+                { step: 2, title: 'Matematik & İstatistik', desc: 'Lineer cebir, olasılık, istatistik', time: '4 hafta' },
+                { step: 3, title: 'NumPy & Pandas', desc: 'Veri işleme kütüphaneleri', time: '2 hafta' },
+                { step: 4, title: 'Makine Öğrenmesi (Scikit-Learn)', desc: 'Klasik ML algoritmaları', time: '4 hafta' },
+                { step: 5, title: 'Derin Öğrenme (TensorFlow/PyTorch)', desc: 'Nöral ağlar', time: '6 hafta' },
+                { step: 6, title: 'NLP & LLM\'ler', desc: 'ChatGPT gibi modelleri anla', time: '4 hafta' },
+                { step: 7, title: 'Kendi AI Projenini Yap', desc: 'Chatbot, görsel tanıma vs.', time: '8 hafta' }
+            ]
+        };
+
+        function generateRoadmap(goal) {
+            const roadmap = roadmaps[goal] || roadmaps['Yazılım öğrenmek istiyorum'];
+            const output = document.getElementById('chatOutput');
+            
+            // Kullanıcı mesajı
+            const userMsg = document.createElement('div');
+            userMsg.className = 'chat-message user';
+            userMsg.innerText = goal;
+            output.appendChild(userMsg);
+            
+            // AI yanıtı
+            const botMsg = document.createElement('div');
+            botMsg.className = 'chat-message bot';
+            botMsg.innerHTML = '<strong>✅ Senin İçin Hazırlanan Yol Haritası:</strong><br><br>' +
+                roadmap.map(r => `
+                    <div style="margin-bottom: 10px; padding: 8px; background: rgba(16,185,129,0.1); border-left: 3px solid #10b981; border-radius: 4px;">
+                        <strong>Adım ${r.step}: ${r.title}</strong><br>
+                        <span style="font-size: 12px; color: var(--text-muted);">📋 ${r.desc}</span><br>
+                        <span style="font-size: 11px; color: #3b82f6;">⏱️ Tahmini: ${r.time}</span>
+                    </div>
+                `).join('');
+            botMsg.innerHTML += '<br>🎯 <strong>İpucu:</strong> Her adımı tamamladığında bir kutlama mesajı atacak. XP kazan!';
+            
+            output.appendChild(botMsg);
+            output.scrollTop = output.scrollHeight;
+            
+            document.getElementById('aiQuestionInput').value = '';
+            
+            // XP ekle
+            setTimeout(() => addXP(100), 500);
+        }
+
+        function selectAiQuestion(text) {
+            document.getElementById('aiQuestionInput').value = text;
+            askAiQuestion();
+        }
+
+        function askAiQuestion() {
+            const input = document.getElementById('aiQuestionInput');
+            const question = input.value.trim();
+            if (!question) return;
+
+            const output = document.getElementById('chatOutput');
+            const userMsg = document.createElement('div');
+            userMsg.className = 'chat-message user';
+            userMsg.innerText = question;
+            output.appendChild(userMsg);
+
+            let answer = 'Bu konuda hızlı bir öneri hazırlıyorum...';
+            if (/dil|öğren|yazılım/i.test(question)) {
+                answer = '🐍 <strong>Python</strong> ile başlamanı öneriyorum. Neden? Kolay öğrenilebilir, geniş kütüphaneleri var ve iş piyasasında çok talep var. Devamında: Git → HTML/CSS → JavaScript → Backend → Veritabanı.';
+            } else if (/cv|özgeçmiş|portfolio/i.test(question)) {
+                answer = '📄 <strong>CV kısa ve net olmalı:</strong> 1. Başlık & iletişim 2. Teknik beceriler 3. Projeler (Github linkleri ile) 4. İş deneyimi 5. Eğitim. Portfolio olarak GitHub ve kişisel websiten yeterli.';
+            } else if (/uzaktan|freelance|iş|işi|gelir/i.test(question)) {
+                answer = '💼 <strong>Freelance yolculuğu:</strong> 1. Bir beceri seç (Python/Web/Design) 2. Portföy yap 3. Upwork/Fiverr\'e kaydol 4. İlk 10 işi düşük ücrette yap (review için) 5. Sonra fiyatını artır. İlk 6 ay zorlu, sonra düzenli müşteri bulursun.';
+            } else if (/ai|yapay|zeka/i.test(question)) {
+                answer = '🤖 <strong>AI Öğrenme Yolu:</strong> Python → Matematik (lineer cebir, istatistik) → NumPy/Pandas → Scikit-Learn → TensorFlow → LLM\'ler. Ücretsiz kaynaklar: Andrew Ng\'s Coursera kursu çok iyi. ';
+            } else {
+                answer = '💡 <strong>Genel Tavsiye:</strong> Öğrenme yolculuğunda sabırlı ol. Her gün 1-2 saat çalış. Küçük projeler başlat. Topluluk ile bağlantı kur. Başarısız olmaktan korkma, o adım atmanın parçası.';
+            }
+
+            const botMsg = document.createElement('div');
+            botMsg.className = 'chat-message bot';
+            botMsg.innerHTML = answer;
+            output.appendChild(botMsg);
+            output.scrollTop = output.scrollHeight;
+            input.value = '';
+            
+            // XP ekle
+            setTimeout(() => addXP(25), 300);
+        }
+
         // --- DİL SİSTEMİ VERİLERİ ---
         let currentLang = 'tr';
         const translations = {
@@ -1237,6 +1714,11 @@
         window.onload = () => {
             const savedLang = localStorage.getItem('nomad_lang') || 'tr';
             setLanguage(savedLang);
+            
+            // Streak ve profile sistemi
+            checkAndUpdateStreak();
+            updateProfileDisplay();
+            
             renderDailyTools();
             renderRoadmap();
             renderCareerList();
